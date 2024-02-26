@@ -16,7 +16,11 @@ import { UsersService } from './users.service';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { Request, Response } from 'express';
-import { FilesInterceptor } from '@nestjs/platform-express';
+import {
+  FileFieldsInterceptor,
+  FileInterceptor,
+  FilesInterceptor,
+} from '@nestjs/platform-express';
 import { CloudinaryService } from 'src/cloudinary/clodinary.service';
 
 @Controller('users')
@@ -28,32 +32,59 @@ export class UsersController {
 
   // create user return=> access_token ande refresh token in cookie
   @Post()
-  @UseInterceptors(FilesInterceptor('files'))
+  @UseInterceptors(
+    FileFieldsInterceptor([
+      { name: 'bankAccountStatementFile', maxCount: 1 },
+      { name: 'criminalRecordFile', maxCount: 1 },
+    ]),
+  )
   async create(
     @Body() createUserDto: CreateUserDto,
     @Res() res: Response,
-    @UploadedFiles() files: Express.Multer.File[],
+    @UploadedFiles()
+    files: {
+      bankAccountStatementFile?: Express.Multer.File;
+      criminalRecordFile?: Express.Multer.File;
+    },
   ) {
     try {
       const user = await this.usersService.findOneByEmail(createUserDto.email);
       if (user) {
         res.status(301).send({ message: 'Email is already in use.' });
       } else {
-        const secureUrls = await Promise.all(
-          files.map(async (file) => {
-            try {
-              const result = await this.cloudinaryService.uploadImage(file);
-              return result.secure_url;
-            } catch (error) {
-              console.log(`Error uploading file: ${file.originalname}`, error);
-              return null;
-            }
-          }),
-        );
+        let bankAccountStatementFileRes = { secure_url: '' };
+        let criminalRecordFileRes = { secure_url: '' };
+
+        if (files.bankAccountStatementFile) {
+          bankAccountStatementFileRes =
+            await this.cloudinaryService.uploadImage(
+              files.bankAccountStatementFile[0],
+            );
+        }
+        if (files.criminalRecordFile) {
+          criminalRecordFileRes = await this.cloudinaryService.uploadImage(
+            files.criminalRecordFile[0],
+          );
+        }
+        // const secureUrls = await Promise.all(
+        //   // files.map(async (file) => {
+        //   //   try {
+        //   //     const result = await this.cloudinaryService.uploadImage(file);
+        //   //     return result.secure_url;
+        //   //   } catch (error) {
+        //   //     console.log(`Error uploading file: ${file.originalname}`, error);
+        //   //     res.status(500).send({
+        //   //       status: HttpStatus.SERVICE_UNAVAILABLE,
+        //   //       message:'Service Unavilable Upload Files Please Try Again To Register User',
+        //   //     });
+        //   //   }
+        //   // }),
+        // );
+
         const { access_token, refresh_token } = await this.usersService.create({
           ...createUserDto,
-          bankAccountStatementFile: secureUrls[0],
-          criminalRecordFile: secureUrls[1],
+          bankAccountStatementFile: bankAccountStatementFileRes.secure_url,
+          criminalRecordFile: criminalRecordFileRes.secure_url,
         });
 
         res.cookie('refresh_token', refresh_token, {
@@ -66,7 +97,6 @@ export class UsersController {
           status: HttpStatus.CREATED,
           message: 'User created successfully.',
           access_token: access_token,
-          filsUrl: secureUrls,
         });
       }
     } catch (error) {

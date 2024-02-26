@@ -4,7 +4,7 @@ import { v2 as cloudinary, v2 } from 'cloudinary';
 import toStream = require('buffer-to-stream');
 
 @Injectable()
-export class CloudinaryService { 
+export class CloudinaryService {
   constructor() {
     cloudinary.config({
       cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
