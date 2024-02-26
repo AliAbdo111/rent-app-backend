@@ -7,9 +7,9 @@ export class AuthService {
   constructor(private jwtService: JwtService) {}
 
   async genrateToken(payload: any): Promise<string> {
-    console.log("generate ")
-    return await this.jwtService.signAsync(payload,{
-      secret:'strrooossdd,'
+    console.log('generate ');
+    return await this.jwtService.signAsync(payload, {
+      secret: 'strrooossdd,',
     });
   }
 

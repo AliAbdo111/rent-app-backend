@@ -11,7 +11,7 @@ import { AuthService } from 'src/auth/auth.service';
 import { sendEmail } from 'src/utils/email.util';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
-import { IUser } from './interfaces/user.interface';
+import { IUser } from '../users/interfaces/user.interface';
 
 @Injectable()
 export class UsersService {
@@ -81,16 +81,16 @@ export class UsersService {
     return await this.repositoryUsers.find();
   }
 
-  findOne(id: number) {
-    return this.repositoryUsers.findOne({ id: id });
+  findOne(id: string) {
+    return this.repositoryUsers.findOne({ _id: id });
   }
 
   findOneByEmail(email: string) {
     return this.repositoryUsers.findOne({ email: email });
   }
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  update(id: any, _updateUserDto: UpdateUserDto) {
-    return this.repositoryUsers.updateOne(id, _updateUserDto);
+  update(_id: any, _updateUserDto: UpdateUserDto) {
+    return this.repositoryUsers.updateOne({ _id: _id }, _updateUserDto);
   }
 
   async remove(id: any): Promise<any> {
@@ -101,11 +101,10 @@ export class UsersService {
     try {
       const user = await this.findOneByEmail(email);
       if (!user) {
-        console.log(user);
         return false;
       } else {
         const access_token = await this.authService.genrateToken({
-          sub: user.id,
+          sub: user._id,
           email: user.email,
         });
         const emailSubject = 'Password Reset Email';

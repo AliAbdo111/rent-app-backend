@@ -4,16 +4,22 @@ import { AppService } from './app.service';
 import { MongooseModule } from '@nestjs/mongoose';
 import { UsersModule } from './users/users.module';
 import { MulterModule } from '@nestjs/platform-express';
+import { ConfigModule } from '@nestjs/config';
+import { ConditionBookletOperationsModule } from './condition-booklet-operations/condition-booklet-operations.module';
+import { ConditionBookletProjectModule } from './condition-booklet-project/condition-booklet-project.module';
 
 @Module({
   imports: [
     MulterModule.register({
       dest: '/upload',
     }),
+    ConfigModule.forRoot({
+      isGlobal: true,
+    }),
     UsersModule,
-    MongooseModule.forRoot(
-      'mongodb+srv://Aliomran_11:Aliomran_11@bookstore.2p8vi6j.mongodb.net/rent-app',
-    ),
+    MongooseModule.forRoot(process.env.DATABASE_CONNECTION_URL),
+    ConditionBookletOperationsModule,
+    ConditionBookletProjectModule,
   ],
 
   controllers: [AppController],

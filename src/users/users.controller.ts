@@ -9,26 +9,55 @@ import {
   Res,
   HttpStatus,
   Req,
+  UseInterceptors,
+  UploadedFiles,
 } from '@nestjs/common';
 import { UsersService } from './users.service';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { Request, Response } from 'express';
+import { FilesInterceptor } from '@nestjs/platform-express';
+import { CloudinaryService } from 'src/cloudinary/clodinary.service';
 
 @Controller('users')
 export class UsersController {
-  constructor(private readonly usersService: UsersService) {}
+  constructor(
+    private readonly usersService: UsersService,
+    private readonly cloudinaryService: CloudinaryService,
+  ) {}
 
   // create user return=> access_token ande refresh token in cookie
   @Post()
-  async create(@Body() createUserDto: CreateUserDto, @Res() res: Response) {
+  @UseInterceptors(FilesInterceptor('files'))
+  async create(
+    @Body() createUserDto: CreateUserDto,
+    @Res() res: Response,
+    @UploadedFiles() files: Express.Multer.File[],
+  ) {
     try {
       const user = await this.usersService.findOneByEmail(createUserDto.email);
       if (user) {
         res.status(301).send({ message: 'Email is already in use.' });
       } else {
-        const { access_token, refresh_token } =
-          await this.usersService.create(createUserDto);
+        const secureUrls = await Promise.all(
+          files.map(async (file) => {
+            try {
+              const result = await this.cloudinaryService.uploadImage(file);
+              return result.secure_url;
+            } catch (error) {
+              console.error(
+                `Error uploading file: ${file.originalname}`,
+                error,
+              );
+              return null;
+            }
+          }),
+        );
+        const { access_token, refresh_token } = await this.usersService.create({
+          ...createUserDto,
+          bankAccountStatementFile: secureUrls[0],
+          criminalRecordFile: secureUrls[1],
+        });
 
         res.cookie('refresh_token', refresh_token, {
           httpOnly: true,
@@ -40,6 +69,7 @@ export class UsersController {
           status: HttpStatus.CREATED,
           message: 'User created successfully.',
           access_token: access_token,
+          filsUrl: secureUrls,
         });
       }
     } catch (error) {
@@ -90,7 +120,7 @@ export class UsersController {
   @Get(':id')
   async findOne(@Param('id') id: string, @Res() res: Response) {
     try {
-      const user = await this.usersService.findOne(+id);
+      const user = await this.usersService.findOne(id);
       if (!user) {
         res.status(404).send(`not found user with id ${id}`);
       } else {
@@ -108,7 +138,7 @@ export class UsersController {
     @Res() res: Response,
   ) {
     try {
-      const updateUser = await this.usersService.update(+id, updateUserDto);
+      const updateUser = await this.usersService.update(id, updateUserDto);
       if (!updateUser) {
         res.status(404).send(`not found user with id ${id}`);
       } else {
@@ -122,8 +152,8 @@ export class UsersController {
   @Delete(':id')
   async remove(@Param('id') id: string, @Res() res: Response) {
     try {
-      const result = await this.usersService.remove(+id);
-      if (!result.affected) {
+      const result = await this.usersService.remove(id);
+      if (!result) {
         res.status(404).send(`not found user with id+${id}`);
       } else {
         res.status(200).send('user deleted succesfully');
