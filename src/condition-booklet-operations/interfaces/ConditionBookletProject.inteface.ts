@@ -1,12 +1,5 @@
-import { IsNotEmpty } from 'class-validator';
-import { ConditionBookletProject } from 'src/condition-booklet-project/entities/condition-booklet-project.entity';
-
-export class CreateConditionBookletOperationDto {
-  @IsNotEmpty()
-  projectId: ConditionBookletProject;
-
-  //   personalInfo
-
+export interface IConditionBookletProject {
+  projectId: string;
   personalInfo: {
     firstName: string;
     lastName: string;
@@ -17,11 +10,9 @@ export class CreateConditionBookletOperationDto {
     nationality: string;
     familyMembers: number;
   };
-
-  //   files needs
-
   bankAccountStatementFile: string;
   hrLetter: string;
   birthCertificate: string;
+
   MarriageCertificate: string;
 }

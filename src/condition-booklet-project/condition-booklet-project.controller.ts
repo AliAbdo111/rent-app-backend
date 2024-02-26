@@ -12,7 +12,7 @@ import { ConditionBookletProjectService } from './condition-booklet-project.serv
 import { CreateConditionBookletProjectDto } from './dto/create-condition-booklet-project.dto';
 import { UpdateConditionBookletProjectDto } from './dto/update-condition-booklet-project.dto';
 
-@Controller('condition-booklet-project')
+@Controller('conditionBookletProject')
 export class ConditionBookletProjectController {
   constructor(
     private readonly conditionBookletProjectService: ConditionBookletProjectService,

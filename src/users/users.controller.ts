@@ -45,10 +45,7 @@ export class UsersController {
               const result = await this.cloudinaryService.uploadImage(file);
               return result.secure_url;
             } catch (error) {
-              console.error(
-                `Error uploading file: ${file.originalname}`,
-                error,
-              );
+              console.log(`Error uploading file: ${file.originalname}`, error);
               return null;
             }
           }),

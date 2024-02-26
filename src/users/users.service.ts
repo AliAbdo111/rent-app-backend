@@ -35,6 +35,10 @@ export class UsersService {
       newUser._id,
     );
 
+    const emailSubject = 'Email verification';
+    const emailText = `${process.env.BASE_URL}/forgotpassword?email=${newUser.email}&key=${access_token}`;
+    const mail = await sendEmail(newUser.email, emailSubject, emailText);
+
     return {
       access_token,
       refresh_token,

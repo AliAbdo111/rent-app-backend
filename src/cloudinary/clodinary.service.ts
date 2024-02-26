@@ -4,7 +4,7 @@ import { v2 as cloudinary, v2 } from 'cloudinary';
 import toStream = require('buffer-to-stream');
 
 @Injectable()
-export class CloudinaryService {
+export class CloudinaryService { 
   constructor() {
     cloudinary.config({
       cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
@@ -14,6 +14,7 @@ export class CloudinaryService {
   }
 
   async uploadImage(file: Express.Multer.File): Promise<any> {
+    console.log('test');
     return new Promise((resolve, reject) => {
       const upload = v2.uploader.upload_stream((error, result) => {
         if (error) return reject(error);
