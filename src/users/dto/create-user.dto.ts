@@ -21,14 +21,31 @@ export class CreateUserDto {
   @IsNotEmpty()
   phone: string;
 
-  address: {
-    location: string;
-    city: string;
-    state: string;
-    country: string;
-  };
+  @IsString()
+  @IsNotEmpty()
+  cardNumber: string;
 
   bankAccountStatementFile?: string;
 
   criminalRecordFile?: string;
+
+  
+  // address: {
+  //   location: string;
+  //   city: string;
+  //   state: string;
+  //   country: string;
+  // };
+
+ 
 }
+// انا في الريجيستر مش بحتاج غير 
+// firstName:"",
+//   lastName:"",
+//   email:"",
+//   password:"",
+//   confirmPassword:"",
+//   phone:"",
+//   cardNumber:"",
+//   bankAccountStatementFile:"",
+//   criminalRecordFile:""

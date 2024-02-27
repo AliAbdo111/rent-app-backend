@@ -4,6 +4,8 @@ import { ConditionBookletOperationsController } from './condition-booklet-operat
 import { MongooseModule } from '@nestjs/mongoose';
 import { CloudinaryService } from 'src/cloudinary/clodinary.service';
 import { conditionBookletOperationSchema } from './entities/condition-booklet-operation.entity';
+import { PaymentService } from 'src/services/payment/payment.service';
+import { ConditionBookletProjectService } from 'src/condition-booklet-project/condition-booklet-project.service';
 
 @Module({
   imports: [
@@ -15,6 +17,11 @@ import { conditionBookletOperationSchema } from './entities/condition-booklet-op
     ]),
   ],
   controllers: [ConditionBookletOperationsController],
-  providers: [ConditionBookletOperationsService, CloudinaryService],
+  providers: [
+    ConditionBookletOperationsService,
+    CloudinaryService,
+    PaymentService,
+    
+  ],
 })
 export class ConditionBookletOperationsModule {}

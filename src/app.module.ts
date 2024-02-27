@@ -7,6 +7,7 @@ import { MulterModule } from '@nestjs/platform-express';
 import { ConfigModule } from '@nestjs/config';
 import { ConditionBookletOperationsModule } from './condition-booklet-operations/condition-booklet-operations.module';
 import { ConditionBookletProjectModule } from './condition-booklet-project/condition-booklet-project.module';
+import { PaymentService } from './services/payment/payment.service';
 
 @Module({
   imports: [
@@ -23,6 +24,6 @@ import { ConditionBookletProjectModule } from './condition-booklet-project/condi
   ],
 
   controllers: [AppController],
-  providers: [AppService],
+  providers: [AppService, PaymentService],
 })
 export class AppModule {}

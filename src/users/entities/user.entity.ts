@@ -24,18 +24,21 @@ export class User {
   @Prop()
   criminalRecordFile: string;
 
-  @Prop({
-    type: {
-      city: String,
-      state: String,
-      country: String,
-    },
-  })
-  address: {
-    city: string;
-    state: string;
-    country: string;
-  };
+  @Prop()
+  cardNumber: string;
+
+  // @Prop({
+  //   type: {
+  //     city: String,
+  //     state: String,
+  //     country: String,
+  //   },
+  // })
+  // address: {
+  //   city: string;
+  //   state: string;
+  //   country: string;
+  // };
 
   async hashPass(): Promise<void> {
     if (this.password) {
