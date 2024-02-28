@@ -39,23 +39,23 @@ export class PaymentService {
     );
     const response = await request.json();
     const id = response?.id;
-    return this.thirdStep(token, id, user, product);
+    return this.thirdStep(token, id);
   }
 
-  async thirdStep(token: string, id: number, user: any, product: any) {
+  async thirdStep(token: string, id: number) {
     const data = {
       auth_token: token,
-      amount_cents: product.price,
+      amount_cents: '100000',
       expiration: 3600,
       order_id: id,
       billing_data: {
         apartment: '803',
         email: 'claudette09@exa.com',
         floor: '42',
-        first_name: user?.personalInfo.firstName,
+        first_name: 'Clifford',
         street: 'Ethan Land',
         building: '8028',
-        phone_number: user?.personalInfo.phone,
+        phone_number: '+86(8)9135210487',
         shipping_method: 'PKG',
         postal_code: '01898',
         city: 'Jaskolskiburgh',
