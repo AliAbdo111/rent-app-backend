@@ -9,7 +9,8 @@ import { IConditionBookletProject } from './interfaces/project.Bocklet.interface
 export class ConditionBookletProjectService {
   constructor(
     @InjectModel('ConditionBookletProject')
-    private projectRepository: Model<ConditionBookletProject>,
+    private projectRepository?: Model<ConditionBookletProject>,
+
   ) {}
 
   async create(
@@ -24,7 +25,7 @@ export class ConditionBookletProjectService {
     return await this.projectRepository.find();
   }
 
-  async findOne(id: string): Promise<IConditionBookletProject> {
+  async findOne(id: any): Promise<IConditionBookletProject> {
     return await this.projectRepository.findOne({ _id: id });
   }
 

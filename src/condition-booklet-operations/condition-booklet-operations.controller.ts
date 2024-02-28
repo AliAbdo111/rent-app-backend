@@ -9,6 +9,7 @@ import {
   UseInterceptors,
   UploadedFiles,
   ServiceUnavailableException,
+  Inject,
 } from '@nestjs/common';
 import { ConditionBookletOperationsService } from './condition-booklet-operations.service';
 import { CreateConditionBookletOperationDto } from './dto/create-condition-booklet-operation.dto';
@@ -20,11 +21,12 @@ import { ConditionBookletProjectService } from 'src/condition-booklet-project/co
 
 @Controller('ConditionBookletOperation')
 export class ConditionBookletOperationsController {
+  // @Inject(ConditionBookletProjectService)
+  // private readonly conditionProjectService: ConditionBookletProjectService;
   constructor(
     private readonly conditionBookletOperationsService: ConditionBookletOperationsService,
     private readonly cloudinaryService: CloudinaryService,
     private readonly paymentService: PaymentService,
-    // private readonly conditionProjectService: ConditionBookletProjectService
   ) {}
 
   @Post()
@@ -34,13 +36,16 @@ export class ConditionBookletOperationsController {
     createConditionBookletOperationDto: CreateConditionBookletOperationDto,
     @UploadedFiles() files: Express.Multer.File[],
   ) {
- 
-    try { 
-      // const project = await this.conditionProjectService.findOne(
-      //   String(createConditionBookletOperationDto.projectId),
-      // );
-      // console.log(project)
-      const responsePayment = await this.paymentService.firstStepPayment();
+    try {
+      // get project related with operations
+      const project = await this.conditionBookletOperationsService.getProject(
+        createConditionBookletOperationDto.projectId,
+      );
+      //  send data user and project to maymnet service
+      const responsePayment = await this.paymentService.firstStepPayment(
+        project,
+        createConditionBookletOperationDto,
+      );
 
       return { responsePayment: responsePayment };
     } catch (error) {

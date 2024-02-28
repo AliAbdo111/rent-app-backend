@@ -29,17 +29,14 @@ export class CreateUserDto {
 
   criminalRecordFile?: string;
 
-  
   // address: {
   //   location: string;
   //   city: string;
   //   state: string;
   //   country: string;
   // };
-
- 
 }
-// انا في الريجيستر مش بحتاج غير 
+// انا في الريجيستر مش بحتاج غير
 // firstName:"",
 //   lastName:"",
 //   email:"",

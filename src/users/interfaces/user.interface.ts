@@ -10,7 +10,7 @@ export interface IUser extends Document {
   password: string;
 
   phone: string;
-  cardNumber:string;
+  cardNumber: string;
   // address: {
   //   location: string;
   //   city: string;

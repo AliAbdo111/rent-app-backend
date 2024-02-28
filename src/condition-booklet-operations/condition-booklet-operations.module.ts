@@ -5,14 +5,20 @@ import { MongooseModule } from '@nestjs/mongoose';
 import { CloudinaryService } from 'src/cloudinary/clodinary.service';
 import { conditionBookletOperationSchema } from './entities/condition-booklet-operation.entity';
 import { PaymentService } from 'src/services/payment/payment.service';
-import { ConditionBookletProjectService } from 'src/condition-booklet-project/condition-booklet-project.service';
+import { ConditionBookletProjectModule } from 'src/condition-booklet-project/condition-booklet-project.module';
+import { ConditionBookletProjectSchema } from 'src/condition-booklet-project/entities/condition-booklet-project.entity';
 
 @Module({
   imports: [
+    ConditionBookletProjectModule,
     MongooseModule.forFeature([
       {
         name: 'ConditionBookletOperation',
         schema: conditionBookletOperationSchema,
+      },
+      {
+        name: 'ConditionBookletProject',
+        schema: ConditionBookletProjectSchema,
       },
     ]),
   ],
@@ -21,7 +27,6 @@ import { ConditionBookletProjectService } from 'src/condition-booklet-project/co
     ConditionBookletOperationsService,
     CloudinaryService,
     PaymentService,
-    
   ],
 })
 export class ConditionBookletOperationsModule {}
