@@ -12,9 +12,7 @@ import {
 import { ConditionBookletOperationsService } from './condition-booklet-operations.service';
 import { CreateConditionBookletOperationDto } from './dto/create-condition-booklet-operation.dto';
 import { UpdateConditionBookletOperationDto } from './dto/update-condition-booklet-operation.dto';
-import {
-  FileFieldsInterceptor,
-} from '@nestjs/platform-express';
+import { FileFieldsInterceptor } from '@nestjs/platform-express';
 import { CloudinaryService } from 'src/cloudinary/clodinary.service';
 import { PaymentService } from 'src/services/payment/payment.service';
 import { ConditionBookletProjectService } from 'src/condition-booklet-project/condition-booklet-project.service';
@@ -50,24 +48,24 @@ export class ConditionBookletOperationsController {
     },
   ) {
     const bankAccountStatementFile = await this.cloudinaryService.uploadImage(
-      files.bankAccountStatementFile[0],
-    );
-    const hrLetter = await this.cloudinaryService.uploadImage(
-      files.hrLetter[0],
+      files?.bankAccountStatementFile[0],
     );
     const birthCertificate = await this.cloudinaryService.uploadImage(
-      files.birthCertificate[0],
+      files?.birthCertificate[0],
     );
     const MarriageCertificate = await this.cloudinaryService.uploadImage(
-      files.MarriageCertificate[0],
+      files?.MarriageCertificate[0],
+    );
+    const hrLetter = await this.cloudinaryService.uploadImage(
+      files?.hrLetter[0],
     );
 
     return await this.conditionBookletOperationsService.create({
       ...createConditionBookletOperationDto,
-      bankAccountStatementFile: bankAccountStatementFile,
-      hrLetter: hrLetter,
-      birthCertificate: birthCertificate,
-      MarriageCertificate: MarriageCertificate,
+      bankAccountStatementFile: bankAccountStatementFile.secure_url,
+      hrLetter: hrLetter.secure_url,
+      birthCertificate: birthCertificate.secure_url,
+      MarriageCertificate: MarriageCertificate.secure_url,
     });
   }
   // try {
