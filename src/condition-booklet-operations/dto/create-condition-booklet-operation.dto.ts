@@ -11,7 +11,6 @@ export class CreateConditionBookletOperationDto {
     firstName: string;
     lastName: string;
     phone: string;
-    countryCode: string;
     maritalStatus: string;
     idNumber: string;
     nationality: string;

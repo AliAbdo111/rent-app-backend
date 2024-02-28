@@ -8,13 +8,13 @@ import {
   Delete,
   UseInterceptors,
   UploadedFiles,
-  ServiceUnavailableException,
-  Inject,
 } from '@nestjs/common';
 import { ConditionBookletOperationsService } from './condition-booklet-operations.service';
 import { CreateConditionBookletOperationDto } from './dto/create-condition-booklet-operation.dto';
 import { UpdateConditionBookletOperationDto } from './dto/update-condition-booklet-operation.dto';
-import { FilesInterceptor } from '@nestjs/platform-express';
+import {
+  FileFieldsInterceptor,
+} from '@nestjs/platform-express';
 import { CloudinaryService } from 'src/cloudinary/clodinary.service';
 import { PaymentService } from 'src/services/payment/payment.service';
 import { ConditionBookletProjectService } from 'src/condition-booklet-project/condition-booklet-project.service';
@@ -30,46 +30,61 @@ export class ConditionBookletOperationsController {
   ) {}
 
   @Post()
-  @UseInterceptors(FilesInterceptor('file'))
+  @UseInterceptors(
+    FileFieldsInterceptor([
+      { name: 'bankAccountStatementFile', maxCount: 1 },
+      { name: 'hrLetter', maxCount: 1 },
+      { name: 'birthCertificate', maxCount: 1 },
+      { name: 'MarriageCertificate', maxCount: 1 },
+    ]),
+  )
   async create(
     @Body()
     createConditionBookletOperationDto: CreateConditionBookletOperationDto,
-    @UploadedFiles() files: Express.Multer.File[],
+    @UploadedFiles()
+    files: {
+      bankAccountStatementFile?: Express.Multer.File;
+      hrLetter?: Express.Multer.File;
+      birthCertificate?: Express.Multer.File;
+      MarriageCertificate?: Express.Multer.File;
+    },
   ) {
-    try {
-      // get project related with operations
-      const project = await this.conditionBookletOperationsService.getProject(
-        createConditionBookletOperationDto.projectId,
-      );
-      //  send data user and project to maymnet service
-      const responsePayment = await this.paymentService.firstStepPayment(
-        project,
-        createConditionBookletOperationDto,
-      );
-
-      return { responsePayment: responsePayment };
-    } catch (error) {
-      throw new ServiceUnavailableException('Erorr In Service Payment ')
-    }
-    const secureUrls = await Promise.all(
-      files.map(async (file) => {
-        try {
-          const result = await this.cloudinaryService.uploadImage(file);
-          return result.secure_url;
-        } catch (error) {
-          console.error(`Error uploading file: ${file.originalname}`, error);
-          return null;
-        }
-      }),
+    const bankAccountStatementFile = await this.cloudinaryService.uploadImage(
+      files.bankAccountStatementFile[0],
     );
+    const hrLetter = await this.cloudinaryService.uploadImage(
+      files.hrLetter[0],
+    );
+    const birthCertificate = await this.cloudinaryService.uploadImage(
+      files.birthCertificate[0],
+    );
+    const MarriageCertificate = await this.cloudinaryService.uploadImage(
+      files.MarriageCertificate[0],
+    );
+
     return await this.conditionBookletOperationsService.create({
       ...createConditionBookletOperationDto,
-      bankAccountStatementFile: secureUrls[0],
-      hrLetter: secureUrls[1],
-      birthCertificate: secureUrls[2],
-      MarriageCertificate: secureUrls[3],
+      bankAccountStatementFile: bankAccountStatementFile,
+      hrLetter: hrLetter,
+      birthCertificate: birthCertificate,
+      MarriageCertificate: MarriageCertificate,
     });
   }
+  // try {
+  //   // get project related with operations
+  //   const project = await this.conditionBookletOperationsService.getProject(
+  //     createConditionBookletOperationDto.projectId,
+  //   );
+  //   //  send data user and project to maymnet service
+  //   const responsePayment = await this.paymentService.firstStepPayment(
+  //     project,
+  //     createConditionBookletOperationDto,
+  //   );
+
+  //   return { responsePayment: responsePayment };
+  // } catch (error) {
+  //   throw new ServiceUnavailableException('Erorr In Service Payment ')
+  // }
 
   @Get()
   findAll() {

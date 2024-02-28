@@ -18,7 +18,7 @@ export class PaymentService {
     const response = await request.json();
     console.log(response);
     const token = response?.token;
-    return this.secondStep(token ,product ,user);
+    return this.secondStep(token, product, user);
   }
 
   async secondStep(token: string, product: any, user: any) {
@@ -39,13 +39,13 @@ export class PaymentService {
     );
     const response = await request.json();
     const id = response?.id;
-    return this.thirdStep(token, id);
+    return this.thirdStep(token, id, product);
   }
 
-  async thirdStep(token: string, id: number) {
+  async thirdStep(token: string, id: number, product: any) {
     const data = {
       auth_token: token,
-      amount_cents: '100000',
+      amount_cents: product?.price,
       expiration: 3600,
       order_id: id,
       billing_data: {

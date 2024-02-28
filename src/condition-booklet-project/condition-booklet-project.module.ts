@@ -11,7 +11,6 @@ import { MongooseModule } from '@nestjs/mongoose';
         name: 'ConditionBookletProject',
         schema: ConditionBookletProjectSchema,
       },
-     
     ]),
   ],
   controllers: [ConditionBookletProjectController],

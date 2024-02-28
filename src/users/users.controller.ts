@@ -55,31 +55,17 @@ export class UsersController {
         let bankAccountStatementFileRes = { secure_url: '' };
         let criminalRecordFileRes = { secure_url: '' };
 
-        if (files.bankAccountStatementFile) {
+        if (files?.bankAccountStatementFile) {
           bankAccountStatementFileRes =
             await this.cloudinaryService.uploadImage(
               files.bankAccountStatementFile[0],
             );
         }
-        if (files.criminalRecordFile) {
+        if (files?.criminalRecordFile) {
           criminalRecordFileRes = await this.cloudinaryService.uploadImage(
             files.criminalRecordFile[0],
           );
         }
-        // const secureUrls = await Promise.all(
-        //   // files.map(async (file) => {
-        //   //   try {
-        //   //     const result = await this.cloudinaryService.uploadImage(file);
-        //   //     return result.secure_url;
-        //   //   } catch (error) {
-        //   //     console.log(`Error uploading file: ${file.originalname}`, error);
-        //   //     res.status(500).send({
-        //   //       status: HttpStatus.SERVICE_UNAVAILABLE,
-        //   //       message:'Service Unavilable Upload Files Please Try Again To Register User',
-        //   //     });
-        //   //   }
-        //   // }),
-        // );
 
         const { access_token, refresh_token } = await this.usersService.create({
           ...createUserDto,

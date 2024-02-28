@@ -22,11 +22,9 @@ export class ConditionBookletOperationsService {
     private projectRepository?: Model<ConditionBookletProject>,
   ) {}
 
-
   async create(
     createConditionBookletOperationDto: CreateConditionBookletOperationDto,
   ): Promise<any> {
-
     const operationproject = await this.conditionBookletOperation.create(
       createConditionBookletOperationDto,
     );

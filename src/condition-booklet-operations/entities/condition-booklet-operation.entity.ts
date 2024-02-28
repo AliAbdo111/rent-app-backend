@@ -16,7 +16,6 @@ export class ConditionBookletOperation {
       firstName: String,
       lastName: String,
       phone: String,
-      countryCode: String,
       maritalStatus: String,
       idNumber: String,
       nationality: String,

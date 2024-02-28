@@ -10,7 +10,6 @@ export class ConditionBookletProjectService {
   constructor(
     @InjectModel('ConditionBookletProject')
     private projectRepository?: Model<ConditionBookletProject>,
-
   ) {}
 
   async create(
