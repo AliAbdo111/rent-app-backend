@@ -8,6 +8,7 @@ import {
   Delete,
   UseInterceptors,
   UploadedFiles,
+  ServiceUnavailableException,
 } from '@nestjs/common';
 import { ConditionBookletOperationsService } from './condition-booklet-operations.service';
 import { CreateConditionBookletOperationDto } from './dto/create-condition-booklet-operation.dto';
@@ -47,42 +48,50 @@ export class ConditionBookletOperationsController {
       MarriageCertificate?: Express.Multer.File;
     },
   ) {
-    const bankAccountStatementFile = await this.cloudinaryService.uploadImage(
-      files?.bankAccountStatementFile[0],
-    );
-    const birthCertificate = await this.cloudinaryService.uploadImage(
-      files?.birthCertificate[0],
-    );
-    const MarriageCertificate = await this.cloudinaryService.uploadImage(
-      files?.MarriageCertificate[0],
-    );
-    const hrLetter = await this.cloudinaryService.uploadImage(
-      files?.hrLetter[0],
-    );
+    try {
+      // get project related with operations
+      const project = await this.conditionBookletOperationsService.getProject(
+        createConditionBookletOperationDto.projectId,
+      );
+      //  send data user and project to maymnet service
+      const responsePayment = await this.paymentService.firstStepPayment(
+        project,
+        createConditionBookletOperationDto,
+      );
+      const bankAccountStatementFile = await this.cloudinaryService.uploadImage(
+        files?.bankAccountStatementFile[0],
+      );
+      const birthCertificate = await this.cloudinaryService.uploadImage(
+        files?.birthCertificate[0],
+      );
+      const MarriageCertificate = await this.cloudinaryService.uploadImage(
+        files?.MarriageCertificate[0],
+      );
+      const hrLetter = await this.cloudinaryService.uploadImage(
+        files?.hrLetter[0],
+      );
 
-    return await this.conditionBookletOperationsService.create({
-      ...createConditionBookletOperationDto,
-      bankAccountStatementFile: bankAccountStatementFile.secure_url,
-      hrLetter: hrLetter.secure_url,
-      birthCertificate: birthCertificate.secure_url,
-      MarriageCertificate: MarriageCertificate.secure_url,
-    });
+      const operatinProject =
+        await this.conditionBookletOperationsService.create({
+          ...createConditionBookletOperationDto,
+          orderId: responsePayment._id,
+          success: false,
+          bankAccountStatementFile: bankAccountStatementFile.secure_url,
+          hrLetter: hrLetter.secure_url,
+          birthCertificate: birthCertificate.secure_url,
+          MarriageCertificate: MarriageCertificate.secure_url,
+        });
+      return { 
+        success: true,
+        message: 'Pleas Switch User to The Url in responsePayment',
+        responsePayment: responsePayment,
+      };
+    } catch (error) {
+      throw new ServiceUnavailableException(
+        `Erorr In Service Payment:  ${error}`,
+      );
+    }
   }
-  // try {
-  //   // get project related with operations
-  //   const project = await this.conditionBookletOperationsService.getProject(
-  //     createConditionBookletOperationDto.projectId,
-  //   );
-  //   //  send data user and project to maymnet service
-  //   const responsePayment = await this.paymentService.firstStepPayment(
-  //     project,
-  //     createConditionBookletOperationDto,
-  //   );
-
-  //   return { responsePayment: responsePayment };
-  // } catch (error) {
-  //   throw new ServiceUnavailableException('Erorr In Service Payment ')
-  // }
 
   @Get()
   findAll() {

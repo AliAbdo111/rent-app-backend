@@ -7,20 +7,22 @@ export class CreateConditionBookletOperationDto {
 
   //   personalInfo
 
-  personalInfo: {
-    firstName: string;
-    lastName: string;
-    phone: string;
-    maritalStatus: string;
-    idNumber: string;
-    nationality: string;
-    familyMembers: number;
-  };
+  firstName: string;
+  lastName: string;
+  phone: string;
+  maritalStatus: string;
+  idNumber: string;
+  nationality: string;
+  familyMembers: number;
 
   //   files needs
-
   bankAccountStatementFile: string;
   hrLetter: string;
   birthCertificate: string;
   MarriageCertificate: string;
+
+  // data about order
+  success?: boolean;
+
+  orderId?: number;
 }

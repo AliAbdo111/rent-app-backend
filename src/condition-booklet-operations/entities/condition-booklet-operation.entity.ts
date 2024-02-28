@@ -11,27 +11,25 @@ export class ConditionBookletOperation {
   projectId: ConditionBookletProject;
 
   //   personalInfo
-  @Prop({
-    type: {
-      firstName: String,
-      lastName: String,
-      phone: String,
-      maritalStatus: String,
-      idNumber: String,
-      nationality: String,
-      familyMembers: Number,
-    },
-  })
-  personalInfo: {
-    firstName: string;
-    lastName: string;
-    phone: string;
-    countryCode: string;
-    maritalStatus: string;
-    idNumber: string;
-    nationality: string;
-    familyMembers: number;
-  };
+  @Prop()
+  firstName: string;
+
+  @Prop()
+  lastName: string;
+  @Prop()
+  email: string;
+  @Prop()
+  phone: string;
+  @Prop()
+  countryCode: string;
+  @Prop()
+  maritalStatus: string;
+  @Prop()
+  idNumber: string;
+  @Prop()
+  nationality: string;
+  @Prop()
+  familyMembers: number;
 
   //   files needs
   @Prop()
@@ -45,6 +43,12 @@ export class ConditionBookletOperation {
 
   @Prop()
   MarriageCertificate: string;
+
+  @Prop()
+  orderId: number;
+
+  @Prop()
+  success: boolean;
 }
 
 export const conditionBookletOperationSchema = SchemaFactory.createForClass(

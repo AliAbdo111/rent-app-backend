@@ -7,8 +7,9 @@ export class PaymentService {
     console.log(product);
     console.log(user);
     const data = {
-      api_key:
-        'ZXlKaGJHY2lPaUpJVXpVeE1pSXNJblI1Y0NJNklrcFhWQ0o5LmV5SmpiR0Z6Y3lJNklrMWxjbU5vWVc1MElpd2ljSEp2Wm1sc1pWOXdheUk2T1RVNU56QXdMQ0p1WVcxbElqb2lNVGN3T1RBeU9ESXdNQzR6TVRreE56Y2lmUS5MaVFsSy1jcTRYYWVDbFlaSW9ueEUtdVZLZ2pmS1lvaDB1cFFJS2lIY2lfX3ZiV2hJbGNVWHN0d1JDcWp1WTBKSWgyS2RNeGtaS1dqbFljMnlOY1BBQQ==',
+      api_key: process.env.API_KEY_PAYMENT,
+      
+        // 'ZXlKaGJHY2lPaUpJVXpVeE1pSXNJblI1Y0NJNklrcFhWQ0o5LmV5SmpiR0Z6Y3lJNklrMWxjbU5vWVc1MElpd2ljSEp2Wm1sc1pWOXdheUk2T1RVNU56QXdMQ0p1WVcxbElqb2lNVGN3T1RBeU9ESXdNQzR6TVRreE56Y2lmUS5MaVFsSy1jcTRYYWVDbFlaSW9ueEUtdVZLZ2pmS1lvaDB1cFFJS2lIY2lfX3ZiV2hJbGNVWHN0d1JDcWp1WTBKSWgyS2RNeGtaS1dqbFljMnlOY1BBQQ==',
     };
     const request = await fetch('https://accept.paymob.com/api/auth/tokens', {
       method: 'post',
@@ -16,7 +17,6 @@ export class PaymentService {
       body: JSON.stringify(data),
     });
     const response = await request.json();
-    console.log(response);
     const token = response?.token;
     return this.secondStep(token, product, user);
   }
@@ -38,11 +38,13 @@ export class PaymentService {
       },
     );
     const response = await request.json();
+    console.log(response);
     const id = response?.id;
-    return this.thirdStep(token, id, product);
+    return this.thirdStep(token, id, product, user);
   }
 
-  async thirdStep(token: string, id: number, product: any) {
+  async thirdStep(token: string, id: number, product: any, user: any) {
+    console.log(user);
     const data = {
       auth_token: token,
       amount_cents: product?.price,
@@ -50,17 +52,17 @@ export class PaymentService {
       order_id: id,
       billing_data: {
         apartment: '803',
-        email: 'claudette09@exa.com',
+        email: user.email,
         floor: '42',
-        first_name: 'Clifford',
+        first_name: user.firstName,
         street: 'Ethan Land',
         building: '8028',
-        phone_number: '+86(8)9135210487',
+        phone_number: user.phone,
         shipping_method: 'PKG',
         postal_code: '01898',
         city: 'Jaskolskiburgh',
         country: 'CR',
-        last_name: 'Nicolas',
+        last_name: user.lastName,
         state: 'Utah',
       },
       currency: 'EGP',
@@ -78,11 +80,11 @@ export class PaymentService {
     const responce = await request.json();
 
     const theToken = responce.token;
-    return this.cardPayment(theToken);
+    return this.cardPayment(theToken, id);
   }
 
-  async cardPayment(token: string) {
+  async cardPayment(token: string, _id: any) {
     const ifarmUrl = `https://accept.paymob.com/api/acceptance/iframes/824831?payment_token=${token}`;
-    return ifarmUrl;
+    return { ifarmUrl, _id };
   }
 }
