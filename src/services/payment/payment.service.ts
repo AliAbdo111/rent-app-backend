@@ -8,8 +8,6 @@ export class PaymentService {
     console.log(user);
     const data = {
       api_key: process.env.API_KEY_PAYMENT,
-      
-        // 'ZXlKaGJHY2lPaUpJVXpVeE1pSXNJblI1Y0NJNklrcFhWQ0o5LmV5SmpiR0Z6Y3lJNklrMWxjbU5vWVc1MElpd2ljSEp2Wm1sc1pWOXdheUk2T1RVNU56QXdMQ0p1WVcxbElqb2lNVGN3T1RBeU9ESXdNQzR6TVRreE56Y2lmUS5MaVFsSy1jcTRYYWVDbFlaSW9ueEUtdVZLZ2pmS1lvaDB1cFFJS2lIY2lfX3ZiV2hJbGNVWHN0d1JDcWp1WTBKSWgyS2RNeGtaS1dqbFljMnlOY1BBQQ==',
     };
     const request = await fetch('https://accept.paymob.com/api/auth/tokens', {
       method: 'post',
@@ -51,19 +49,19 @@ export class PaymentService {
       expiration: 3600,
       order_id: id,
       billing_data: {
-        apartment: '803',
+        apartment: '',
         email: user.email,
         floor: '42',
         first_name: user.firstName,
-        street: 'Ethan Land',
-        building: '8028',
+        street: '',
+        building: '',
         phone_number: user.phone,
-        shipping_method: 'PKG',
-        postal_code: '01898',
-        city: 'Jaskolskiburgh',
-        country: 'CR',
+        shipping_method: '',
+        postal_code: '',
+        city: '',
+        country: '',
         last_name: user.lastName,
-        state: 'Utah',
+        state: '',
       },
       currency: 'EGP',
       integration_id: 4486052, ////integration id
