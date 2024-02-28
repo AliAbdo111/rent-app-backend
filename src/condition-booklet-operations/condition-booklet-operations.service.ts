@@ -64,4 +64,18 @@ export class ConditionBookletOperationsService {
   remove(id: string) {
     return this.conditionBookletOperation.findByIdAndDelete(id);
   }
+
+  async getOperationByOrderID(id: number, updatedData: any) {
+    try {
+      const updateOperation =
+        await this.conditionBookletOperation.findOneAndUpdate({
+          orderId: id,
+          success: updatedData,
+        });
+      return updateOperation;
+    } catch (error) {
+      throw new ServiceUnavailableException()
+    }
+  }
+
 }

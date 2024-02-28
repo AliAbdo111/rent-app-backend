@@ -9,6 +9,7 @@ import {
   UseInterceptors,
   UploadedFiles,
   ServiceUnavailableException,
+  Query,
 } from '@nestjs/common';
 import { ConditionBookletOperationsService } from './condition-booklet-operations.service';
 import { CreateConditionBookletOperationDto } from './dto/create-condition-booklet-operation.dto';
@@ -118,5 +119,17 @@ export class ConditionBookletOperationsController {
   @Delete(':id')
   remove(@Param('id') id: string) {
     return this.conditionBookletOperationsService.remove(id);
+  }
+
+  // call back for payment operatin project booklet 
+  @Post('/CallpackPayment/operation')
+  callBack(@Query() query: any) {
+    try {
+      console.log(query)
+      const {id}= query;
+      const project = await this.conditionBookletOperationsService.getOperationByOrderID(id)
+    } catch (error) {
+      throw new ServiceUnavailableException()
+    }
   }
 }
