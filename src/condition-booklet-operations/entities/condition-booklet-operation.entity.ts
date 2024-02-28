@@ -44,11 +44,22 @@ export class ConditionBookletOperation {
   @Prop()
   MarriageCertificate: string;
 
-  @Prop()
+  @Prop({
+    default: 0,
+  })
   orderId: number;
-
-  @Prop()
+  @Prop({
+    default: false,
+  })
   success: boolean;
+  @Prop({
+    default: 0,
+  })
+  TRANSACTION_ID: number;
+  @Prop({
+    default: true,
+  })
+  pending: boolean;
 }
 
 export const conditionBookletOperationSchema = SchemaFactory.createForClass(

@@ -65,12 +65,20 @@ export class ConditionBookletOperationsService {
     return this.conditionBookletOperation.findByIdAndDelete(id);
   }
 
-  async getOperationByOrderID(id: number, updatedData: any) {
+  async getOperationByOrderID(
+    id: number, 
+    success: boolean,
+    pending:boolean,
+    TRANSACTION_ID: number
+    ) {
     try {
       const updateOperation =
-        await this.conditionBookletOperation.findOneAndUpdate({
-          orderId: id,
-          success: updatedData,
+        await this.conditionBookletOperation.findOneAndUpdate(
+          { orderId: id },
+          {
+            success: success,
+            TRANSACTION_ID: TRANSACTION_ID,
+            pending: pending,
         });
       return updateOperation;
     } catch (error) {

@@ -123,11 +123,24 @@ export class ConditionBookletOperationsController {
 
   // call back for payment operatin project booklet 
   @Post('/CallpackPayment/operation')
-  callBack(@Query() query: any) {
+ async callBack(@Query() query: any,@Body() body:any) {
     try {
-      console.log(query)
-      const {id}= query;
-      const project = await this.conditionBookletOperationsService.getOperationByOrderID(id)
+      console.log(body)
+      console.log(body?.obj?.id)  //TRANSACTION_ID
+      console.log(body?.obj?.success)
+      console.log(body?.obj?.pending)
+      console.log(body?.obj?.order.id)
+      console.log(query) //hmac
+      const { hmac }= query;
+      const { updatedData } = query;
+      const project =
+        await this.conditionBookletOperationsService.getOperationByOrderID(
+          body?.obj?.order.id,
+          body?.obj?.success,
+          body?.obj?.pending,
+          body?.obj?.id,
+        );
+        return project
     } catch (error) {
       throw new ServiceUnavailableException()
     }
