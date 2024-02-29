@@ -2,16 +2,27 @@ import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 
 import * as bcrypt from 'bcrypt';
 import { Document } from 'mongoose';
+
+enum UserType {
+  Vendor = 'vendor',
+  Owner = 'owner',
+  Admin = 'admin',
+  User = 'user',
+}
 @Schema()
-export class User extends Document{
+export class User extends Document {
   @Prop()
   firstName: string;
 
   @Prop()
   lastName: string;
 
-  @Prop()
-  user_type:string  //vendor /owner /admin 
+  @Prop({
+    type: String,
+    enum: Object.values(UserType),
+    default: UserType.User,
+  })
+  user_type: UserType; //vendor /owner /admin /user
 
   @Prop()
   email: string;

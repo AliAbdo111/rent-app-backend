@@ -16,11 +16,7 @@ import { UsersService } from './users.service';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { Request, Response } from 'express';
-import {
-  FileFieldsInterceptor,
-  FileInterceptor,
-  FilesInterceptor,
-} from '@nestjs/platform-express';
+import { FileFieldsInterceptor } from '@nestjs/platform-express';
 import { CloudinaryService } from 'src/cloudinary/clodinary.service';
 
 @Controller('users')
@@ -97,17 +93,18 @@ export class UsersController {
   // signin  return=> access_token ande refresh token in cookie
   @Post('/signIn')
   async signIn(@Body() signInDto: Record<string, any>, @Res() res: Response) {
-    const { refresh_token, access_token } = await this.usersService.signIn(
-      signInDto.email,
-      signInDto.password,
-    );
+    const { refresh_token, access_token, user } =
+      await this.usersService.signIn(signInDto.email, signInDto.password);
 
     res.cookie('refresh_token', refresh_token, {
       httpOnly: true,
       secure: true,
       sameSite: 'strict',
     });
-    res.send({ access_token: access_token });
+    res.send({
+      access_token: access_token,
+      user: user,
+    });
   }
 
   // refresh token
