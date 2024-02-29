@@ -1,13 +1,17 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 
 import * as bcrypt from 'bcrypt';
+import { Document } from 'mongoose';
 @Schema()
-export class User {
+export class User extends Document{
   @Prop()
   firstName: string;
 
   @Prop()
   lastName: string;
+
+  @Prop()
+  user_type:string  //vendor /owner /admin 
 
   @Prop()
   email: string;

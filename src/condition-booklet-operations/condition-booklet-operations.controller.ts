@@ -1,3 +1,4 @@
+//#region
 import {
   Controller,
   Get,
@@ -17,7 +18,6 @@ import { UpdateConditionBookletOperationDto } from './dto/update-condition-bookl
 import { FileFieldsInterceptor } from '@nestjs/platform-express';
 import { CloudinaryService } from 'src/cloudinary/clodinary.service';
 import { PaymentService } from 'src/services/payment/payment.service';
-import { ConditionBookletProjectService } from 'src/condition-booklet-project/condition-booklet-project.service';
 
 @Controller('ConditionBookletOperation')
 export class ConditionBookletOperationsController {
@@ -51,6 +51,7 @@ export class ConditionBookletOperationsController {
   ) {
     try {
       // get project related with operations
+      const foldeName = 'BookeletUser'
       const project = await this.conditionBookletOperationsService.getProject(
         createConditionBookletOperationDto.projectId,
       );
@@ -61,15 +62,19 @@ export class ConditionBookletOperationsController {
       );
       const bankAccountStatementFile = await this.cloudinaryService.uploadImage(
         files?.bankAccountStatementFile[0],
+        foldeName
       );
       const birthCertificate = await this.cloudinaryService.uploadImage(
         files?.birthCertificate[0],
+        foldeName
       );
       const MarriageCertificate = await this.cloudinaryService.uploadImage(
         files?.MarriageCertificate[0],
+        foldeName
       );
       const hrLetter = await this.cloudinaryService.uploadImage(
         files?.hrLetter[0],
+        foldeName
       );
 
       const operatinProject =
@@ -82,12 +87,13 @@ export class ConditionBookletOperationsController {
           birthCertificate: birthCertificate.secure_url,
           MarriageCertificate: MarriageCertificate.secure_url,
         });
-      return { 
+      return {
         success: true,
         message: 'Pleas Switch User to The Url in responsePayment',
         responsePayment: responsePayment,
       };
     } catch (error) {
+      console.log(error);
       throw new ServiceUnavailableException(
         `Erorr In Service Payment:  ${error}`,
       );
@@ -96,12 +102,20 @@ export class ConditionBookletOperationsController {
 
   @Get()
   findAll() {
-    return this.conditionBookletOperationsService.findAll();
+    try {
+      return this.conditionBookletOperationsService.findAll();
+    } catch (error) {
+      throw new ServiceUnavailableException(`Error : ${error}`);
+    }
   }
 
   @Get(':id')
   findOne(@Param('id') id: string) {
-    return this.conditionBookletOperationsService.findOne(id);
+    try {
+      return this.conditionBookletOperationsService.findOne(id);
+    } catch (error) {
+      throw new ServiceUnavailableException(`Erorr :  ${error}`);
+    }
   }
 
   @Patch(':id')
@@ -110,29 +124,35 @@ export class ConditionBookletOperationsController {
     @Body()
     updateConditionBookletOperationDto: UpdateConditionBookletOperationDto,
   ) {
-    return this.conditionBookletOperationsService.update(
-      +id,
-      updateConditionBookletOperationDto,
-    );
+    try {
+      return this.conditionBookletOperationsService.update(
+        +id,
+        updateConditionBookletOperationDto,
+      );
+    } catch (error) {
+      throw new ServiceUnavailableException(`Error :${error}`);
+    }
   }
 
   @Delete(':id')
   remove(@Param('id') id: string) {
-    return this.conditionBookletOperationsService.remove(id);
+    try {
+      return this.conditionBookletOperationsService.remove(id);
+    } catch (error) {
+      throw new ServiceUnavailableException(`Error Message : ${error}`);
+    }
   }
 
-  // call back for payment operatin project booklet 
+  // call back for payment operatin project booklet
   @Post('/CallpackPayment/operation')
- async callBack(@Query() query: any,@Body() body:any) {
+  async callBack(@Query() query: any, @Body() body: any) {
     try {
-      console.log(body)
-      console.log(body?.obj?.id)  //TRANSACTION_ID
-      console.log(body?.obj?.success)
-      console.log(body?.obj?.pending)
-      console.log(body?.obj?.order.id)
-      console.log(query) //hmac
-      const { hmac }= query;
-      const { updatedData } = query;
+      // console.log(body);
+      // console.log(body?.obj?.id); //TRANSACTION_ID
+      // console.log(body?.obj?.success);
+      // console.log(body?.obj?.pending);
+      // console.log(body?.obj?.order.id);
+      // console.log(query); //hmac
       const project =
         await this.conditionBookletOperationsService.getOperationByOrderID(
           body?.obj?.order.id,
@@ -140,9 +160,10 @@ export class ConditionBookletOperationsController {
           body?.obj?.pending,
           body?.obj?.id,
         );
-        return project
+      return project;
     } catch (error) {
-      throw new ServiceUnavailableException()
+      throw new ServiceUnavailableException(`Error : ${error}`);
     }
   }
 }
+//#endregion

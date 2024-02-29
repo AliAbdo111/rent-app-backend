@@ -25,11 +25,15 @@ export class ConditionBookletOperationsService {
   async create(
     createConditionBookletOperationDto: CreateConditionBookletOperationDto,
   ): Promise<any> {
-    const operationproject = await this.conditionBookletOperation.create(
-      createConditionBookletOperationDto,
-    );
-    operationproject.save();
-    return operationproject;
+    try {
+      const operationproject = await this.conditionBookletOperation.create(
+        createConditionBookletOperationDto,
+      );
+      operationproject.save();
+      return operationproject;
+    } catch (error) {
+      throw new ServiceUnavailableException(`Error: ${error}`);
+    }
   }
 
   async getProject(id: any) {
@@ -44,33 +48,49 @@ export class ConditionBookletOperationsService {
   }
 
   async findAll(): Promise<any> {
-    return await this.conditionBookletOperation.find();
+    try {
+      return await this.conditionBookletOperation.find();
+    } catch (error) {
+      throw new ServiceUnavailableException(error);
+    }
   }
 
   async findOne(id: string): Promise<any> {
-    return this.conditionBookletOperation.findOne({ _id: id });
+    try {
+      return this.conditionBookletOperation.findOne({ _id: id });
+    } catch (error) {
+      throw new ServiceUnavailableException(error);
+    }
   }
 
   async update(
     id: number,
     updateConditionBookletOperationDto: UpdateConditionBookletOperationDto,
   ): Promise<any> {
-    return await this.conditionBookletOperation.findByIdAndUpdate(
-      id,
-      updateConditionBookletOperationDto,
-    );
+    try {
+      return await this.conditionBookletOperation.findByIdAndUpdate(
+        id,
+        updateConditionBookletOperationDto,
+      );
+    } catch (error) {
+      throw new ServiceUnavailableException(error);
+    }
   }
 
   remove(id: string) {
-    return this.conditionBookletOperation.findByIdAndDelete(id);
+    try {
+      return this.conditionBookletOperation.findByIdAndDelete(id);
+    } catch (error) {
+      throw new ServiceUnavailableException(error);
+    }
   }
 
   async getOperationByOrderID(
-    id: number, 
+    id: number,
     success: boolean,
-    pending:boolean,
-    TRANSACTION_ID: number
-    ) {
+    pending: boolean,
+    TRANSACTION_ID: number,
+  ) {
     try {
       const updateOperation =
         await this.conditionBookletOperation.findOneAndUpdate(
@@ -79,11 +99,11 @@ export class ConditionBookletOperationsService {
             success: success,
             TRANSACTION_ID: TRANSACTION_ID,
             pending: pending,
-        });
+          },
+        );
       return updateOperation;
     } catch (error) {
-      throw new ServiceUnavailableException()
+      throw new ServiceUnavailableException(error);
     }
   }
-
 }

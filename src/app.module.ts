@@ -8,6 +8,7 @@ import { ConfigModule } from '@nestjs/config';
 import { ConditionBookletOperationsModule } from './condition-booklet-operations/condition-booklet-operations.module';
 import { ConditionBookletProjectModule } from './condition-booklet-project/condition-booklet-project.module';
 import { PaymentService } from './services/payment/payment.service';
+import { RealEstateUnitModule } from './real-estate-unit/real-estate-unit.module';
 
 @Module({
   imports: [
@@ -21,6 +22,7 @@ import { PaymentService } from './services/payment/payment.service';
     MongooseModule.forRoot(process.env.DATABASE_CONNECTION_URL),
     ConditionBookletOperationsModule,
     ConditionBookletProjectModule,
+    RealEstateUnitModule,
   ],
 
   controllers: [AppController],

@@ -36,32 +36,32 @@ export class PaymentService {
       },
     );
     const response = await request.json();
-    console.log(response);
+    // console.log(response);
     const id = response?.id;
     return this.thirdStep(token, id, product, user);
   }
 
   async thirdStep(token: string, id: number, product: any, user: any) {
-    console.log(user);
+    // console.log(user);
     const data = {
       auth_token: token,
       amount_cents: product?.price,
       expiration: 3600,
       order_id: id,
       billing_data: {
-        apartment: '803',
+        apartment: 'NA',
         email: user.email,
-        floor: '42',
+        floor: 'NA',
         first_name: user.firstName,
-        street: 'Ethan Land',
-        building: '8028',
+        street: 'NA',
+        building: 'NA',
         phone_number: user.phone,
-        shipping_method: 'PKG',
-        postal_code: '01898',
-        city: 'Jaskolskiburgh',
-        country: 'CR',
+        shipping_method: 'NA',
+        postal_code: 'NA',
+        city: 'NA',
+        country: 'NA',
         last_name: user.lastName,
-        state: 'Utah',
+        state: 'NA',
       },
       currency: 'EGP',
       integration_id: 4486052, ////integration id

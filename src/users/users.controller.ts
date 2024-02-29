@@ -48,6 +48,7 @@ export class UsersController {
     },
   ) {
     try {
+      const folderName = 'User'
       const user = await this.usersService.findOneByEmail(createUserDto.email);
       if (user) {
         res.status(301).send({ message: 'Email is already in use.' });
@@ -59,11 +60,13 @@ export class UsersController {
           bankAccountStatementFileRes =
             await this.cloudinaryService.uploadImage(
               files.bankAccountStatementFile[0],
+              folderName
             );
         }
         if (files?.criminalRecordFile) {
           criminalRecordFileRes = await this.cloudinaryService.uploadImage(
             files.criminalRecordFile[0],
+            folderName
           );
         }
 
