@@ -27,6 +27,12 @@ export class UsersService {
     const newUser = await this.repositoryUsers.create({
       ...createUserDto,
       password: hash,
+      address: {
+        location: '',
+        city: "",
+        state: "",
+        country: "",
+      },
     });
     newUser.save();
 

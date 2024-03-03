@@ -108,17 +108,27 @@ export class UsersController {
       secure: true,
       sameSite: 'strict',
     });
+    res.cookie('access_token', access_token, {
+      httpOnly: true,
+      secure: true,
+      sameSite: 'strict',
+    });
     res.send({
       access_token: access_token,
       user: {
+        _id: user._id,
         user_type: user.user_type,
         email: user.email,
         firstName: user.firstName,
         lastName: user.lastName,
         phone: user.phone,
+        address: user.address,
+        city: user.city,
+        state: user.state,
+        country: user.country,
+        cardNumber: user.cardNumber,
         bankAccountStatementFile: user.bankAccountStatementFile,
         criminalRecordFile: user.criminalRecordFile,
-        cardNumber: user.cardNumber,
         imageProfile: user.imageProfile,
       },
     });
@@ -157,14 +167,19 @@ export class UsersController {
       } else {
         res.status(200).send(
           {
+            _id: user._id,
             user_type: user.user_type,
             email: user.email,
             firstName: user.firstName,
             lastName: user.lastName,
             phone: user.phone,
+            address: user.address,
+            city: user.city,
+            state: user.state,
+            country: user.country,
+            cardNumber: user.cardNumber,
             bankAccountStatementFile: user.bankAccountStatementFile,
             criminalRecordFile: user.criminalRecordFile,
-            cardNumber: user.cardNumber,
             imageProfile: user.imageProfile,
           });
       }

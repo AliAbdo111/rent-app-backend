@@ -33,13 +33,12 @@ export class CreateUserDto {
   bankAccountStatementFile?: string;
 
   criminalRecordFile?: string;
-
-  // address: {
-  //   location: string;
-  //   city: string;
-  //   state: string;
-  //   country: string;
-  // };
+  
+    address?: string;
+    city?: string;
+    state?: string;
+    country?: string;
+  
 }
 // انا في الريجيستر مش بحتاج غير
 // firstName:"",
