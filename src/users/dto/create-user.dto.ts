@@ -28,7 +28,7 @@ export class CreateUserDto {
 
   @IsNumber()
   @IsNotEmpty()
-  cardNumber: number;
+  cardNumber: string;
 
   bankAccountStatementFile?: string;
 

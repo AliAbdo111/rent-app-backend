@@ -47,7 +47,7 @@ export class User extends Document {
   criminalRecordFile: string;
 
   @Prop()
-  cardNumber: number;
+  cardNumber: string;
 
   @Prop({
     type: String,
