@@ -26,7 +26,7 @@ export class CreateUserDto {
   @IsNotEmpty()
   phone: string;
 
-  @IsNumber()
+  @IsString()
   @IsNotEmpty()
   cardNumber: string;
 
