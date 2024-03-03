@@ -5,7 +5,7 @@ export class ConditionBookletProject {
   @Prop({
     type: String,
   })
-  nameProject: string;
+  projectName: string;
 
   @Prop({
     type: String,

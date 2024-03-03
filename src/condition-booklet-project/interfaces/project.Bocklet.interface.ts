@@ -1,5 +1,5 @@
 export interface IConditionBookletProject {
-  nameProject: string;
+  projectName: string;
   description: string;
   price: number;
 }

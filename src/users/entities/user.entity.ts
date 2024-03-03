@@ -24,6 +24,13 @@ export class User extends Document {
   })
   user_type: UserType; //vendor /owner /admin /user
 
+  @Prop({
+    type: String,
+    default:
+      'https://res.cloudinary.com/dovighfuo/image/upload/v1709471656/realEstateUnite/download_rdxqap.png',
+  })
+  imageProfile: string;
+
   @Prop()
   email: string;
 

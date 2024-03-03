@@ -3,7 +3,7 @@ import { IsNotEmpty, IsNumber, IsString } from 'class-validator';
 export class CreateConditionBookletProjectDto {
   @IsNotEmpty()
   @IsString()
-  nameProject: string;
+  projectName: string;
 
   @IsNotEmpty()
   @IsString()

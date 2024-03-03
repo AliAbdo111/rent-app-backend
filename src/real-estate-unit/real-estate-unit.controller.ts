@@ -32,7 +32,6 @@ export class RealEstateUnitController {
     @Body() createRealEstateUnitDto: CreateRealEstateUnitDto,
     @UploadedFiles() images: Express.Multer.File[],
   ) {
-   
     const urles: {
       public_id: string;
       secure_url: string;
@@ -43,8 +42,8 @@ export class RealEstateUnitController {
             await this.cloudnirayService.uploadImage(img, this.folderName);
           return { public_id, secure_url };
         },
-      ),)
-   
+      ),
+    );
 
     return this.realEstateUnitService.create({
       ...createRealEstateUnitDto,

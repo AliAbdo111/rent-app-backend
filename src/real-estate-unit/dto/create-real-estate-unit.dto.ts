@@ -1,5 +1,7 @@
+import { User } from 'src/users/entities/user.entity';
+
 export class CreateRealEstateUnitDto {
-  vendor: string;
+  vendor: User;
 
   address: string;
 

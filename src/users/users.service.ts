@@ -12,6 +12,7 @@ import { sendEmail } from 'src/utils/email.util';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import { IUser } from '../users/interfaces/user.interface';
+import { User } from './entities/user.entity';
 
 @Injectable()
 export class UsersService {
@@ -85,7 +86,7 @@ export class UsersService {
     return await this.repositoryUsers.find();
   }
 
-  findOne(id: string) {
+  findOne(id: string) :Promise<User> {
     return this.repositoryUsers.findOne({ _id: id });
   }
 

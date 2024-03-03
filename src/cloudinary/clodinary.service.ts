@@ -18,13 +18,15 @@ export class CloudinaryService {
     folderName: string,
   ): Promise<any> {
     return new Promise((resolve, reject) => {
-      const upload = v2.uploader.upload_stream({
+      const upload = v2.uploader.upload_stream(
+        {
           folder: folderName,
         },
         (error, result) => {
-        if (error) return reject(error);
+          if (error) return reject(error);
           resolve(result);
-      });
+        },
+      );
       toStream(file.buffer).pipe(upload);
     });
   }
@@ -35,7 +37,7 @@ export class CloudinaryService {
       const destroy = await v2.uploader.destroy(assetId);
       return destroy;
     } catch (error) {
-      throw new Error(`Error deleting image from Cloudinary${error}`)
+      throw new Error(`Error deleting image from Cloudinary${error}`);
     }
   }
 }

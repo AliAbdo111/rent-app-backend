@@ -1,15 +1,15 @@
 import { Injectable, UnauthorizedException } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { v4 as uuidv4 } from 'uuid';
+import { jwtConstants } from './constants';
 
 @Injectable()
 export class AuthService {
   constructor(private jwtService: JwtService) {}
 
   async genrateToken(payload: any): Promise<string> {
-    console.log('generate ');
     return await this.jwtService.signAsync(payload, {
-      secret: 'strrooossdd,',
+      secret: jwtConstants.secret,
     });
   }
 
@@ -19,7 +19,6 @@ export class AuthService {
       const userId = payload;
       return userId;
     } catch (error) {
-      console.log(error);
       throw new UnauthorizedException();
     }
   }

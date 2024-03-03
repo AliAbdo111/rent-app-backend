@@ -11,20 +11,27 @@ import {
   Req,
   UseInterceptors,
   UploadedFiles,
+  UseGuards,
+  UploadedFile,
 } from '@nestjs/common';
 import { UsersService } from './users.service';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { Request, Response } from 'express';
-import { FileFieldsInterceptor } from '@nestjs/platform-express';
+import {
+  FileFieldsInterceptor,
+  FileInterceptor,
+} from '@nestjs/platform-express';
 import { CloudinaryService } from 'src/cloudinary/clodinary.service';
+import { AuthGuard } from 'src/auth/AuthGuard';
 
 @Controller('users')
 export class UsersController {
+  folderName: string = 'User';
   constructor(
     private readonly usersService: UsersService,
     private readonly cloudinaryService: CloudinaryService,
-  ) {}
+  ) { }
 
   // create user return=> access_token ande refresh token in cookie
   @Post()
@@ -44,7 +51,6 @@ export class UsersController {
     },
   ) {
     try {
-      const folderName = 'User'
       const user = await this.usersService.findOneByEmail(createUserDto.email);
       if (user) {
         res.status(301).send({ message: 'Email is already in use.' });
@@ -56,13 +62,13 @@ export class UsersController {
           bankAccountStatementFileRes =
             await this.cloudinaryService.uploadImage(
               files.bankAccountStatementFile[0],
-              folderName
+              this.folderName,
             );
         }
         if (files?.criminalRecordFile) {
           criminalRecordFileRes = await this.cloudinaryService.uploadImage(
             files.criminalRecordFile[0],
-            folderName
+            this.folderName,
           );
         }
 
@@ -130,6 +136,7 @@ export class UsersController {
     }
   }
 
+  // @UseGuards(AuthGuard)
   @Get(':id')
   async findOne(@Param('id') id: string, @Res() res: Response) {
     try {
@@ -137,7 +144,18 @@ export class UsersController {
       if (!user) {
         res.status(404).send(`not found user with id ${id}`);
       } else {
-        res.status(200).send(user);
+        res.status(200).send(
+          {
+            user_type: user.user_type,
+            email: user.email,
+            firstName: user.firstName,
+            lastName: user.lastName,
+            phone: user.phone,
+            bankAccountStatementFile: user.bankAccountStatementFile,
+            criminalRecordFile: user.criminalRecordFile,
+            cardNumber: user.cardNumber,
+            imageProfile: user.imageProfile,
+          });
       }
     } catch (error) {
       res.status(500).send('server error happned');
@@ -145,13 +163,24 @@ export class UsersController {
   }
 
   @Patch(':id')
+  @UseInterceptors(FileInterceptor('imageProfile'))
   async update(
     @Param('id') id: string,
     @Body() updateUserDto: UpdateUserDto,
+    @UploadedFile() imageProfile: Express.Multer.File,
     @Res() res: Response,
   ) {
     try {
-      const updateUser = await this.usersService.update(id, updateUserDto);
+      if (imageProfile) {
+        var { secure_url } = await this.cloudinaryService.uploadImage(
+          imageProfile,
+          this.folderName,
+        );
+      }
+      const updateUser = await this.usersService.update(id, {
+        ...updateUserDto,
+        imageProfile: secure_url,
+      });
       if (!updateUser) {
         res.status(404).send(`not found user with id ${id}`);
       } else {
@@ -161,6 +190,7 @@ export class UsersController {
       res.status(500).send('server error happned');
     }
   }
+
 
   @Delete(':id')
   async remove(@Param('id') id: string, @Res() res: Response) {

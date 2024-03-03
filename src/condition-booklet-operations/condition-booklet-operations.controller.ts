@@ -51,7 +51,7 @@ export class ConditionBookletOperationsController {
   ) {
     try {
       // get project related with operations
-      const foldeName = 'BookeletUser'
+      const foldeName = 'BookeletUser';
       const project = await this.conditionBookletOperationsService.getProject(
         createConditionBookletOperationDto.projectId,
       );
@@ -62,19 +62,19 @@ export class ConditionBookletOperationsController {
       );
       const bankAccountStatementFile = await this.cloudinaryService.uploadImage(
         files?.bankAccountStatementFile[0],
-        foldeName
+        foldeName,
       );
       const birthCertificate = await this.cloudinaryService.uploadImage(
         files?.birthCertificate[0],
-        foldeName
+        foldeName,
       );
       const MarriageCertificate = await this.cloudinaryService.uploadImage(
         files?.MarriageCertificate[0],
-        foldeName
+        foldeName,
       );
       const hrLetter = await this.cloudinaryService.uploadImage(
         files?.hrLetter[0],
-        foldeName
+        foldeName,
       );
 
       const operatinProject =

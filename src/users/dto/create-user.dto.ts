@@ -17,9 +17,11 @@ export class CreateUserDto {
   @IsNotEmpty()
   password: string;
 
+  imageProfile?: string;
+
   @IsNotEmpty()
   user_type: string;
-  
+
   @IsString()
   @IsNotEmpty()
   phone: string;
