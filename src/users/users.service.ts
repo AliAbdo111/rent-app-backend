@@ -86,7 +86,7 @@ export class UsersService {
     return await this.repositoryUsers.find();
   }
 
-  findOne(id: string) :Promise<User> {
+  findOne(id: string): Promise<User> {
     return this.repositoryUsers.findOne({ _id: id });
   }
 

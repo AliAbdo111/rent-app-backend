@@ -24,6 +24,7 @@ import {
 } from '@nestjs/platform-express';
 import { CloudinaryService } from 'src/cloudinary/clodinary.service';
 import { AuthGuard } from 'src/auth/AuthGuard';
+import * as bcrypt from 'bcrypt';
 
 @Controller('users')
 export class UsersController {
@@ -109,7 +110,17 @@ export class UsersController {
     });
     res.send({
       access_token: access_token,
-      user: user,
+      user: {
+        user_type: user.user_type,
+        email: user.email,
+        firstName: user.firstName,
+        lastName: user.lastName,
+        phone: user.phone,
+        bankAccountStatementFile: user.bankAccountStatementFile,
+        criminalRecordFile: user.criminalRecordFile,
+        cardNumber: user.cardNumber,
+        imageProfile: user.imageProfile,
+      },
     });
   }
 
@@ -171,6 +182,11 @@ export class UsersController {
     @Res() res: Response,
   ) {
     try {
+      if (updateUserDto.password) {
+        const salt = Number(process.env.SALT);
+        const hash = await bcrypt.hash(updateUserDto.password, salt);
+        updateUserDto.password = hash;
+      }
       if (imageProfile) {
         var { secure_url } = await this.cloudinaryService.uploadImage(
           imageProfile,
@@ -190,7 +206,6 @@ export class UsersController {
       res.status(500).send('server error happned');
     }
   }
-
 
   @Delete(':id')
   async remove(@Param('id') id: string, @Res() res: Response) {
