@@ -1,7 +1,7 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { Document } from 'mongoose';
 
-@Schema()
+@Schema({ timestamps: true })
 export class RealEstateUnit extends Document {
   @Prop()
   vendor: string;
@@ -74,6 +74,7 @@ export class RealEstateUnit extends Document {
     type: String,
   })
   space: string;
+
 }
 export const RealEstateUnitSchema =
   SchemaFactory.createForClass(RealEstateUnit);

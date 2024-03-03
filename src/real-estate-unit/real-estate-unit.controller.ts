@@ -8,15 +8,13 @@ import {
   Delete,
   UseInterceptors,
   UploadedFiles,
-  NotFoundException,
-  Query,
+  ServiceUnavailableException,
 } from '@nestjs/common';
 import { RealEstateUnitService } from './real-estate-unit.service';
 import { CreateRealEstateUnitDto } from './dto/create-real-estate-unit.dto';
 import { UpdateRealEstateUnitDto } from './dto/update-real-estate-unit.dto';
 import { FilesInterceptor } from '@nestjs/platform-express';
 import { CloudinaryService } from 'src/cloudinary/clodinary.service';
-import { Types } from 'mongoose';
 
 @Controller('real-estate-unit')
 export class RealEstateUnitController {
@@ -24,7 +22,7 @@ export class RealEstateUnitController {
   constructor(
     private readonly realEstateUnitService: RealEstateUnitService,
     private readonly cloudnirayService: CloudinaryService,
-  ) {}
+  ) { }
 
   @Post()
   @UseInterceptors(FilesInterceptor('images'))
@@ -62,18 +60,26 @@ export class RealEstateUnitController {
   }
 
   @Patch(':id')
-  update(
+  async update(
     @Param('id') id: string,
     @Body() updateRealEstateUnitDto: UpdateRealEstateUnitDto,
   ) {
-    return this.realEstateUnitService.update(id, updateRealEstateUnitDto);
+    return await this.realEstateUnitService.update(id, updateRealEstateUnitDto);
   }
 
   @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.realEstateUnitService.remove(id);
+  async remove(@Param('id') id: string) {
+    return await this.realEstateUnitService.remove(id);
   }
 
+  @Get('units/getLastUnitRealEstat')
+  async getLastUnitRealEstat() {
+    try {
+      await this.realEstateUnitService.
+    } catch (error) {
+throw new ServiceUnavailableException()
+    }
+  }
   // @Delete('deleteImageUnit')
   // async deleteImage(
   //   @Query('realEstateUnitId') realEstateUnitId: string,

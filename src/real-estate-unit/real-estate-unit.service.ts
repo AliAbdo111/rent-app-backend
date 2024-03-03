@@ -14,7 +14,7 @@ export class RealEstateUnitService {
   constructor(
     @InjectModel('RealEstateUnit')
     private realEstateRepository: Model<RealEstateUnit>, //interafce
-  ) {}
+  ) { }
   async create(createRealEstateUnitDto: CreateRealEstateUnitDto) {
     try {
       const lastDocument = await this.realEstateRepository
@@ -61,6 +61,14 @@ export class RealEstateUnitService {
       throw new ServiceUnavailableException(
         `Message Error on RealEstateUnitService Is :${error}`,
       );
+    }
+  }
+
+  async getLastUnit(): Promise<any[]> {
+    try {
+      return this.realEstateRepository.find().sort({ createdAt: -1 }).limit(20);
+    } catch (error) {
+      throw new ServiceUnavailableException(`Error From Service Unit Real Estate ${error}`)
     }
   }
 

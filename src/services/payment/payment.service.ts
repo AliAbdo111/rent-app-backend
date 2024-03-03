@@ -43,9 +43,10 @@ export class PaymentService {
 
   async thirdStep(token: string, id: number, product: any, user: any) {
     // console.log(user);
+    const price = product?.price * 100;
     const data = {
       auth_token: token,
-      amount_cents: product?.price,
+      amount_cents: price,
       expiration: 3600,
       order_id: id,
       billing_data: {
