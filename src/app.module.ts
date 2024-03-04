@@ -9,6 +9,7 @@ import { ConditionBookletOperationsModule } from './condition-booklet-operations
 import { ConditionBookletProjectModule } from './condition-booklet-project/condition-booklet-project.module';
 import { PaymentService } from './services/payment/payment.service';
 import { RealEstateUnitModule } from './real-estate-unit/real-estate-unit.module';
+import { ContactUsModule } from './contact-us/contact-us.module';
 
 @Module({
   imports: [
@@ -23,6 +24,7 @@ import { RealEstateUnitModule } from './real-estate-unit/real-estate-unit.module
     ConditionBookletOperationsModule,
     ConditionBookletProjectModule,
     RealEstateUnitModule,
+    ContactUsModule,
   ],
 
   controllers: [AppController],
