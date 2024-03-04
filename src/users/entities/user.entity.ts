@@ -1,6 +1,4 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
-
-import * as bcrypt from 'bcrypt';
 import { Document } from 'mongoose';
 
 enum UserType {
@@ -50,22 +48,21 @@ export class User extends Document {
   cardNumber: string;
 
   @Prop({
-    type: String,
     default: ''
   })
-  address: string
+  location: string
   @Prop({
-    type: String,
+    default: ''
+  })
+  @Prop({
     default: ''
   })
   city: string;
   @Prop({
-    type: String,
     default: ''
   })
   state: string;
   @Prop({
-    type: String,
     default: ''
   })
   country: string;
