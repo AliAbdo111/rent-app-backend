@@ -22,7 +22,7 @@ export class RealEstateUnitController {
   constructor(
     private readonly realEstateUnitService: RealEstateUnitService,
     private readonly cloudnirayService: CloudinaryService,
-  ) { }
+  ) {}
 
   @Post()
   @UseInterceptors(FilesInterceptor('images'))
@@ -75,9 +75,9 @@ export class RealEstateUnitController {
   @Get('units/getLastUnitRealEstat')
   async getLastUnitRealEstat() {
     try {
-      await this.realEstateUnitService.
+      await this.realEstateUnitService.getLastUnit();
     } catch (error) {
-throw new ServiceUnavailableException()
+      throw new ServiceUnavailableException();
     }
   }
   // @Delete('deleteImageUnit')
