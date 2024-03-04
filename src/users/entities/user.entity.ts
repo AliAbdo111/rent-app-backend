@@ -66,5 +66,9 @@ export class User extends Document {
   })
   country: string;
 
+  @Prop({
+    default: false
+  })
+  IsActive: boolean;
 }
 export const UserSchema = SchemaFactory.createForClass(User);

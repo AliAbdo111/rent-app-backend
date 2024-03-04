@@ -40,16 +40,26 @@ export class UsersService {
     const refresh_token = await this.authService.generateRefreshToken(
       newUser._id,
     );
-
-    const emailSubject = 'Email verification';
-    // const emailText = `${process.env.BASE_URL}/forgotpassword?email=${newUser.email}&key=${access_token}`;
-    const emailText = `${process.env.BASE_URL}/forgotpassword?email=${newUser.email}&key=${access_token}`;
-    const mail = await sendEmail(newUser.email, emailSubject, emailText);
-
+    await this.sendMail(newUser as User, access_token);
     return {
       access_token,
       refresh_token,
     };
+  }
+
+  async sendMail(newUser: User, access_token: string) {
+    try {
+      const emailSubject = 'Email verification';
+      const emailText = `${process.env.BASE_URL}/emailverification?email=${newUser.email}&key=${access_token}`;
+      const mail = await sendEmail(
+        newUser.email,
+        emailSubject,
+        emailText,
+        newUser.firstName,
+      );
+    } catch (error) {
+      throw new ServiceUnavailableException(`Error Pn Service Mail : ${error}`)
+    }
   }
 
   async signIn(

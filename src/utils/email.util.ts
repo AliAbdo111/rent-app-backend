@@ -328,6 +328,7 @@ export async function sendEmail(
   toEmail: string,
   subject: string,
   htmlContent?: string,
+  name?: string,
 ) {
   try {
     // Define email options
@@ -467,7 +468,7 @@ export async function sendEmail(
           <!-- Start Body Name User  -->
           <div class="container_small">
             <div>
-              <h3 class="name_user">Hello {aboalhasan},</h3>
+              <h3 class="name_user">Hello ${name},</h3>
               <p class="title_user">Please confirm your account by clicking on button:</p>
               <a href="${htmlContent}" target="_blank">
       

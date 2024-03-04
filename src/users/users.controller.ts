@@ -25,6 +25,7 @@ import {
 import { CloudinaryService } from 'src/cloudinary/clodinary.service';
 import { AuthGuard } from 'src/auth/AuthGuard';
 import * as bcrypt from 'bcrypt';
+import { AuthService } from 'src/auth/auth.service';
 
 @Controller('users')
 export class UsersController {
@@ -32,6 +33,7 @@ export class UsersController {
   constructor(
     private readonly usersService: UsersService,
     private readonly cloudinaryService: CloudinaryService,
+    private authService: AuthService,
   ) { }
 
   // create user return=> access_token ande refresh token in cookie
@@ -53,9 +55,7 @@ export class UsersController {
   ) {
     try {
       const user = await this.usersService.findOneByEmail(createUserDto.email);
-      if (user) {
-        res.status(301).send({ message: 'Email is already in use.' });
-      } else {
+      if (!user) {
         let bankAccountStatementFileRes = { secure_url: '' };
         let criminalRecordFileRes = { secure_url: '' };
 
@@ -89,6 +89,17 @@ export class UsersController {
           status: HttpStatus.CREATED,
           message: 'User created successfully.',
           access_token: access_token,
+        });
+      } else if (user && user.IsActive) { //check is not acttive 
+        res.status(301).send({ message: 'Emil Is Already Used Before ' });
+      } else {
+        const payload = { sub: user._id, email: user.email };
+        const access_token = await this.authService.genrateToken(payload);
+        this.usersService.sendMail(user, access_token);
+        res.status(301).send({
+          status: 302,
+          message:
+            'Email requires verification. We have sent an email for this',
         });
       }
     } catch (error) {
