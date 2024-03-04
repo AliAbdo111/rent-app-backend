@@ -68,7 +68,9 @@ export class RealEstateUnitService {
     try {
       return this.realEstateRepository.find().sort({ createdAt: -1 }).limit(20);
     } catch (error) {
-      throw new ServiceUnavailableException(`Error From Service Unit Real Estate ${error}`)
+      throw new ServiceUnavailableException(
+        `Error From Service Unit Real Estate ${error}`,
+      );
     }
   }
 

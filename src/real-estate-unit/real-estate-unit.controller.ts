@@ -75,7 +75,7 @@ export class RealEstateUnitController {
   @Get('units/getLastUnitRealEstat')
   async getLastUnitRealEstat() {
     try {
-      await this.realEstateUnitService.getLastUnit();
+      return await this.realEstateUnitService.getLastUnit();
     } catch (error) {
       throw new ServiceUnavailableException();
     }
