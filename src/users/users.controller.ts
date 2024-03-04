@@ -93,7 +93,7 @@ export class UsersController {
       }
     } catch (error) {
       console.log(error);
-      res.status(500).send({ message: 'server error' });
+      res.status(500).send({ message: 'server error '+error });
     }
   }
 

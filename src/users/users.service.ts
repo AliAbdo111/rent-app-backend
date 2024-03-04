@@ -27,12 +27,11 @@ export class UsersService {
     const newUser = await this.repositoryUsers.create({
       ...createUserDto,
       password: hash,
-      address: {
-        location: '',
-        city: "",
-        state: "",
-        country: "",
-      },
+      location: '',
+      city: "",
+      state: "",
+      country: "",
+ 
     });
     newUser.save();
 
@@ -97,7 +96,7 @@ export class UsersService {
     return this.repositoryUsers.findOne({ _id: id });
   }
 
-  findOneByEmail(email: string) {
+  findOneByEmail(email: string): Promise<User> {
     return this.repositoryUsers.findOne({ email: email });
   }
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
