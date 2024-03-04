@@ -22,6 +22,12 @@ export class AuthService {
       throw new UnauthorizedException();
     }
   }
+  async validateToken(token: string) {
+    console.log(`token is ${token}`)
+    return this.jwtService.verify(token, {
+      secret: process.env.JWT_SECRET_KEY,
+    });
+  }
   async generateRefreshToken(userId: number) {
     const tokenId = uuidv4();
     const refreshToken = await this.jwtService.signAsync(
