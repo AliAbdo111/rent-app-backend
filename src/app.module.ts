@@ -11,6 +11,8 @@ import { PaymentService } from './services/payment/payment.service';
 import { RealEstateUnitModule } from './real-estate-unit/real-estate-unit.module';
 import { ContactUsModule } from './contact-us/contact-us.module';
 import { MaintenanceRealEstateModule } from './maintenance-real-estate/maintenance-real-estate.module';
+import { RealEstateOriginalUnitModule } from './real-estate-original-unit/real-estate-original-unit.module';
+import { RealEstateBookletUnitModule } from './real-estate-booklet-unit/real-estate-booklet-unit.module';
 
 @Module({
   imports: [
@@ -27,6 +29,8 @@ import { MaintenanceRealEstateModule } from './maintenance-real-estate/maintenan
     RealEstateUnitModule,
     ContactUsModule,
     MaintenanceRealEstateModule,
+    RealEstateOriginalUnitModule,
+    RealEstateBookletUnitModule,
   ],
 
   controllers: [AppController],

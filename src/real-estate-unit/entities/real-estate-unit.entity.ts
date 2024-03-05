@@ -74,7 +74,6 @@ export class RealEstateUnit extends Document {
     type: String,
   })
   space: string;
-
 }
 export const RealEstateUnitSchema =
   SchemaFactory.createForClass(RealEstateUnit);
