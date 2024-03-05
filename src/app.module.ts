@@ -13,9 +13,14 @@ import { ContactUsModule } from './contact-us/contact-us.module';
 import { MaintenanceRealEstateModule } from './maintenance-real-estate/maintenance-real-estate.module';
 import { RealEstateOriginalUnitModule } from './real-estate-original-unit/real-estate-original-unit.module';
 import { RealEstateBookletUnitModule } from './real-estate-booklet-unit/real-estate-booklet-unit.module';
+import { JwtModule } from '@nestjs/jwt';
+import { jwtConstants } from './auth/constants';
 
 @Module({
   imports: [
+    JwtModule.register({
+      secret: jwtConstants.secret,
+    }),
     MulterModule.register({
       dest: '/upload',
     }),

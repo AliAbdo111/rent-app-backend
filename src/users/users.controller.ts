@@ -17,7 +17,8 @@ import {
 import { UsersService } from './users.service';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
-import { Request, Response } from 'express';
+import {  Request
+,  Response } from 'express';
 import {
   FileFieldsInterceptor,
   FileInterceptor,
@@ -26,6 +27,8 @@ import { CloudinaryService } from 'src/cloudinary/clodinary.service';
 import { AuthGuard } from 'src/auth/AuthGuard';
 import * as bcrypt from 'bcrypt';
 import { AuthService } from 'src/auth/auth.service';
+import { Types } from 'mongoose';
+
 
 @Controller('users')
 export class UsersController {
@@ -148,7 +151,7 @@ export class UsersController {
   // refresh token
   @Post('/refresh')
   async refreshToken(@Res() res: Response, @Req() req: Request) {
-    const oldRefreshToken = req.header['refresh_token'];
+    const oldRefreshToken = "'req.header['refresh_token']'";
     const newAccessToken =
       await this.usersService.refreshToken(oldRefreshToken);
     res.send(newAccessToken);
@@ -168,10 +171,19 @@ export class UsersController {
     }
   }
 
-  // @UseGuards(AuthGuard)
+  @UseGuards(AuthGuard)
   @Get(':id')
-  async findOne(@Param('id') id: string, @Res() res: Response) {
+  async findOne(
+    @Param('id') id: string,
+    @Req() req: Request,
+    @Res() res: Response,
+  ) {
     try {
+      // console.log(req)
+      // const { sub } = (req as any).decodedData 
+      // console.log(sub)
+      // console.log(typeof sub)
+      // const _id = String(sub);
       const user = await this.usersService.findOne(id);
       if (!user) {
         res.status(404).send(`not found user with id ${id}`);
@@ -195,7 +207,8 @@ export class UsersController {
           });
       }
     } catch (error) {
-      res.status(500).send('server error happned');
+      console.log(error)
+      res.status(500).send('server error happned' + error);
     }
   }
 
