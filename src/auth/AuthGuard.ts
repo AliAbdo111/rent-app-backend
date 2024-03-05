@@ -10,7 +10,9 @@ import { jwtConstants } from './constants';
 import { AuthService } from './auth.service';
 
 export class AuthGuard implements CanActivate {
-  constructor(private readonly authService: AuthService) {}
+  constructor(
+    private jwtService: JwtService,
+    private readonly authService: AuthService) { }
   async canActivate(context: ExecutionContext): Promise<boolean> {
     try {
       const request = context.switchToHttp().getRequest();
@@ -20,9 +22,12 @@ export class AuthGuard implements CanActivate {
       }
       const authToken = authorization.replace(/bearer/gim, '').trim();
       console.log(authToken)
-      const resp = await this.authService.validateToken(authToken);
-      console.log(resp)
-      request.decodedData = resp;
+      // const resp = await this.authService.validateToken(authToken);
+      const payload = await this.jwtService.verify(authToken, {
+        secret: jwtConstants.secret,
+      });
+      console.log(payload)
+      request.decodedData = payload;
       return true;
     } catch (error) {
       console.log('auth error :', error.message);
@@ -31,7 +36,7 @@ export class AuthGuard implements CanActivate {
       );
     }
   }
-  
+
   // async canActivate(context: ExecutionContext): Promise<boolean> {
   //   const request = context.switchToHttp().getRequest();
   //   const token = this.extractTokenFromHeader(request);
