@@ -3,8 +3,6 @@ import { Document } from 'mongoose';
 
 @Schema({ timestamps: true })
 export class RealEstateUnit extends Document {
-  // @Prop()
-  // vendor: string;
   @Prop({
     type: Number,
     default: 0,
@@ -27,7 +25,10 @@ export class RealEstateUnit extends Document {
     type: Number,
   })
   price: number;
-  @Prop()
+  @Prop({
+    type: Number,
+    default:0
+  })
   priceAfterDiscount: number
   @Prop({
     type: Number,

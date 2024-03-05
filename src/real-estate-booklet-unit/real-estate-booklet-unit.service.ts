@@ -10,15 +10,32 @@ export class RealEstateBookletUnitService {
   constructor(
     @InjectModel('RealEstateBookletUnit')
     private unitBooklitRepository: Model<RealEstateBookletUnit>,
-  ){}
+  ) { }
   async create(createRealEstateBookletUnitDto: CreateRealEstateBookletUnitDto) {
-    return await this.unitBooklitRepository.create(
-      createRealEstateBookletUnitDto,
-    );
+    try {
+      const lastDocument = await this.unitBooklitRepository
+        .findOne()
+        .sort({ uintCode: -1 })
+        .exec();
+      const newRealEstate = new this.unitBooklitRepository(
+        createRealEstateBookletUnitDto,
+      );
+
+      if (lastDocument) {
+        newRealEstate.uintCode = lastDocument.uintCode + 1;
+      } else {
+        newRealEstate.uintCode = 1;
+      }
+      return newRealEstate.save();
+    } catch (error) {
+      throw new ServiceUnavailableException(
+        `Error RealEstateUnitService is :${error}`,
+      );
+    }
   }
 
   findAll() {
-    return `This action returns all realEstateBookletUnit`;
+    return this.unitBooklitRepository.find()
   }
 
   async findOne(id: string) {
