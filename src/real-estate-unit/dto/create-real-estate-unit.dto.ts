@@ -1,7 +1,9 @@
+import { IsEnum } from 'class-validator';
+import { Status } from 'src/Types/RealEstat';
 import { User } from 'src/users/entities/user.entity';
 
 export class CreateRealEstateUnitDto {
-  vendor: User;
+  // vendor: User;
 
   address: string;
 
@@ -9,6 +11,8 @@ export class CreateRealEstateUnitDto {
 
   price: number;
 
+  @IsEnum(Status)
+  status: Status;
   countRoom: number;
 
   countBathRoom: number;
