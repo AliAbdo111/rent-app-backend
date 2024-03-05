@@ -13,12 +13,15 @@ import {
   UploadedFiles,
   UseGuards,
   UploadedFile,
+
 } from '@nestjs/common';
 import { UsersService } from './users.service';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
-import {  Request
-,  Response } from 'express';
+import {
+  Request
+  , Response
+} from 'express';
 import {
   FileFieldsInterceptor,
   FileInterceptor,
@@ -27,7 +30,8 @@ import { CloudinaryService } from 'src/cloudinary/clodinary.service';
 import { AuthGuard } from 'src/auth/AuthGuard';
 import * as bcrypt from 'bcrypt';
 import { AuthService } from 'src/auth/auth.service';
-import { Types } from 'mongoose';
+import { ObjectId } from 'mongodb'
+
 
 
 @Controller('users')
@@ -107,7 +111,7 @@ export class UsersController {
       }
     } catch (error) {
       console.log(error);
-      res.status(500).send({ message: 'server error '+error });
+      res.status(500).send({ message: 'server error ' + error });
     }
   }
 
@@ -162,6 +166,7 @@ export class UsersController {
     try {
       const users = await this.usersService.findAll();
       res.status(200).send({
+        success: true,
         users: users,
       });
     } catch (error) {
@@ -172,21 +177,20 @@ export class UsersController {
   }
 
   @UseGuards(AuthGuard)
-  @Get(':id')
+  @Get('/getProfile')
   async findOne(
-    @Param('id') id: string,
     @Req() req: Request,
     @Res() res: Response,
   ) {
     try {
-      // console.log(req)
-      // const { sub } = (req as any).decodedData 
-      // console.log(sub)
-      // console.log(typeof sub)
-      // const _id = String(sub);
-      const user = await this.usersService.findOne(id);
+      const { sub } = (req as any).decodedData
+      const _id = new ObjectId(sub);
+      const user = await this.usersService.findOne(_id);
       if (!user) {
-        res.status(404).send(`not found user with id ${id}`);
+        res.status(404).send({
+          success: false,
+          message: `not found user with id+${_id}`,
+        });
       } else {
         res.status(200).send(
           {
@@ -195,8 +199,8 @@ export class UsersController {
             email: user.email,
             firstName: user.firstName,
             lastName: user.lastName,
-            phone: user.phone,
             location: user.location,
+            phone: user.phone,
             city: user.city,
             state: user.state,
             country: user.country,
@@ -212,15 +216,19 @@ export class UsersController {
     }
   }
 
-  @Patch(':id')
+
+  @UseGuards(AuthGuard)
+  @Patch()
   @UseInterceptors(FileInterceptor('imageProfile'))
   async update(
-    @Param('id') id: string,
     @Body() updateUserDto: UpdateUserDto,
     @UploadedFile() imageProfile: Express.Multer.File,
+    @Req() req: Request,
     @Res() res: Response,
   ) {
     try {
+      const { sub } = (req as any).decodedData
+      const id = new ObjectId(sub);
       if (updateUserDto.password) {
         const salt = Number(process.env.SALT);
         const hash = await bcrypt.hash(updateUserDto.password, salt);
@@ -236,29 +244,49 @@ export class UsersController {
         ...updateUserDto,
         imageProfile: secure_url,
       });
-      if (!updateUser) {
-        res.status(404).send(`not found user with id ${id}`);
+      console.log(updateUser)
+      if (!updateUser.matchedCount) {
+        res.status(404).send({
+          success: false,
+          message: `not found user with id +${id}`,
+        });
       } else {
-        res.status(200).send('user upadted successfully');
+        res.status(200).send({
+          success: true,
+          message: 'user upadted successfully'
+        });
       }
     } catch (error) {
       res.status(500).send('server error happned');
     }
   }
 
-  @Delete(':id')
-  async remove(@Param('id') id: string, @Res() res: Response) {
+
+  @UseGuards(AuthGuard)
+  @Delete()
+  async remove(@Req() req: Request, @Res() res: Response) {
     try {
+      const { sub } = (req as any).decodedData
+      const id = new ObjectId(sub);
+      console.log(id)
       const result = await this.usersService.remove(id);
-      if (!result) {
-        res.status(404).send(`not found user with id+${id}`);
+      console.log(result)
+      if (!result.deletedCount) {
+        res.status(404).send({
+          success: false,
+          message: `not found user with id +${id}`,
+        });
       } else {
-        res.status(200).send('user deleted succesfully');
+        res.status(200).send({
+          success: true,
+          message: 'user deleted succesfully'
+        });
       }
     } catch (error) {
-      res.status(500).send('Internal server error');
+      res.status(500).send('Internal server error' + error);
     }
   }
+
 
   @Get('/forgotPassword/:email')
   async forgotPassword(@Param('email') email: string, @Res() res: Response) {

@@ -5,7 +5,6 @@ import {
 } from '@nestjs/common';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
-
 import * as bcrypt from 'bcrypt';
 import { AuthService } from 'src/auth/auth.service';
 import { sendEmail } from 'src/utils/email.util';
@@ -68,7 +67,7 @@ export class UsersService {
   ): Promise<{ access_token: string; user: any; refresh_token: string }> {
     const user = await this.repositoryUsers.findOne({ email: email });
 
-    if (!user) {
+    if (!user || !user.IsActive) {
       throw new UnauthorizedException();
     }
 
@@ -102,8 +101,8 @@ export class UsersService {
     return await this.repositoryUsers.find();
   }
 
-  findOne(id: string): Promise<User> {
-    return this.repositoryUsers.findOne({ _id: id });
+  findOne(id: any): Promise<User> {
+    return this.repositoryUsers.findOne(id);
   }
 
   findOneByEmail(email: string): Promise<User> {
@@ -115,7 +114,7 @@ export class UsersService {
   }
 
   async remove(id: any): Promise<any> {
-    return this.repositoryUsers.deleteOne({ _id: id }).exec();
+    return this.repositoryUsers.deleteOne( id ).exec();
   }
 
   async forgotPassword(email: string) {

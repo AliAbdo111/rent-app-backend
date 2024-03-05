@@ -12,4 +12,5 @@ export interface IUser extends Document {
   phone: string;
 
   cardNumber: string;
+  IsActive: boolean
 }

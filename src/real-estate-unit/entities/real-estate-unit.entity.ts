@@ -10,6 +10,8 @@ export class RealEstateUnit extends Document {
     default: 0,
   })
   uintCode: number;
+  @Prop()
+  title: string;
 
   @Prop({
     type: String,
@@ -25,7 +27,8 @@ export class RealEstateUnit extends Document {
     type: Number,
   })
   price: number;
-
+  @Prop()
+  priceAfterDiscount: number
   @Prop({
     type: Number,
   })
