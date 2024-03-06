@@ -3,7 +3,7 @@ import { CreateUserDto } from './create-user.dto';
 import { IsEmail, IsString } from 'class-validator';
 
 export class UpdateUserDto extends PartialType(CreateUserDto) {
-  IsActive: boolean
+  IsActive: boolean;
 }
 export class signInDto {
   @IsEmail()

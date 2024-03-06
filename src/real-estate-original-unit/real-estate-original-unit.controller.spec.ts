@@ -11,7 +11,9 @@ describe('RealEstateOriginalUnitController', () => {
       providers: [RealEstateOriginalUnitService],
     }).compile();
 
-    controller = module.get<RealEstateOriginalUnitController>(RealEstateOriginalUnitController);
+    controller = module.get<RealEstateOriginalUnitController>(
+      RealEstateOriginalUnitController,
+    );
   });
 
   it('should be defined', () => {

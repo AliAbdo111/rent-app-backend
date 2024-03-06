@@ -6,13 +6,13 @@ import { MaintenanceRequestsSchema } from './entities/maintenance-real-estate.en
 import { CloudinaryService } from 'src/cloudinary/clodinary.service';
 
 @Module({
-  imports:[
+  imports: [
     MongooseModule.forFeature([
       {
         name: 'MaintenanceRequests',
-        schema: MaintenanceRequestsSchema
-      }
-    ])
+        schema: MaintenanceRequestsSchema,
+      },
+    ]),
   ],
   controllers: [MaintenanceRealEstateController],
   providers: [MaintenanceRealEstateService, CloudinaryService],

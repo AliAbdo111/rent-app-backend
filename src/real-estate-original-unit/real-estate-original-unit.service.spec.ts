@@ -9,7 +9,9 @@ describe('RealEstateOriginalUnitService', () => {
       providers: [RealEstateOriginalUnitService],
     }).compile();
 
-    service = module.get<RealEstateOriginalUnitService>(RealEstateOriginalUnitService);
+    service = module.get<RealEstateOriginalUnitService>(
+      RealEstateOriginalUnitService,
+    );
   });
 
   it('should be defined', () => {

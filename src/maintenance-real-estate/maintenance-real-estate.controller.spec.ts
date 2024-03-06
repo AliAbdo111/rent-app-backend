@@ -11,7 +11,9 @@ describe('MaintenanceRealEstateController', () => {
       providers: [MaintenanceRealEstateService],
     }).compile();
 
-    controller = module.get<MaintenanceRealEstateController>(MaintenanceRealEstateController);
+    controller = module.get<MaintenanceRealEstateController>(
+      MaintenanceRealEstateController,
+    );
   });
 
   it('should be defined', () => {

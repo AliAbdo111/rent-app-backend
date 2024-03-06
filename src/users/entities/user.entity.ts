@@ -47,27 +47,27 @@ export class User extends Document {
   cardNumber: string;
 
   @Prop({
-    default: ''
+    default: '',
   })
-  location: string
+  location: string;
   @Prop({
-    default: ''
+    default: '',
   })
   @Prop({
-    default: ''
+    default: '',
   })
   city: string;
   @Prop({
-    default: ''
+    default: '',
   })
   state: string;
   @Prop({
-    default: ''
+    default: '',
   })
   country: string;
 
   @Prop({
-    default: false
+    default: false,
   })
   IsActive: boolean;
 }

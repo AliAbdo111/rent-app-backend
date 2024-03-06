@@ -6,7 +6,7 @@ import { RealEstateBookletUnitSchema } from './entities/real-estate-booklet-unit
 import { CloudinaryService } from 'src/cloudinary/clodinary.service';
 
 @Module({
-  imports:[
+  imports: [
     MongooseModule.forFeature([
       { name: 'RealEstateBookletUnit', schema: RealEstateBookletUnitSchema },
     ]),

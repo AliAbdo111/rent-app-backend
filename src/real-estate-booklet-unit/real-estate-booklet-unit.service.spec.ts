@@ -9,7 +9,9 @@ describe('RealEstateBookletUnitService', () => {
       providers: [RealEstateBookletUnitService],
     }).compile();
 
-    service = module.get<RealEstateBookletUnitService>(RealEstateBookletUnitService);
+    service = module.get<RealEstateBookletUnitService>(
+      RealEstateBookletUnitService,
+    );
   });
 
   it('should be defined', () => {

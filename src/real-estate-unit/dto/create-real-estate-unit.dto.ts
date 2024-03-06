@@ -1,20 +1,23 @@
-import { IsEnum } from 'class-validator';
+import { IsBoolean, IsEnum, IsNumber, IsString } from 'class-validator';
 import { Status } from 'src/Types/RealEstat';
-import { User } from 'src/users/entities/user.entity';
 
 export class CreateRealEstateUnitDto {
-  // vendor: User;
-
+  @IsString()
+  title: string;
+  @IsString()
   address: string;
-
+  @IsString()
   finshingType: string;
-
+  // @IsNumber()
   price: number;
 
   @IsEnum(Status)
   status: Status;
+
+  // @IsNumber()
   countRoom: number;
 
+  // @IsNumber()
   countBathRoom: number;
 
   UtilityMeters: string[]; //عدادات المرافق"كهربا","مياه","غاز"
@@ -23,12 +26,13 @@ export class CreateRealEstateUnitDto {
     public_id: string;
     secure_url: string;
   }[];
-
+  @IsString()
   shortDescription: string;
-
+  @IsString()
   longDescriprion: string;
 
+  // @IsBoolean()
   hasAParcking: boolean;
-
+  @IsString()
   space: string;
 }

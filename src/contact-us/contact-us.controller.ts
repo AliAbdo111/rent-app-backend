@@ -1,11 +1,20 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete, ServiceUnavailableException } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  Post,
+  Body,
+  Patch,
+  Param,
+  Delete,
+  ServiceUnavailableException,
+} from '@nestjs/common';
 import { ContactUsService } from './contact-us.service';
 import { CreateContactUsDto } from './dto/create-contact-us.dto';
 import { UpdateContactUsDto } from './dto/update-contact-us.dto';
 
 @Controller('contact-us')
 export class ContactUsController {
-  constructor(private readonly contactUsService: ContactUsService) { }
+  constructor(private readonly contactUsService: ContactUsService) {}
 
   @Post()
   create(@Body() createContactUsDto: CreateContactUsDto) {
@@ -23,7 +32,7 @@ export class ContactUsController {
     try {
       return this.contactUsService.findAll();
     } catch (error) {
-      throw new ServiceUnavailableException(`Error Is ${error}`)
+      throw new ServiceUnavailableException(`Error Is ${error}`);
     }
   }
 
@@ -33,7 +42,10 @@ export class ContactUsController {
   }
 
   @Patch(':id')
-  update(@Param('id') id: string, @Body() updateContactUsDto: UpdateContactUsDto) {
+  update(
+    @Param('id') id: string,
+    @Body() updateContactUsDto: UpdateContactUsDto,
+  ) {
     return this.contactUsService.update(+id, updateContactUsDto);
   }
 

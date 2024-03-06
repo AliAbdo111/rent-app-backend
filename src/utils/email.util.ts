@@ -145,7 +145,7 @@ import * as nodemailer from 'nodemailer';
 //           <div class="center_hello">
 //             <img src="https://i.ibb.co/GfZtXtS/Whats-App-Image-2023-08-29-at-5-55-01-PM.jpg" alt="">
 //           </div>
-      
+
 //           <!-- Start Body Name User  -->
 //           <div class="container_small">
 //             <div>
@@ -153,10 +153,9 @@ import * as nodemailer from 'nodemailer';
 //               <p class="title_user">Please confirm your account by clicking on button:</p>
 //               <button type="button" class="buttonC">confirmation account</button>
 //             </div>
-      
-      
+
 //           </div>
-      
+
 //         </div>
 //       </body>
 //       </html>`,

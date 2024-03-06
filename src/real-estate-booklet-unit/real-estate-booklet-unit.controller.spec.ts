@@ -11,7 +11,9 @@ describe('RealEstateBookletUnitController', () => {
       providers: [RealEstateBookletUnitService],
     }).compile();
 
-    controller = module.get<RealEstateBookletUnitController>(RealEstateBookletUnitController);
+    controller = module.get<RealEstateBookletUnitController>(
+      RealEstateBookletUnitController,
+    );
   });
 
   it('should be defined', () => {

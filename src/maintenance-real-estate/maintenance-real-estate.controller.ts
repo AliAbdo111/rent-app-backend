@@ -1,4 +1,15 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete, ServiceUnavailableException, UseInterceptors, UploadedFile } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  Post,
+  Body,
+  Patch,
+  Param,
+  Delete,
+  ServiceUnavailableException,
+  UseInterceptors,
+  UploadedFile,
+} from '@nestjs/common';
 import { MaintenanceRealEstateService } from './maintenance-real-estate.service';
 import { CreateMaintenanceRealEstateDto } from './dto/create-maintenance-real-estate.dto';
 import { UpdateMaintenanceRealEstateDto } from './dto/update-maintenance-real-estate.dto';
@@ -30,23 +41,24 @@ export class MaintenanceRealEstateController {
 
   @Get()
   async findAll() {
-  try {
-    return await this.maintenanceRealEstateService.findAll();
-  } catch (error) {
-    throw new ServiceUnavailableException(`Error From Service maintenanceRealEstateService is : ${error}`)
-
-  }
+    try {
+      return await this.maintenanceRealEstateService.findAll();
+    } catch (error) {
+      throw new ServiceUnavailableException(
+        `Error From Service maintenanceRealEstateService is : ${error}`,
+      );
+    }
   }
 
   @Get(':id')
   async findOne(@Param('id') id: string) {
-   try {
+    try {
       return await this.maintenanceRealEstateService.findOne(id);
-   } catch (error) {
+    } catch (error) {
       throw new ServiceUnavailableException(
         `Error From Service maintenanceRealEstateService is : ${error}`,
-      )
-   }
+      );
+    }
   }
 
   @Patch(':id')
@@ -61,17 +73,19 @@ export class MaintenanceRealEstateController {
       );
     } catch (error) {
       throw new ServiceUnavailableException(
-        `Error From Service maintenanceRealEstateService is : ${error}`,)
+        `Error From Service maintenanceRealEstateService is : ${error}`,
+      );
     }
- 
   }
 
   @Delete(':id')
   async remove(@Param('id') id: string) {
     try {
-      return await this.maintenanceRealEstateService.remove(id)
+      return await this.maintenanceRealEstateService.remove(id);
     } catch (error) {
-      throw new ServiceUnavailableException(`Error From Service maintenanceRealEstateService is : ${error}`)
+      throw new ServiceUnavailableException(
+        `Error From Service maintenanceRealEstateService is : ${error}`,
+      );
     }
   }
 }

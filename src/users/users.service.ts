@@ -16,7 +16,7 @@ import { User } from './entities/user.entity';
 @Injectable()
 export class UsersService {
   constructor(
-    @InjectModel('User') private repositoryUsers: Model<IUser>,
+    @InjectModel('User') private repositoryUsers: Model<User>,
     private authService: AuthService,
   ) {}
 
@@ -27,10 +27,9 @@ export class UsersService {
       ...createUserDto,
       password: hash,
       location: '',
-      city: "",
-      state: "",
-      country: "",
- 
+      city: '',
+      state: '',
+      country: '',
     });
     newUser.save();
 
@@ -57,7 +56,7 @@ export class UsersService {
         newUser.firstName,
       );
     } catch (error) {
-      throw new ServiceUnavailableException(`Error Pn Service Mail : ${error}`)
+      throw new ServiceUnavailableException(`Error Pn Service Mail : ${error}`);
     }
   }
 
@@ -97,12 +96,15 @@ export class UsersService {
     // const newRefreshToken = await this.authService.generateRefreshToken(userId);
   }
 
-  async findAll() {
-    return await this.repositoryUsers.find();
+  async findAll(limit: number, page: number): Promise<User[]> {
+    return await this.repositoryUsers
+      .find()
+      .skip((page - 1) * limit)
+      .limit(limit);
   }
 
-  findOne(id: any): Promise<User> {
-    return this.repositoryUsers.findOne(id);
+  async findOne(id: any): Promise<User> {
+    return await this.repositoryUsers.findOne(id);
   }
 
   findOneByEmail(email: string): Promise<User> {
@@ -114,7 +116,7 @@ export class UsersService {
   }
 
   async remove(id: any): Promise<any> {
-    return this.repositoryUsers.deleteOne( id ).exec();
+    return this.repositoryUsers.deleteOne(id).exec();
   }
 
   async forgotPassword(email: string) {

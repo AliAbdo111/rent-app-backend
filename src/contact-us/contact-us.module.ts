@@ -5,7 +5,7 @@ import { MongooseModule } from '@nestjs/mongoose';
 import { ContactUsSchema } from './entities/contact-us.entity';
 
 @Module({
-  imports:[
+  imports: [
     MongooseModule.forFeature([
       {
         name: 'ContactUs',

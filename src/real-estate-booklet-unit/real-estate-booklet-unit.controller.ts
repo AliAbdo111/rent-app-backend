@@ -1,4 +1,16 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete, ServiceUnavailableException, UseInterceptors, UploadedFiles } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  Post,
+  Body,
+  Patch,
+  Param,
+  Delete,
+  ServiceUnavailableException,
+  UseInterceptors,
+  UploadedFiles,
+  Query,
+} from '@nestjs/common';
 import { RealEstateBookletUnitService } from './real-estate-booklet-unit.service';
 import { CreateRealEstateBookletUnitDto } from './dto/create-real-estate-booklet-unit.dto';
 import { UpdateRealEstateBookletUnitDto } from './dto/update-real-estate-booklet-unit.dto';
@@ -11,7 +23,7 @@ export class RealEstateBookletUnitController {
   constructor(
     private readonly realEstateBookletUnitService: RealEstateBookletUnitService,
     private readonly cloudnirayService: CloudinaryService,
-  ) { }
+  ) {}
 
   @Post()
   @UseInterceptors(FilesInterceptor('images'))
@@ -19,7 +31,7 @@ export class RealEstateBookletUnitController {
     @Body() createRealEstateUnitDto: CreateRealEstateBookletUnitDto,
     @UploadedFiles() images: Express.Multer.File[],
   ) {
-    try{
+    try {
       const urles: {
         public_id: string;
         secure_url: string;
@@ -32,12 +44,17 @@ export class RealEstateBookletUnitController {
           },
         ),
       );
-  
-      return this.realEstateBookletUnitService.create({
+
+      await this.realEstateBookletUnitService.create({
         ...createRealEstateUnitDto,
         images: urles,
       });
-    }catch (error){
+      return {
+        success: true,
+        status: 201,
+        message: 'Real Estate Unit Created Successfuly',
+      };
+    } catch (error) {
       throw new ServiceUnavailableException(
         `Error from realEstate Booklet Unit Service Is :${error}`,
       );
@@ -45,10 +62,23 @@ export class RealEstateBookletUnitController {
   }
 
   @Get()
-  findAll() {
+  async findAll(@Query() query: any) {
     try {
-      return this.realEstateBookletUnitService.findAll();
-      } catch (error) {
+      const limit = parseInt(query.limit) || 10;
+      const page = parseInt(query.page) || 1;
+      const realEstat = await this.realEstateBookletUnitService.findAll(
+        limit,
+        page,
+      );
+      return {
+        success: true,
+        status: 200,
+        limit: limit,
+        page: page,
+        message: 'You Get Real Estate Units Successfuly',
+        realEstatUnit: realEstat,
+      };
+    } catch (error) {
       throw new ServiceUnavailableException(
         `Error from realEstate Booklet Unit Service Is :${error}`,
       );
@@ -56,9 +86,22 @@ export class RealEstateBookletUnitController {
   }
 
   @Get(':id')
-  findOne(@Param('id') id: string) {
+  async findOne(@Param('id') id: string) {
     try {
-      return this.realEstateBookletUnitService.findOne(id);
+      const realEstat = await this.realEstateBookletUnitService.findOne(id);
+      if (!realEstat) {
+        return {
+          success: false,
+          status: 400,
+          message: 'Not Found Real Estate Unit',
+        };
+      }
+      return {
+        success: true,
+        status: 200,
+        message: 'You Get Real Estate Unit Successfuly',
+        realEstatUnit: realEstat,
+      };
     } catch (error) {
       throw new ServiceUnavailableException(
         `Error from realEstate Booklet Unit Service Is :${error}`,
@@ -71,12 +114,23 @@ export class RealEstateBookletUnitController {
     @Param('id') id: string,
     @Body() updateRealEstateUnitDto: UpdateRealEstateBookletUnitDto,
   ) {
-
     try {
-      return await this.realEstateBookletUnitService.update(
+      const realEstat = await this.realEstateBookletUnitService.update(
         id,
         updateRealEstateUnitDto,
       );
+      if (!realEstat) {
+        return {
+          success: false,
+          status: 400,
+          message: 'Not Found Real Estate Unit',
+        };
+      }
+      return {
+        success: true,
+        status: 200,
+        message: 'Real Estate Unit Update Successfuly',
+      };
     } catch (error) {
       throw new ServiceUnavailableException(
         `Error from realEstate Booklet Unit Service Is :${error}`,
@@ -87,7 +141,19 @@ export class RealEstateBookletUnitController {
   @Delete(':id')
   async remove(@Param('id') id: string) {
     try {
-      return await this.realEstateBookletUnitService.remove(id);
+      const unit = await this.realEstateBookletUnitService.remove(id);
+      if (!unit) {
+        return {
+          success: false,
+          status: 400,
+          message: 'Not Found Real Estate Unit',
+        };
+      }
+      return {
+        success: true,
+        status: 200,
+        message: 'You Delete Real Estate Unit Successfuly',
+      };
     } catch (error) {
       throw new ServiceUnavailableException(
         `Error from realEstate Booklet Unit Service Is :${error}`,
@@ -95,10 +161,16 @@ export class RealEstateBookletUnitController {
     }
   }
 
-  @Get('units/getLastUnitRealEstat')
+  @Get('units/getLastUnitBookelt')
   async getLastUnitRealEstat() {
     try {
-      return await this.realEstateBookletUnitService.getLastUnit();
+      const units = await this.realEstateBookletUnitService.getLastUnit();
+      return {
+        success: true,
+        status: 200,
+        message: 'You Get Last Unit Bookelt Unit Successfuly',
+        realEstatUnit: units,
+      };
     } catch (error) {
       throw new ServiceUnavailableException(
         `Error from realEstate Booklet Unit Service Is :${error}`,

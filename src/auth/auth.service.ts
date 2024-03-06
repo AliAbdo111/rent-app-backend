@@ -23,7 +23,7 @@ export class AuthService {
     }
   }
   async validateToken(token: string) {
-    console.log(`token is ${token}`)
+    console.log(`token is ${token}`);
     return this.jwtService.verify(token, {
       secret: process.env.JWT_SECRET_KEY,
     });

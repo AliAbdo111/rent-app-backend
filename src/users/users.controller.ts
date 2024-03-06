@@ -13,15 +13,12 @@ import {
   UploadedFiles,
   UseGuards,
   UploadedFile,
-
+  Query,
 } from '@nestjs/common';
 import { UsersService } from './users.service';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
-import {
-  Request
-  , Response
-} from 'express';
+import { Request, Response } from 'express';
 import {
   FileFieldsInterceptor,
   FileInterceptor,
@@ -30,9 +27,7 @@ import { CloudinaryService } from 'src/cloudinary/clodinary.service';
 import { AuthGuard } from 'src/auth/AuthGuard';
 import * as bcrypt from 'bcrypt';
 import { AuthService } from 'src/auth/auth.service';
-import { ObjectId } from 'mongodb'
-
-
+import { ObjectId } from 'mongodb';
 
 @Controller('users')
 export class UsersController {
@@ -41,7 +36,7 @@ export class UsersController {
     private readonly usersService: UsersService,
     private readonly cloudinaryService: CloudinaryService,
     private authService: AuthService,
-  ) { }
+  ) {}
 
   // create user return=> access_token ande refresh token in cookie
   @Post()
@@ -95,9 +90,10 @@ export class UsersController {
         res.status(200).send({
           status: HttpStatus.CREATED,
           message: 'User created successfully.',
-          access_token: access_token,
+          // access_token: access_token,
         });
-      } else if (user && user.IsActive) { //check is not acttive 
+      } else if (user && user.IsActive) {
+        //check is not acttive
         res.status(301).send({ message: 'Emil Is Already Used Before ' });
       } else {
         const payload = { sub: user._id, email: user.email };
@@ -105,6 +101,7 @@ export class UsersController {
         this.usersService.sendMail(user, access_token);
         res.status(301).send({
           status: 302,
+          success: true,
           message:
             'Email requires verification. We have sent an email for this',
         });
@@ -162,9 +159,11 @@ export class UsersController {
   }
 
   @Get()
-  async findAll(@Res() res: Response) {
+  async findAll(@Res() res: Response, @Query() qeuery: any) {
     try {
-      const users = await this.usersService.findAll();
+      const limit = parseInt(qeuery.limit) || 10;
+      const page = parseInt(qeuery.page) || 1;
+      const users = await this.usersService.findAll(limit, page);
       res.status(200).send({
         success: true,
         users: users,
@@ -178,12 +177,9 @@ export class UsersController {
 
   @UseGuards(AuthGuard)
   @Get('/getProfile')
-  async findOne(
-    @Req() req: Request,
-    @Res() res: Response,
-  ) {
+  async findOne(@Req() req: Request, @Res() res: Response) {
     try {
-      const { sub } = (req as any).decodedData
+      const { sub } = (req as any).decodedData;
       const _id = new ObjectId(sub);
       const user = await this.usersService.findOne(_id);
       if (!user) {
@@ -192,30 +188,28 @@ export class UsersController {
           message: `not found user with id+${_id}`,
         });
       } else {
-        res.status(200).send(
-          {
-            _id: user._id,
-            user_type: user.user_type,
-            email: user.email,
-            firstName: user.firstName,
-            lastName: user.lastName,
-            location: user.location,
-            phone: user.phone,
-            city: user.city,
-            state: user.state,
-            country: user.country,
-            cardNumber: user.cardNumber,
-            bankAccountStatementFile: user.bankAccountStatementFile,
-            criminalRecordFile: user.criminalRecordFile,
-            imageProfile: user.imageProfile,
-          });
+        res.status(200).send({
+          _id: user._id,
+          user_type: user.user_type,
+          email: user.email,
+          firstName: user.firstName,
+          lastName: user.lastName,
+          location: user.location,
+          phone: user.phone,
+          city: user.city,
+          state: user.state,
+          country: user.country,
+          cardNumber: user.cardNumber,
+          bankAccountStatementFile: user.bankAccountStatementFile,
+          criminalRecordFile: user.criminalRecordFile,
+          imageProfile: user.imageProfile,
+        });
       }
     } catch (error) {
-      console.log(error)
+      console.log(error);
       res.status(500).send('server error happned' + error);
     }
   }
-
 
   @UseGuards(AuthGuard)
   @Patch()
@@ -227,7 +221,7 @@ export class UsersController {
     @Res() res: Response,
   ) {
     try {
-      const { sub } = (req as any).decodedData
+      const { sub } = (req as any).decodedData;
       const id = new ObjectId(sub);
       if (updateUserDto.password) {
         const salt = Number(process.env.SALT);
@@ -244,7 +238,7 @@ export class UsersController {
         ...updateUserDto,
         imageProfile: secure_url,
       });
-      console.log(updateUser)
+      console.log(updateUser);
       if (!updateUser.matchedCount) {
         res.status(404).send({
           success: false,
@@ -253,7 +247,7 @@ export class UsersController {
       } else {
         res.status(200).send({
           success: true,
-          message: 'user upadted successfully'
+          message: 'user upadted successfully',
         });
       }
     } catch (error) {
@@ -261,16 +255,15 @@ export class UsersController {
     }
   }
 
-
   @UseGuards(AuthGuard)
   @Delete()
   async remove(@Req() req: Request, @Res() res: Response) {
     try {
-      const { sub } = (req as any).decodedData
+      const { sub } = (req as any).decodedData;
       const id = new ObjectId(sub);
-      console.log(id)
+      console.log(id);
       const result = await this.usersService.remove(id);
-      console.log(result)
+      console.log(result);
       if (!result.deletedCount) {
         res.status(404).send({
           success: false,
@@ -279,14 +272,13 @@ export class UsersController {
       } else {
         res.status(200).send({
           success: true,
-          message: 'user deleted succesfully'
+          message: 'user deleted succesfully',
         });
       }
     } catch (error) {
       res.status(500).send('Internal server error' + error);
     }
   }
-
 
   @Get('/forgotPassword/:email')
   async forgotPassword(@Param('email') email: string, @Res() res: Response) {

@@ -14,7 +14,7 @@ export class RealEstateUnitService {
   constructor(
     @InjectModel('RealEstateUnit')
     private realEstateRepository: Model<RealEstateUnit>, //interafce
-  ) { }
+  ) {}
   async create(createRealEstateUnitDto: CreateRealEstateUnitDto) {
     try {
       const lastDocument = await this.realEstateRepository

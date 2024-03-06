@@ -1,4 +1,10 @@
-import { IsEmail, IsNotEmpty, IsNumber, IsString, Matches } from 'class-validator';
+import {
+  IsEmail,
+  IsNotEmpty,
+  IsNumber,
+  IsString,
+  Matches,
+} from 'class-validator';
 
 export class CreateUserDto {
   @IsString()
@@ -38,5 +44,4 @@ export class CreateUserDto {
   city?: string;
   state?: string;
   country?: string;
-
 }

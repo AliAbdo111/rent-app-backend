@@ -1,4 +1,4 @@
-export enum Status{
+export enum Status {
   PREMIUM = 'premium',
   STANDARD = 'standard',
 }

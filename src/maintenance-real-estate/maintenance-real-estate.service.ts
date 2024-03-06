@@ -7,13 +7,12 @@ import { MaintenanceRequests } from './entities/maintenance-real-estate.entity';
 
 @Injectable()
 export class MaintenanceRealEstateService {
-
   constructor(
     @InjectModel('MaintenanceRequests')
     private readonly maintenanceRepository: Model<MaintenanceRequests>,
-  ){}
+  ) {}
   create(createMaintenanceRealEstateDto: CreateMaintenanceRealEstateDto) {
-    return this.maintenanceRepository.create(createMaintenanceRealEstateDto)
+    return this.maintenanceRepository.create(createMaintenanceRealEstateDto);
   }
 
   findAll() {
@@ -21,10 +20,13 @@ export class MaintenanceRealEstateService {
   }
 
   findOne(id: string) {
-    return this.maintenanceRepository.findById(id)
+    return this.maintenanceRepository.findById(id);
   }
 
-  update(id: string, updateMaintenanceRealEstateDto: UpdateMaintenanceRealEstateDto) {
+  update(
+    id: string,
+    updateMaintenanceRealEstateDto: UpdateMaintenanceRealEstateDto,
+  ) {
     return this.maintenanceRepository.findByIdAndUpdate(
       id,
       updateMaintenanceRealEstateDto,

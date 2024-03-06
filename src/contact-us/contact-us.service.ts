@@ -9,11 +9,11 @@ import { Model } from 'mongoose';
 export class ContactUsService {
   constructor(
     @InjectModel('ContactUs')
-    private contactUsRepository?: Model<ContactUs>,)
-{}
-  
+    private contactUsRepository?: Model<ContactUs>,
+  ) {}
+
   async create(createContactUsDto: CreateContactUsDto) {
-    return await this.contactUsRepository.create(createContactUsDto)
+    return await this.contactUsRepository.create(createContactUsDto);
   }
 
   async findAll() {

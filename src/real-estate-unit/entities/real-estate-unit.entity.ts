@@ -1,5 +1,6 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { Document } from 'mongoose';
+import { Status } from 'src/Types/RealEstat';
 
 @Schema({ timestamps: true })
 export class RealEstateUnit extends Document {
@@ -8,8 +9,14 @@ export class RealEstateUnit extends Document {
     default: 0,
   })
   uintCode: number;
+
   @Prop()
   title: string;
+  @Prop({
+    type: String,
+    enum: Object.values(Status),
+  })
+  status: Status;
 
   @Prop({
     type: String,
@@ -27,9 +34,9 @@ export class RealEstateUnit extends Document {
   price: number;
   @Prop({
     type: Number,
-    default:0
+    default: 0,
   })
-  priceAfterDiscount: number
+  priceAfterDiscount: number;
   @Prop({
     type: Number,
   })

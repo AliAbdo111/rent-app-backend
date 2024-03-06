@@ -13,13 +13,14 @@ import { AuthService } from './auth.service';
 @Injectable()
 export class AuthGuard implements CanActivate {
   constructor(
-    private readonly  jwtService: JwtService,
+    private readonly jwtService: JwtService,
     private readonly authService: AuthService,
   ) {}
   async canActivate(context: ExecutionContext): Promise<boolean> {
     try {
       const request = context.switchToHttp().getRequest();
       const { authorization }: any = request.headers;
+      console.log(authorization);
       if (!authorization || authorization.trim() === '') {
         throw new UnauthorizedException('Please provide token');
       }
