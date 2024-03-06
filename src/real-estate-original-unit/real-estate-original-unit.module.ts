@@ -6,13 +6,13 @@ import { MongooseModule } from '@nestjs/mongoose';
 import { RealEstateOriginalUnitSchema } from './entities/real-estate-original-unit.entity';
 
 @Module({
-  imports:[
+  imports: [
     MongooseModule.forFeature([
       {
         name: 'RealEstateOriginalUnit',
-        schema: RealEstateOriginalUnitSchema
-      }
-    ])
+        schema: RealEstateOriginalUnitSchema,
+      },
+    ]),
   ],
   controllers: [RealEstateOriginalUnitController],
   providers: [RealEstateOriginalUnitService, CloudinaryService],

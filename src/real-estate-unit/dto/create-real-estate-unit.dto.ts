@@ -1,16 +1,32 @@
-import { IsBoolean, IsEnum, IsNumber, IsString } from 'class-validator';
-import { Status } from 'src/Types/RealEstat';
+import {
+  IsBoolean,
+  IsEnum,
+  IsNotEmpty,
+  IsNumber,
+  IsString,
+} from 'class-validator';
+import { Status, TypeUnit } from 'src/Types/RealEstat';
 
 export class CreateRealEstateUnitDto {
+  @IsNotEmpty()
   @IsString()
   title: string;
+
+  @IsNotEmpty()
   @IsString()
   address: string;
+
+  @IsNotEmpty()
   @IsString()
   finshingType: string;
   // @IsNumber()
   price: number;
 
+  @IsEnum(TypeUnit)
+  @IsNotEmpty()
+  unitType: TypeUnit;
+
+  @IsNotEmpty()
   @IsEnum(Status)
   status: Status;
 

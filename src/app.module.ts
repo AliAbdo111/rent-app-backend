@@ -15,6 +15,7 @@ import { RealEstateOriginalUnitModule } from './real-estate-original-unit/real-e
 import { RealEstateBookletUnitModule } from './real-estate-booklet-unit/real-estate-booklet-unit.module';
 import { JwtModule } from '@nestjs/jwt';
 import { jwtConstants } from './auth/constants';
+import { InspectionRequestsModule } from './inspection-requests/inspection-requests.module';
 
 @Module({
   imports: [
@@ -36,6 +37,7 @@ import { jwtConstants } from './auth/constants';
     MaintenanceRealEstateModule,
     RealEstateOriginalUnitModule,
     RealEstateBookletUnitModule,
+    InspectionRequestsModule,
   ],
 
   controllers: [AppController],
