@@ -32,7 +32,7 @@ export class InspectionRequestsController {
       success: true,
       status: 201,
       message: 'You Creatr Inspectaion Successfuly',
-    }
+    };
   }
 
   @Get()
