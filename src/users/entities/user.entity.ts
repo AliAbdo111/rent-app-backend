@@ -50,17 +50,17 @@ export class User extends Document {
     default: '',
   })
   location: string;
-  @Prop({
-    default: '',
-  })
+
   @Prop({
     default: '',
   })
   city: string;
+
   @Prop({
     default: '',
   })
   state: string;
+
   @Prop({
     default: '',
   })

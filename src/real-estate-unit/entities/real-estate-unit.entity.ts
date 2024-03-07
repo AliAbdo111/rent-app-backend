@@ -1,9 +1,27 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
-import { Document } from 'mongoose';
+import mongoose, { Document } from 'mongoose';
 import { Status, TypeUnit } from 'src/Types/RealEstat';
 
 @Schema({ timestamps: true })
 export class RealEstateUnit extends Document {
+  @Prop({
+    type: mongoose.Types.ObjectId,
+    ref: 'User',
+  })
+  owner: string;
+
+  @Prop({
+    type: mongoose.Types.ObjectId,
+    ref: 'User',
+  })
+  rented: string; //مؤجر
+
+  @Prop({
+    type: mongoose.Types.ObjectId,
+    ref: 'User',
+  })
+  tenant: string; //مستأجر
+
   @Prop({
     type: Number,
     default: 0,
