@@ -13,6 +13,9 @@ export class CreateRealEstateUnitDto {
   title: string;
 
   @IsNotEmpty()
+  owner: string;
+
+  @IsNotEmpty()
   @IsString()
   address: string;
 
@@ -51,4 +54,7 @@ export class CreateRealEstateUnitDto {
   hasAParcking: boolean;
   @IsString()
   space: string;
+
+  // @IsNumber()
+  yearofconstruction?: number;
 }

@@ -1,20 +1,28 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
-import { User } from 'src/users/entities/user.entity';
-
+import mongoose from 'mongoose';
 @Schema({ timestamps: true })
 export class MaintenanceRequests {
-  @Prop()
+  @Prop({
+    type: mongoose.Types.ObjectId,
+    ref: 'User',
+  })
   userId: string;
+
   @Prop()
   phone: string;
+
   @Prop()
   typeOfMalfunction: string;
+
   @Prop()
   imgOfMalfunction: string;
+
   @Prop()
   description: string;
+
   @Prop()
   bookingDate: string;
+
   @Prop()
   status: string;
 }

@@ -92,7 +92,7 @@ export class RealEstateBookletUnitController {
       if (!realEstat) {
         return {
           success: false,
-          status: 400,
+          status: 404,
           message: 'Not Found Real Estate Unit',
         };
       }
@@ -122,7 +122,7 @@ export class RealEstateBookletUnitController {
       if (!realEstat) {
         return {
           success: false,
-          status: 400,
+          status: 404,
           message: 'Not Found Real Estate Unit',
         };
       }
@@ -145,7 +145,7 @@ export class RealEstateBookletUnitController {
       if (!unit) {
         return {
           success: false,
-          status: 400,
+          status: 404,
           message: 'Not Found Real Estate Unit',
         };
       }

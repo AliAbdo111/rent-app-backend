@@ -29,6 +29,11 @@ export class RealEstateUnit extends Document {
   uintCode: number;
 
   @Prop({
+    type: Number,
+  })
+  yearofconstruction: number;
+
+  @Prop({
     type: String,
     enum: Object.values(TypeUnit),
     default: TypeUnit.HOUSING,
