@@ -104,6 +104,7 @@ export class RealEstateUnit extends Document {
 
   @Prop({
     type: Boolean,
+    default: true,
   })
   IsAvilable: boolean;
 

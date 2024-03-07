@@ -16,6 +16,8 @@ import { RealEstateBookletUnitModule } from './real-estate-booklet-unit/real-est
 import { JwtModule } from '@nestjs/jwt';
 import { jwtConstants } from './auth/constants';
 import { InspectionRequestsModule } from './inspection-requests/inspection-requests.module';
+import { InvoiceModule } from './invoice/invoice.module';
+import { RentModule } from './rent/rent.module';
 
 @Module({
   imports: [
@@ -38,6 +40,8 @@ import { InspectionRequestsModule } from './inspection-requests/inspection-reque
     RealEstateOriginalUnitModule,
     RealEstateBookletUnitModule,
     InspectionRequestsModule,
+    InvoiceModule,
+    RentModule,
   ],
 
   controllers: [AppController],

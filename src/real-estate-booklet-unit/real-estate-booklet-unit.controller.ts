@@ -177,6 +177,7 @@ export class RealEstateBookletUnitController {
       );
     }
   }
+
   // @Delete('deleteImageUnit')
   // async deleteImage(
   //   @Query('realEstateUnitId') realEstateUnitId: string,
