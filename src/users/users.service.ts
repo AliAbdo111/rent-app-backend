@@ -47,8 +47,9 @@ export class UsersService {
 
   async sendMail(newUser: User, access_token: string) {
     try {
+      console.log(newUser)
       const emailSubject = 'Email verification';
-      const emailText = `${process.env.BASE_URL}/auth/verfiy&key=${access_token}`;
+      const emailText = `${process.env.BASE_URL}/auth/verfiy?key=${access_token}`;
       const mail = await sendEmail(
         newUser.email,
         emailSubject,
@@ -56,7 +57,7 @@ export class UsersService {
         newUser.firstName,
       );
     } catch (error) {
-      throw new ServiceUnavailableException(`Error Pn Service Mail : ${error}`);
+      throw new ServiceUnavailableException(`Error on Service Mail : ${error}`);
     }
   }
 
