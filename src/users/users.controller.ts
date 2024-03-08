@@ -131,8 +131,8 @@ export class UsersController {
     if (status === 302) {
       return res.send({
         status: status,
-        message: message
-    });
+        message: message,
+      });
     }
     res.send({
       status: status,
