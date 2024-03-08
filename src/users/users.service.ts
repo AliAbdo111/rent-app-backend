@@ -45,9 +45,52 @@ export class UsersService {
     };
   }
 
+  async signIn(
+    email: string,
+    pass: string,
+  ): Promise<{
+    access_token: string;
+    user: any;
+    refresh_token: string;
+    status: number;
+    message: string;
+  }> {
+    const user = await this.repositoryUsers.findOne({ email: email });
+
+    if (!user) {
+      throw new UnauthorizedException();
+    }
+    const payload = { sub: user.id, username: user.email };
+    const access_token = await this.authService.genrateToken(payload);
+    if (!user.IsActive) {
+      await this.sendMail(user, access_token);
+      return {
+        user: user,
+        refresh_token: '',
+        access_token: '',
+        status: 302,
+        message: 'Email requires verification. We have sent an email for this',
+      };
+    }
+    const isPasswordValid = await bcrypt.compare(pass, user.password);
+
+    if (!isPasswordValid) {
+      throw new UnauthorizedException();
+    }
+
+    const refresh_token = await this.authService.generateRefreshToken(user.id);
+
+    return {
+      user: user,
+      refresh_token: refresh_token,
+      access_token: access_token,
+      status: 200,
+      message: 'user login successfuly',
+    };
+  }
+
   async sendMail(newUser: User, access_token: string) {
     try {
-      console.log(newUser)
       const emailSubject = 'Email verification';
       const emailText = `${process.env.BASE_URL}/auth/verfiy?key=${access_token}`;
       const mail = await sendEmail(
@@ -59,32 +102,6 @@ export class UsersService {
     } catch (error) {
       throw new ServiceUnavailableException(`Error on Service Mail : ${error}`);
     }
-  }
-
-  async signIn(
-    email: string,
-    pass: string,
-  ): Promise<{ access_token: string; user: any; refresh_token: string }> {
-    const user = await this.repositoryUsers.findOne({ email: email });
-
-    if (!user || !user.IsActive) {
-      throw new UnauthorizedException();
-    }
-
-    const isPasswordValid = await bcrypt.compare(pass, user.password);
-
-    if (!isPasswordValid) {
-      throw new UnauthorizedException();
-    }
-    const payload = { sub: user.id, username: user.email };
-    const access_token = await this.authService.genrateToken(payload);
-    const refresh_token = await this.authService.generateRefreshToken(user.id);
-
-    return {
-      user: user,
-      refresh_token: refresh_token,
-      access_token: access_token,
-    };
   }
 
   async refreshToken(oldRefreshToken: string) {

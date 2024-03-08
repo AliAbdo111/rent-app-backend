@@ -115,7 +115,7 @@ export class UsersController {
   // signin  return=> access_token ande refresh token in cookie
   @Post('/signIn')
   async signIn(@Body() signInDto: Record<string, any>, @Res() res: Response) {
-    const { refresh_token, access_token, user } =
+    const { refresh_token, access_token, user, status, message } =
       await this.usersService.signIn(signInDto.email, signInDto.password);
 
     res.cookie('refresh_token', refresh_token, {
@@ -128,7 +128,15 @@ export class UsersController {
       secure: true,
       sameSite: 'strict',
     });
+    if (status === 302) {
+      return res.send({
+        status: status,
+        message: message
+    });
+    }
     res.send({
+      status: status,
+      message: message,
       access_token: access_token,
       user: {
         _id: user._id,
