@@ -149,7 +149,7 @@ export class UsersService {
           email: user.email,
         });
         const emailSubject = 'Password Reset Email';
-        const emailText = `${process.env.BASE_URL}/forgotpassword?email=${user.email}&key=${access_token}`;
+        const emailText = `${process.env.BASE_URL}/auth?type=reset&key=${access_token}`;
         const mail = await sendEmail(email, emailSubject, emailText);
         console.log(user.email);
         return true;
