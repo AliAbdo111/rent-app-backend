@@ -122,7 +122,7 @@ export class UsersService {
   }
 
   async findOne(id: any): Promise<User> {
-    return await this.repositoryUsers.findOne(id);
+    return await this.repositoryUsers.findById(id);
   }
 
   findOneByEmail(email: string): Promise<User> {
