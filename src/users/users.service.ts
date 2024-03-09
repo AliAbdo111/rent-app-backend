@@ -140,7 +140,6 @@ export class UsersService {
   async forgotPassword(email: string) {
     try {
       const user = await this.findOneByEmail(email);
-      console.log(user)
       if (!user) {
         return false;
       } else {
@@ -156,7 +155,31 @@ export class UsersService {
           emailText,
           user.firstName,
         );
-        console.log(user.email);
+        return true;
+      }
+    } catch (error) {
+      throw new ServiceUnavailableException();
+    }
+  }
+
+  async resendmail(email: string) {
+    try {
+      const user = await this.findOneByEmail(email);
+      if (!user) {
+        return false;
+      } else {
+        const access_token = await this.authService.genrateToken({
+          sub: user._id,
+          email: user.email,
+        });
+        const emailSubject = 'Email verification';
+        const emailText = `${process.env.BASE_URL}/auth/verfiy?key=${access_token}`;
+        const mail = await sendEmail(
+          email,
+          emailSubject,
+          emailText,
+          user.firstName,
+        );
         return true;
       }
     } catch (error) {

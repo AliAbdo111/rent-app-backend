@@ -293,7 +293,6 @@ export class UsersController {
   @Get('/forgotPassword/:email')
   async forgotPassword(@Param('email') email: string, @Res() res: Response) {
     const result = await this.usersService.forgotPassword(email);
-    console.log(result);
     if (!result) {
       res.status(404).send({
         succes: false,
@@ -305,6 +304,23 @@ export class UsersController {
         succes: true,
         status: 200,
         message: 'The mail Sended to User',
+      });
+    }
+  }
+  @Get('/resendmail/:email')
+  async resendmail(@Param('email') email: string, @Res() res: Response) {
+    const result = await this.usersService.resendmail(email);
+    if (!result) {
+      res.status(404).send({
+        succes: false,
+        status: 404,
+        message: 'Not Found user with resendmail  Email', //
+      });
+    } else {
+      res.status(200).send({
+        succes: true,
+        status: 200,
+        message: 'The mail Sended  resendmail to User',
       });
     }
   }
