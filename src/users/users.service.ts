@@ -140,6 +140,7 @@ export class UsersService {
   async forgotPassword(email: string) {
     try {
       const user = await this.findOneByEmail(email);
+      console.log(user)
       if (!user) {
         return false;
       } else {
@@ -150,7 +151,7 @@ export class UsersService {
         const emailSubject = 'Password Reset Email';
         const emailText = `${process.env.BASE_URL}/forgotpassword?email=${user.email}&key=${access_token}`;
         const mail = await sendEmail(email, emailSubject, emailText);
-        console.log(mail);
+        console.log(user.email);
         return true;
       }
     } catch (error) {

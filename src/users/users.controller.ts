@@ -293,12 +293,17 @@ export class UsersController {
   @Get('/forgotPassword/:email')
   async forgotPassword(@Param('email') email: string, @Res() res: Response) {
     const result = await this.usersService.forgotPassword(email);
+    console.log(result);
     if (!result) {
       res.status(404).send({
-        message: 'Not Found user with  Email',
+        succes: false,
+        status: 404,
+        message: 'Not Found user with  Email', //
       });
     } else {
       res.status(200).send({
+        succes: true,
+        status: 200,
         message: 'The mail Sended to User',
       });
     }
