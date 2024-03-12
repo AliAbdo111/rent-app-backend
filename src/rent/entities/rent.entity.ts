@@ -30,5 +30,11 @@ export class Rent extends Document {
     type: Number,
   })
   amount: number;
+
+  @Prop({
+    type: Boolean,
+    default: false,
+  })
+  paid: boolean;
 }
 export const RentSchema = SchemaFactory.createForClass(Rent);

@@ -96,7 +96,7 @@ export class RentController {
       const { sub } = (req as any).decodedData;
       // const id = new ObjectId(sub);
       const rent = await this.rentService.findByUser(sub);
-      if (rent.length ===0) {
+      if (rent.length === 0) {
         return {
           success: false,
           status: 404,

@@ -10,7 +10,7 @@ export class RentService {
   constructor(
     @InjectModel('Rent')
     private rentRepositroy: Model<Rent>,
-  ) { }
+  ) {}
   create(createRentDto: CreateRentDto) {
     return this.rentRepositroy.create(createRentDto);
   }
