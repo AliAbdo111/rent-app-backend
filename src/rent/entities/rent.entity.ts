@@ -1,7 +1,7 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import mongoose, { Document } from 'mongoose';
 
-@Schema()
+@Schema({ timestamps: true })
 export class Rent extends Document {
   @Prop({
     type: mongoose.Types.ObjectId,
