@@ -24,14 +24,14 @@ export class InspectionRequestsController {
   constructor(
     private readonly inspectionRequestsService: InspectionRequestsService,
   ) {}
-
+  @UseGuards(AuthGuard)
   @Post()
   async create(@Body() createInspectionRequestDto: CreateInspectionRequestDto) {
     await this.inspectionRequestsService.create(createInspectionRequestDto);
     return {
       success: true,
       status: 201,
-      message: 'You Creatr Inspectaion Successfuly',
+      message: 'You Create Inspectaion Successfuly',
     };
   }
 

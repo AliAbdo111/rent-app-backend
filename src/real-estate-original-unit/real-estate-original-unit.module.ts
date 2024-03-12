@@ -4,6 +4,9 @@ import { RealEstateOriginalUnitController } from './real-estate-original-unit.co
 import { CloudinaryService } from 'src/cloudinary/clodinary.service';
 import { MongooseModule } from '@nestjs/mongoose';
 import { RealEstateOriginalUnitSchema } from './entities/real-estate-original-unit.entity';
+import { PaymentService } from 'src/services/payment/payment.service';
+import { UsersService } from 'src/users/users.service';
+import { UsersModule } from 'src/users/users.module';
 
 @Module({
   imports: [
@@ -13,8 +16,9 @@ import { RealEstateOriginalUnitSchema } from './entities/real-estate-original-un
         schema: RealEstateOriginalUnitSchema,
       },
     ]),
+    UsersModule,
   ],
   controllers: [RealEstateOriginalUnitController],
-  providers: [RealEstateOriginalUnitService, CloudinaryService],
+  providers: [RealEstateOriginalUnitService, CloudinaryService, PaymentService],
 })
 export class RealEstateOriginalUnitModule {}

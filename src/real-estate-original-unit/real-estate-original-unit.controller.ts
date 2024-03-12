@@ -10,12 +10,15 @@ import {
   Query,
   UploadedFiles,
   UseInterceptors,
+  Res,
 } from '@nestjs/common';
 import { UpdateRealEstateOriginalUnitDto } from './dto/update-real-estate-original-unit.dto';
 import { FilesInterceptor } from '@nestjs/platform-express';
 import { CloudinaryService } from 'src/cloudinary/clodinary.service';
 import { RealEstateOriginalUnitService } from './real-estate-original-unit.service';
 import { CreateRealEstateOriginalUnitDto } from './dto/create-real-estate-original-unit.dto';
+import { PaymentService } from 'src/services/payment/payment.service';
+import { UsersService } from 'src/users/users.service';
 
 @Controller('real-estate-original-unit')
 export class RealEstateOriginalUnitController {
@@ -23,6 +26,8 @@ export class RealEstateOriginalUnitController {
   constructor(
     private readonly realEstateOriginaletUnitService: RealEstateOriginalUnitService,
     private readonly cloudnirayService: CloudinaryService,
+    private readonly paymentService: PaymentService,
+    private readonly userService: UsersService,
   ) {}
 
   @Post()
@@ -177,6 +182,40 @@ export class RealEstateOriginalUnitController {
       );
     }
   }
+
+  @Patch('/rentingUnit/:id')
+  async rentingUnit(
+    @Param('id') id: string,
+    @Body() updateRealEstateUnitDto: UpdateRealEstateOriginalUnitDto,
+  ) {
+    try {
+      const unit = await this.realEstateOriginaletUnitService.rentingUnit(
+        id,
+        updateRealEstateUnitDto,
+      );
+      if (!unit) {
+        return {
+          success: false,
+          status: 404,
+          message: 'Not Found Unit With This Id',
+        };
+      }
+      const user = await this.userService.findOne(unit.tenant);
+      console.log(user);
+      return await this.paymentService.firstStepPayment(unit, user);
+      return {
+        success: true,
+        status: 200,
+        message: 'You request Renting Unit original Successfuly',
+        realEstatUnit: unit,
+      };
+    } catch (error) {
+      throw new ServiceUnavailableException(
+        `Error from realEstate original Unit Service Is :${error}`,
+      );
+    }
+  }
+
   // @Delete('deleteImageUnit')
   // async deleteImage(
   //   @Query('realEstateUnitId') realEstateUnitId: string,

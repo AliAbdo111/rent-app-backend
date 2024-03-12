@@ -37,7 +37,7 @@ export class RealEstateBookletUnitService {
   async findAll(limit: number, page: number): Promise<RealEstateBookletUnit[]> {
     const skip = (page - 1) * limit;
     return await this.unitBooklitRepository
-      .find()
+      .find({ IsAvilable: true })
       .skip(skip)
       .limit(limit)
       .select('-__v')

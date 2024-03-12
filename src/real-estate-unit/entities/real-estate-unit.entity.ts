@@ -20,7 +20,7 @@ export class RealEstateUnit extends Document {
     type: mongoose.Types.ObjectId,
     ref: 'User',
   })
-  tenant: string; //مستأجر
+  tenant: string; //المستأجر اللي عايز ياجر الشقه
 
   @Prop({
     type: Number,

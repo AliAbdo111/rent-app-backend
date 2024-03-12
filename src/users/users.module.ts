@@ -12,5 +12,6 @@ import { AuthGuard } from 'src/auth/AuthGuard';
   imports: [MongooseModule.forFeature([{ name: 'User', schema: UserSchema }])],
   controllers: [UsersController],
   providers: [UsersService, AuthService, JwtService, CloudinaryService],
+  exports: [UsersService],
 })
 export class UsersModule {}

@@ -189,8 +189,8 @@ export class UsersController {
     try {
       const { sub } = (req as any).decodedData;
       const _id = new ObjectId(sub);
-      console.log(_id)
-      console.log(sub)
+      console.log(_id);
+      console.log(sub);
       const user = await this.usersService.findOne(sub);
       if (!user) {
         res.status(404).send({

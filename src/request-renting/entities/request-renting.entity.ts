@@ -1,19 +1,16 @@
-import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
-import mongoose from 'mongoose';
+import { Prop, Schema } from '@nestjs/mongoose';
 import { Document, Types } from 'mongoose';
 import { Status } from 'src/Types/Inspection';
+import mongoose from 'mongoose';
 
 @Schema({ timestamps: true })
-export class InspectionRequest extends Document {
+export class RequestRenting extends Document {
   @Prop({
     type: String,
     enum: Object.values(Status),
     default: Status.WAITING,
   })
   status: Status;
-
-  @Prop()
-  inspectaionDate: Date;
 
   @Prop({
     type: mongoose.Types.ObjectId,
@@ -33,5 +30,3 @@ export class InspectionRequest extends Document {
   })
   userID: string;
 }
-export const InspectionRequestSchema =
-  SchemaFactory.createForClass(InspectionRequest);

@@ -42,11 +42,17 @@ export class RealEstateOriginalUnitService {
   ): Promise<RealEstateOriginalUnit[]> {
     const skip = (page - 1) * limit;
     return await this.unitBooklitRepository
-      .find()
+      .find({ IsAvilable: true })
       .skip(skip)
       .limit(limit)
       .select('-__v')
       .exec();
+  }
+
+  async rentingUnit(id: string, update: UpdateRealEstateOriginalUnitDto) {
+    return this.unitBooklitRepository.findByIdAndUpdate(id, update, {
+      new: true,
+    });
   }
 
   async findOne(id: string) {

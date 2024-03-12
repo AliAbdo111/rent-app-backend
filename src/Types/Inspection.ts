@@ -1,4 +1,4 @@
-export enum StatusInspection {
+export enum Status {
   WAITING = 'WAITING',
   ACCEPTE = 'ACCEPTE',
   CANLSE = 'CANLSE',

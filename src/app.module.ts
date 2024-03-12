@@ -18,6 +18,8 @@ import { jwtConstants } from './auth/constants';
 import { InspectionRequestsModule } from './inspection-requests/inspection-requests.module';
 import { InvoiceModule } from './invoice/invoice.module';
 import { RentModule } from './rent/rent.module';
+import { RatingModule } from './rating/rating.module';
+import { RequestRentingModule } from './request-renting/request-renting.module';
 
 @Module({
   imports: [
@@ -42,6 +44,8 @@ import { RentModule } from './rent/rent.module';
     InspectionRequestsModule,
     InvoiceModule,
     RentModule,
+    RatingModule,
+    RequestRentingModule,
   ],
 
   controllers: [AppController],
