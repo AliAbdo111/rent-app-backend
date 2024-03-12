@@ -16,6 +16,6 @@ export class CreateInvoiceDto {
   @IsString()
   userId: string;
 
-  @IsNumber()
+  // @IsNumber()
   amount: number;
 }

@@ -5,7 +5,6 @@ import { CloudinaryService } from 'src/cloudinary/clodinary.service';
 import { MongooseModule } from '@nestjs/mongoose';
 import { RealEstateOriginalUnitSchema } from './entities/real-estate-original-unit.entity';
 import { PaymentService } from 'src/services/payment/payment.service';
-import { UsersService } from 'src/users/users.service';
 import { UsersModule } from 'src/users/users.module';
 
 @Module({

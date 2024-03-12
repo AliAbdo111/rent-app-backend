@@ -23,6 +23,7 @@ export class InvoiceService {
     return this.invoiceRepository.findById(id);
   }
   findByUser(id: string) {
+    console.log(id)
     return this.invoiceRepository.find({ userId: id });
   }
 

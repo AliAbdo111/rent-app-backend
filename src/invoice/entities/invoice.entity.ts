@@ -1,7 +1,7 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
-import mongoose from 'mongoose';
+import mongoose, { Document } from 'mongoose';
 
-@Schema()
+@Schema({ timestamps: true })
 export class Invoice extends Document {
   @Prop({
     type: mongoose.Types.ObjectId,
@@ -35,6 +35,12 @@ export class Invoice extends Document {
     type: Number,
   })
   amount: number;
+
+  @Prop({
+    tyep: Boolean,
+    default: false,
+  })
+  paid: boolean
 }
 
 export const InvoiceSchema = SchemaFactory.createForClass(Invoice);

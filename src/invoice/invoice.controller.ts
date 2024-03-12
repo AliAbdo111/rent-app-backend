@@ -10,25 +10,48 @@ import {
   UseGuards,
   Query,
   Req,
+  UseInterceptors,
+  UploadedFile,
 } from '@nestjs/common';
 import { InvoiceService } from './invoice.service';
 import { CreateInvoiceDto } from './dto/create-invoice.dto';
 import { UpdateInvoiceDto } from './dto/update-invoice.dto';
 import { IdQueryDto } from 'src/inspection-requests/dto/QueryDto';
 import { AuthGuard } from 'src/auth/AuthGuard';
+import { CloudinaryService } from 'src/cloudinary/clodinary.service';
+import { FileInterceptor } from '@nestjs/platform-express';
 
 @Controller('invoice')
 export class InvoiceController {
-  constructor(private readonly invoiceService: InvoiceService) {}
+  constructor(
+    private clooudinaryService: CloudinaryService,
+    private readonly invoiceService: InvoiceService,
+  ) {}
+
   @UseGuards(AuthGuard)
   @Post()
-  async create(@Body() createInspectionRequestDto: CreateInvoiceDto) {
-    await this.invoiceService.create(createInspectionRequestDto);
-    return {
-      success: true,
-      status: 201,
-      message: 'You Create invoice Successfuly',
-    };
+  @UseInterceptors(FileInterceptor('image'))
+  async create(
+    @Body() createInvoiceDto: CreateInvoiceDto,
+    @UploadedFile() image: Express.Multer.File,
+  ) {
+    try {
+      const { secure_url } = await this.clooudinaryService.uploadImage(
+        image,
+        'Invoice',
+      );
+      createInvoiceDto.invoiceImage = secure_url
+      await this.invoiceService.create(createInvoiceDto);
+      return {
+        success: true,
+        status: 201,
+        message: 'You Create invoice Successfuly',
+      };
+    } catch (error) {
+      throw new ServiceUnavailableException(
+        `Error From Invoice Service Is ${error}`,
+      );
+    }
   }
 
   @Get()
@@ -48,13 +71,30 @@ export class InvoiceController {
     }
   }
 
-  // @Get(':id')
-  // findOne(@Param('id') id: string) {
-  //   return this.inspectionRequestsService.findOne(id);
-  // }
+  @Get(':id')
+  async findOne(@Param('id') id: string) {
+    try {
+      const invoice = await this.invoiceService.findOne(id);
+      if (!invoice) {
+        return {
+          success: false,
+          status: 404,
+          message: 'Not Found Any invoice',
+        };
+      }
+      return {
+      success: true,
+      status: 200,
+      message: 'You Get invoice By Unit Id Successfuly',
+        data: invoice,
+    };
+  } catch (error) {
+    throw new ServiceUnavailableException(`Error From Service ${error}`)
+  }
+  }
 
   @UseGuards(AuthGuard)
-  @Get('/getInspectaionByUser')
+  @Get('getInvoice/byUser')
   async getByUserId(@Req() req: Request) {
     try {
       const { sub } = (req as any).decodedData;
@@ -80,7 +120,7 @@ export class InvoiceController {
   }
 
   @UseGuards(AuthGuard)
-  @Get('/getByUnit')
+  @Get('getInvoice/byUnit')
   async getByUnit(@Query() query: IdQueryDto) {
     try {
       const invoice = await this.invoiceService.findByUnit(query.id);
