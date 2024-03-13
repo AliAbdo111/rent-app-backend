@@ -11,6 +11,12 @@ export class RealEstateUnit extends Document {
   owner: string;
 
   @Prop({
+    type: String,
+    enum: ['RealEstateBookletUnit', 'RealEstateOriginalUnit'],
+  })
+  modelRef: 'RealEstateOriginalUnit' | 'RealEstateBookletUnit';
+
+  @Prop({
     type: mongoose.Types.ObjectId,
     ref: 'User',
   })

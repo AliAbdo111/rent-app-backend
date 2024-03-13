@@ -13,6 +13,9 @@ export class CreateRealEstateUnitDto {
   title: string;
 
   @IsNotEmpty()
+  modelRef: 'RealEstateOriginalUnit' | 'RealEstateBookletUnit';
+
+  @IsNotEmpty()
   owner: string;
 
   @IsNotEmpty()
