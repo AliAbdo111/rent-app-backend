@@ -56,10 +56,10 @@ export class ConditionBookletOperationsController {
         createConditionBookletOperationDto.projectId,
       );
       //  send data user and project to maymnet service
-      const responsePayment = await this.paymentService.firstStepPayment(
-        project,
-        createConditionBookletOperationDto,
-      );
+      // const responsePayment = await this.paymentService.firstStepPayment(
+      //   project,
+      //   createConditionBookletOperationDto,
+      // );
       const bankAccountStatementFile = await this.cloudinaryService.uploadImage(
         files?.bankAccountStatementFile[0],
         foldeName,
@@ -80,7 +80,6 @@ export class ConditionBookletOperationsController {
       const operatinProject =
         await this.conditionBookletOperationsService.create({
           ...createConditionBookletOperationDto,
-          orderId: responsePayment._id,
           success: false,
           bankAccountStatementFile: bankAccountStatementFile.secure_url,
           hrLetter: hrLetter.secure_url,
@@ -89,13 +88,13 @@ export class ConditionBookletOperationsController {
         });
       return {
         success: true,
-        message: 'Pleas Switch User to The Url in responsePayment',
-        responsePayment: responsePayment,
+        status: 201,
+        message: 'The Opration Created',
       };
     } catch (error) {
       console.log(error);
       throw new ServiceUnavailableException(
-        `Erorr In Service Payment:  ${error}`,
+        `Erorr In Service BookletOperations :  ${error}`,
       );
     }
   }
