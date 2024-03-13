@@ -12,6 +12,11 @@ export class InspectionRequest extends Document {
   })
   status: Status;
 
+  @Prop({
+    type: String,
+  })
+  inspectaionTime: string;
+
   @Prop()
   inspectaionDate: Date;
 
