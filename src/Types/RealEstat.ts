@@ -6,4 +6,6 @@ export enum Status {
 export enum TypeUnit {
   HOUSING = 'سكني',
   ADMINISTRATIVE = 'اداري',
+  FACTORIES = 'مصانع',
+  LANDS = 'اراضي',
 }

@@ -2,10 +2,11 @@ import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { Document } from 'mongoose';
 
 enum UserType {
-  Vendor = 'vendor',
-  Owner = 'owner',
-  Admin = 'admin',
-  User = 'user',
+  VENDOR = 'VENDOR',
+  OWNER = 'OWNER',
+  ADMIN = 'ADMIN',
+  USER = 'USER',
+  MEDIATOR = 'MEDIATOR', //وسيط
 }
 @Schema()
 export class User extends Document {
@@ -18,9 +19,9 @@ export class User extends Document {
   @Prop({
     type: String,
     enum: Object.values(UserType),
-    default: UserType.User,
+    default: UserType.USER,
   })
-  user_type: UserType; //vendor /owner /admin /user
+  user_type: UserType; //vendor /owner /admin /user /mediator
 
   @Prop({
     type: String,
