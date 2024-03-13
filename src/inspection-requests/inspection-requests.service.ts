@@ -22,7 +22,7 @@ export class InspectionRequestsService {
   }
 
   findOne(id: string) {
-    return this.inspectionRepository.findById(id);
+    return this.inspectionRepository.findById(id).select('-__v');
   }
 
   async findInspectionByUser(id: string): Promise<InspectionRequest[] | null> {
