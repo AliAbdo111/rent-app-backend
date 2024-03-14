@@ -20,6 +20,7 @@ import { InvoiceModule } from './invoice/invoice.module';
 import { RentModule } from './rent/rent.module';
 import { RatingModule } from './rating/rating.module';
 import { RequestRentingModule } from './request-renting/request-renting.module';
+import { QuestionsModule } from './questions/questions.module';
 
 @Module({
   imports: [
@@ -46,6 +47,7 @@ import { RequestRentingModule } from './request-renting/request-renting.module';
     RentModule,
     RatingModule,
     RequestRentingModule,
+    QuestionsModule,
   ],
 
   controllers: [AppController],
