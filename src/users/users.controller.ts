@@ -188,14 +188,11 @@ export class UsersController {
   async findOne(@Req() req: Request, @Res() res: Response) {
     try {
       const { sub } = (req as any).decodedData;
-      const _id = new ObjectId(sub);
-      console.log(_id);
-      console.log(sub);
       const user = await this.usersService.findOne(sub);
       if (!user) {
         res.status(404).send({
           success: false,
-          message: `not found user with id+${_id}`,
+          message: `not found user with id+${sub}`,
         });
       } else {
         res.status(200).send({

@@ -40,7 +40,7 @@ export class Invoice extends Document {
     tyep: Boolean,
     default: false,
   })
-  paid: boolean
+  paid: boolean;
 }
 
 export const InvoiceSchema = SchemaFactory.createForClass(Invoice);

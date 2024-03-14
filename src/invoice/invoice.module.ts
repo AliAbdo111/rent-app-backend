@@ -2,12 +2,11 @@ import { Module } from '@nestjs/common';
 import { InvoiceService } from './invoice.service';
 import { InvoiceController } from './invoice.controller';
 import { MongooseModule } from '@nestjs/mongoose';
-import { RentSchema } from 'src/rent/entities/rent.entity';
-import { AuthGuard } from 'src/auth/AuthGuard';
 import { AuthModule } from 'src/auth/auth.module';
-import { CloudinaryService } from 'src/cloudinary/clodinary.service';
 import { CloudinaryModule } from 'src/cloudinary/cloudinary.module';
 import { InvoiceSchema } from './entities/invoice.entity';
+import { PaymentService } from 'src/services/payment/payment.service';
+import { UsersModule } from 'src/users/users.module';
 
 @Module({
   imports: [
@@ -18,9 +17,10 @@ import { InvoiceSchema } from './entities/invoice.entity';
       },
     ]),
     AuthModule,
-    CloudinaryModule
+    CloudinaryModule,
+    UsersModule,
   ],
   controllers: [InvoiceController],
-  providers: [InvoiceService],
+  providers: [InvoiceService, PaymentService],
 })
 export class InvoiceModule {}

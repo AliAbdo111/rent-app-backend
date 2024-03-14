@@ -9,10 +9,10 @@ import { InjectModel } from '@nestjs/mongoose';
 export class InvoiceService {
   constructor(
     @InjectModel('Invoice')
-    private invoiceRepository: Model<Invoice>
-  ){}
+    private invoiceRepository: Model<Invoice>,
+  ) {}
   create(createInvoiceDto: CreateInvoiceDto) {
-    return this.invoiceRepository.create(createInvoiceDto)
+    return this.invoiceRepository.create(createInvoiceDto);
   }
 
   findAll() {
@@ -23,7 +23,7 @@ export class InvoiceService {
     return this.invoiceRepository.findById(id);
   }
   findByUser(id: string) {
-    console.log(id)
+    console.log(id);
     return this.invoiceRepository.find({ userId: id });
   }
 

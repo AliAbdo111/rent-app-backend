@@ -12,6 +12,7 @@ import {
   Req,
   UseInterceptors,
   UploadedFile,
+  Res,
 } from '@nestjs/common';
 import { InvoiceService } from './invoice.service';
 import { CreateInvoiceDto } from './dto/create-invoice.dto';
@@ -20,12 +21,17 @@ import { IdQueryDto } from 'src/inspection-requests/dto/QueryDto';
 import { AuthGuard } from 'src/auth/AuthGuard';
 import { CloudinaryService } from 'src/cloudinary/clodinary.service';
 import { FileInterceptor } from '@nestjs/platform-express';
+import { PaymentService } from 'src/services/payment/payment.service';
+import { UsersService } from 'src/users/users.service';
+import { Request, Response } from 'express';
 
 @Controller('invoice')
 export class InvoiceController {
   constructor(
     private clooudinaryService: CloudinaryService,
     private readonly invoiceService: InvoiceService,
+    private readonly paymentService: PaymentService,
+    private readonly usersService: UsersService,
   ) {}
 
   @UseGuards(AuthGuard)
@@ -40,7 +46,7 @@ export class InvoiceController {
         image,
         'Invoice',
       );
-      createInvoiceDto.invoiceImage = secure_url
+      createInvoiceDto.invoiceImage = secure_url;
       await this.invoiceService.create(createInvoiceDto);
       return {
         success: true,
@@ -50,6 +56,41 @@ export class InvoiceController {
     } catch (error) {
       throw new ServiceUnavailableException(
         `Error From Invoice Service Is ${error}`,
+      );
+    }
+  }
+
+  @UseGuards(AuthGuard)
+  @Post('payInvoice')
+  async payInvoice(
+    @Body() body: any,
+    @Req() req: Request,
+    @Res() res: Response,
+  ) {
+    try {
+      const { sub } = (req as any).decodedData;
+      const invoice = await this.invoiceService.findOne(body.invoiceId);
+      const user = await this.usersService.findOne(sub);
+      if (!user) {
+        return res.status(404).json({
+          success: false,
+          status: 404,
+          mesage: ' User Not Found ',
+        });
+      }
+      const product = {
+        price: invoice.amount,
+      };
+      const orderid = await this.paymentService.paymentByCard(product, user);
+      res.status(404).json({
+        success: true,
+        status: 200,
+        mesage: 'Please Redirecte User To The Url Sended !',
+        data: orderid,
+      });
+    } catch (error) {
+      throw new ServiceUnavailableException(
+        `Error From Service Invoice Is: ${error}`,
       );
     }
   }
@@ -83,14 +124,14 @@ export class InvoiceController {
         };
       }
       return {
-      success: true,
-      status: 200,
-      message: 'You Get invoice By Unit Id Successfuly',
+        success: true,
+        status: 200,
+        message: 'You Get invoice By Unit Id Successfuly',
         data: invoice,
-    };
-  } catch (error) {
-    throw new ServiceUnavailableException(`Error From Service ${error}`)
-  }
+      };
+    } catch (error) {
+      throw new ServiceUnavailableException(`Error From Service ${error}`);
+    }
   }
 
   @UseGuards(AuthGuard)

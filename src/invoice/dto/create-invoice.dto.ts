@@ -1,7 +1,6 @@
 import { IsEnum, IsMongoId, IsNumber, IsString } from 'class-validator';
 
 export class CreateInvoiceDto {
-
   @IsMongoId()
   unitId: string;
 

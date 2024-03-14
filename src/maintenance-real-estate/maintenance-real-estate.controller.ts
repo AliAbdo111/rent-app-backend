@@ -14,7 +14,7 @@ import { MaintenanceRealEstateService } from './maintenance-real-estate.service'
 import { CreateMaintenanceRealEstateDto } from './dto/create-maintenance-real-estate.dto';
 import { UpdateMaintenanceRealEstateDto } from './dto/update-maintenance-real-estate.dto';
 import { CloudinaryService } from 'src/cloudinary/clodinary.service';
-import { FileInterceptor, FilesInterceptor } from '@nestjs/platform-express';
+import { FileInterceptor } from '@nestjs/platform-express';
 
 @Controller('maintenance-real-estate')
 export class MaintenanceRealEstateController {

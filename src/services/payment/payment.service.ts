@@ -1,25 +1,29 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, ServiceUnavailableException } from '@nestjs/common';
 
 @Injectable()
 export class PaymentService {
   // the third steps used any method payment
-  async firstStepPayment(product: any, user: any) {
-    console.log(product);
-    console.log(user);
-    const data = {
-      api_key: process.env.API_KEY_PAYMENT,
-    };
-    const request = await fetch('https://accept.paymob.com/api/auth/tokens', {
-      method: 'post',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(data),
-    });
-    const response = await request.json();
-    const token = response?.token;
-    return this.secondStep(token, product, user);
+  async paymentByCard(product: any, user: any) {
+    try {
+      const data = {
+        api_key: process.env.API_KEY_PAYMENT,
+      };
+      const request = await fetch('https://accept.paymob.com/api/auth/tokens', {
+        method: 'post',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(data),
+      });
+      const response = await request.json();
+      const token = response?.token;
+      return this.secondStep(token, product, user);
+    } catch (error) {
+      throw new ServiceUnavailableException(
+        `Error From Service Peyment Is Say :${error}`,
+      );
+    }
   }
 
-  async secondStep(token: string, product: any, user: any) {
+  private async secondStep(token: string, product: any, user: any) {
     const data = {
       auth_token: token,
       delivery_needed: 'false',
@@ -41,7 +45,7 @@ export class PaymentService {
     return this.thirdStep(token, id, product, user);
   }
 
-  async thirdStep(token: string, id: number, product: any, user: any) {
+  private async thirdStep(token: string, id: number, product: any, user: any) {
     // console.log(user);
     const price = product?.price * 100;
     const data = {
@@ -82,7 +86,7 @@ export class PaymentService {
     return this.cardPayment(theToken, id);
   }
 
-  async cardPayment(token: string, _id: any) {
+  private async cardPayment(token: string, _id: any) {
     const ifarmUrl = `https://accept.paymob.com/api/acceptance/iframes/824831?payment_token=${token}`;
     return { ifarmUrl, _id };
   }

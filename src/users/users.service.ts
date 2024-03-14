@@ -122,7 +122,13 @@ export class UsersService {
   }
 
   async findOne(id: any): Promise<User> {
-    return await this.repositoryUsers.findById(id);
+    try {
+      return await this.repositoryUsers.findById(id);
+    } catch (error) {
+      throw new ServiceUnavailableException(
+        `Error From Service User Is :${error}`,
+      );
+    }
   }
 
   findOneByEmail(email: string): Promise<User> {

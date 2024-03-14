@@ -26,11 +26,13 @@ export class InspectionRequestsService {
   }
 
   async findInspectionByUser(id: string): Promise<InspectionRequest[] | null> {
+    console.log(id);
     const userId = new ObjectId(id);
-    return this.inspectionRepository
-      .find(userId)
+    return await this.inspectionRepository
+      .find({ userID: id, status: { $ne: 'WAITING' } })
       .select('-__v')
-      .populate('unitId');
+      .populate('unitId')
+      .exec();
   }
 
   async findByUnit(id: string): Promise<InspectionRequest[] | null> {

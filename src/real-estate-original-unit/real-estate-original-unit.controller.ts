@@ -201,8 +201,8 @@ export class RealEstateOriginalUnitController {
         };
       }
       const user = await this.userService.findOne(unit.tenant);
-      console.log(user);
-      return await this.paymentService.firstStepPayment(unit, user);
+      // console.log(user);
+      // return await this.paymentService.firstStepPayment(unit, user);
       return {
         success: true,
         status: 200,
