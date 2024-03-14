@@ -10,6 +10,7 @@ export class AuthService {
   async genrateToken(payload: any): Promise<string> {
     return await this.jwtService.signAsync(payload, {
       secret: jwtConstants.secret,
+      
     });
   }
 
@@ -25,14 +26,14 @@ export class AuthService {
   async validateToken(token: string) {
     console.log(`token is ${token}`);
     return this.jwtService.verify(token, {
-      secret: process.env.JWT_SECRET_KEY,
+      secret: jwtConstants.secret,
     });
   }
   async generateRefreshToken(userId: number) {
     const tokenId = uuidv4();
     const refreshToken = await this.jwtService.signAsync(
       { id: userId, tokenId: tokenId },
-      { expiresIn: '7d', secret: 'strrooossdd,' },
+      { expiresIn: '7d', secret: jwtConstants.secret },
     );
     return refreshToken;
   }

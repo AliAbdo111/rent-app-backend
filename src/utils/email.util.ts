@@ -1,3 +1,4 @@
+import { ServiceUnavailableException } from '@nestjs/common';
 import * as nodemailer from 'nodemailer';
 
 // Create a transporter using your email service provider's settings
@@ -171,5 +172,8 @@ export async function sendEmail(
     console.log('Email sent resendmail:', info.messageId);
   } catch (error) {
     console.error('Error sending email:', error.message);
+    throw new ServiceUnavailableException(
+      `Error From Service Mail Is Say :${error}`,
+    );
   }
 }
