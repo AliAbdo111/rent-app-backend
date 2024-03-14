@@ -26,12 +26,18 @@ export class QuestionsController {
     try {
       const limit = parseInt(query.limit) || 10;
       const page = parseInt(query.page) || 1;
-      const questions = await this.questionsService.findAll(limit, page);
+      const { data, countPage } = await this.questionsService.findAll(
+        limit,
+        page,
+      );
       return {
         success: true,
         status: 200,
+        limit: limit,
+        page: page,
+        countPages: countPage,
         message: 'You Get All Questions Successfuly',
-        data: questions
+        data: data
       }
     } catch (error) {
       throw new ServiceUnavailableException(
