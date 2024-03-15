@@ -35,7 +35,9 @@ export class QuestionsService {
   }
 
   update(id: string, updateQuestionDto: UpdateQuestionDto) {
-    return this.questionRepository.findByIdAndUpdate(id, updateQuestionDto);
+    return this.questionRepository.findByIdAndUpdate(id, updateQuestionDto, {
+      new: true,
+    });
   }
 
   remove(id: string) {

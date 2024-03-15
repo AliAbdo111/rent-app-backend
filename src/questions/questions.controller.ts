@@ -59,7 +59,7 @@ export class QuestionsController {
       }
       return {
         success: true,
-        status: 201,
+        status: 200,
         message: 'You Get Question Successfuly',
         data: question
       }
@@ -87,7 +87,7 @@ export class QuestionsController {
       }
       return {
         success: true,
-        status: 201,
+        status: 200,
         message: ' Update Question Successfuly',
         data: question
       }
@@ -111,9 +111,9 @@ export class QuestionsController {
       }
       return{
         success: true,
-        status: 201,
+        status: 200,
         message:'Delete Question Successfuly',
-        data: question
+  
       }
     } catch (error) {
       throw new ServiceUnavailableException(`Error From Service Is Say :${error}`)

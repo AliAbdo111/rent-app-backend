@@ -26,7 +26,9 @@ export class ContractTermsService {
   }
 
   update(id: string, updateDto: UpdateContractTermDto) {
-    return this.contractTermRepository.findByIdAndUpdate(id, updateDto);
+    return this.contractTermRepository.findByIdAndUpdate(id, updateDto, {
+      new: true,
+    });
   }
 
   remove(id: string) {

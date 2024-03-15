@@ -55,7 +55,7 @@ export class ContractTermsController {
       }
       return {
         success: true,
-        status: 201,
+        status: 200,
         message: 'You Get One Contract Term Successfuly',
         data: ContracTerms
       }
@@ -85,7 +85,7 @@ export class ContractTermsController {
       }
       return {
         success: true,
-        status: 201,
+        status: 200,
         message: ' Contract Terms  Successfuly',
         data: ContracTerms
       }
@@ -109,9 +109,8 @@ export class ContractTermsController {
       }
       return {
         success: true,
-        status: 201,
+        status: 200,
         message: ' contract Term Successfuly',
-        data: contractTerm
       }
     } catch (error) {
       throw new ServiceUnavailableException(`Error From Service Contract Terms Is Say :${error}`)
