@@ -110,7 +110,7 @@ export class ContractTermsController {
       return {
         success: true,
         status: 200,
-        message: ' contract Term Successfuly',
+        message: ' Contract Term Deleted Successfuly',
       }
     } catch (error) {
       throw new ServiceUnavailableException(`Error From Service Contract Terms Is Say :${error}`)

@@ -121,7 +121,7 @@ export class RentalTermsController {
       return {
         success: true,
         status: 200,
-        message: ' Rental Term Successfuly',
+        message: 'Rental Term Deleted Successfuly',
       }
     } catch (error) {
       throw new ServiceUnavailableException(`Error From Service Rental Terms Is Say :${error}`)
