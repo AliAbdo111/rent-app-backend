@@ -60,7 +60,7 @@ export class QuestionsController {
       return {
         success: true,
         status: 201,
-        message: ' Question Successfuly',
+        message: 'You Get Question Successfuly',
         data: question
       }
     } catch (error) {
@@ -88,7 +88,7 @@ export class QuestionsController {
       return {
         success: true,
         status: 201,
-        message: ' Question Successfuly',
+        message: ' Update Question Successfuly',
         data: question
       }
     } catch (error) {
@@ -112,7 +112,7 @@ export class QuestionsController {
       return{
         success: true,
         status: 201,
-        message:' Question Successfuly',
+        message:'Delete Question Successfuly',
         data: question
       }
     } catch (error) {

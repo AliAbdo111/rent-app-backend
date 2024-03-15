@@ -21,6 +21,7 @@ import { RentModule } from './rent/rent.module';
 import { RatingModule } from './rating/rating.module';
 import { RequestRentingModule } from './request-renting/request-renting.module';
 import { QuestionsModule } from './questions/questions.module';
+import { ContractTermsModule } from './contract-terms/contract-terms.module';
 
 @Module({
   imports: [
@@ -48,6 +49,7 @@ import { QuestionsModule } from './questions/questions.module';
     RatingModule,
     RequestRentingModule,
     QuestionsModule,
+    ContractTermsModule,
   ],
 
   controllers: [AppController],
