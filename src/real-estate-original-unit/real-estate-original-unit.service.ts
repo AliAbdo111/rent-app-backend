@@ -15,11 +15,11 @@ export class RealEstateOriginalUnitService {
     createRealEstateBookletUnitDto: CreateRealEstateOriginalUnitDto,
   ) {
     try {
-      const lastDocument = await this.unitBooklitRepository
+      const lastDocument = await this.unitOriginalRepository
         .findOne()
         .sort({ uintCode: -1 })
         .exec();
-      const newRealEstate = new this.unitBooklitRepository(
+      const newRealEstate = new this.unitOriginalRepository(
         createRealEstateBookletUnitDto,
       );
 
@@ -41,13 +41,13 @@ export class RealEstateOriginalUnitService {
     page: number,
   ): Promise<RealEstateOriginalUnit[]> {
     const skip = (page - 1) * limit;
-    return await this.unitBooklitRepository
+    return await this.unitOriginalRepository
       .find({ IsAvilable: true })
       .skip(skip)
       .limit(limit)
       .select('-__v')
       .exec();
-  }
+  } 
 
   async rentingUnit(id: string, update: UpdateRealEstateOriginalUnitDto) {
     return this.unitOriginalRepository.findByIdAndUpdate(id, update, {
@@ -63,7 +63,7 @@ export class RealEstateOriginalUnitService {
     id: string,
     updateRealEstateOriginalUnitDto: UpdateRealEstateOriginalUnitDto,
   ) {
-    return await this.unitBooklitRepository.findByIdAndUpdate(
+    return await this.unitOriginalRepository.findByIdAndUpdate(
       id,
       updateRealEstateOriginalUnitDto,
     );
