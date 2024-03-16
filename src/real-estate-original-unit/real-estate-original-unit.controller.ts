@@ -166,7 +166,7 @@ export class RealEstateOriginalUnitController {
     }
   }
 
-  @Get('units/getLastUnitBookelt')
+  @Get('units/getLastUnitOriginal')
   async getLastUnitRealEstat() {
     try {
       const units = await this.realEstateOriginaletUnitService.getLastUnit();

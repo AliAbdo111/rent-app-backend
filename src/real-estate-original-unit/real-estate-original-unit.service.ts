@@ -9,7 +9,7 @@ import { Model } from 'mongoose';
 export class RealEstateOriginalUnitService {
   constructor(
     @InjectModel('RealEstateOriginalUnit')
-    private unitBooklitRepository: Model<RealEstateOriginalUnit>,
+    private unitOriginalRepository: Model<RealEstateOriginalUnit>,
   ) {}
   async create(
     createRealEstateBookletUnitDto: CreateRealEstateOriginalUnitDto,
@@ -31,7 +31,7 @@ export class RealEstateOriginalUnitService {
       return newRealEstate.save();
     } catch (error) {
       throw new ServiceUnavailableException(
-        `Error RealEstateUnitService is :${error}`,
+        `Error RealEstate UnitService is :${error}`,
       );
     }
   }
@@ -50,13 +50,13 @@ export class RealEstateOriginalUnitService {
   }
 
   async rentingUnit(id: string, update: UpdateRealEstateOriginalUnitDto) {
-    return this.unitBooklitRepository.findByIdAndUpdate(id, update, {
+    return this.unitOriginalRepository.findByIdAndUpdate(id, update, {
       new: true,
     });
   }
 
   async findOne(id: string) {
-    return await this.unitBooklitRepository.findById(id).select('-__v');
+    return await this.unitOriginalRepository.findById(id).select('-__v');
   }
 
   async update(
@@ -70,12 +70,12 @@ export class RealEstateOriginalUnitService {
   }
 
   async remove(id: string) {
-    return await this.unitBooklitRepository.findByIdAndDelete(id);
+    return await this.unitOriginalRepository.findByIdAndDelete(id);
   }
 
   async getLastUnit(): Promise<any[]> {
     try {
-      return this.unitBooklitRepository
+      return this.unitOriginalRepository
         .find()
         .select('-__v')
         .sort({ createdAt: -1 })

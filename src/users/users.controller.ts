@@ -268,9 +268,7 @@ export class UsersController {
     try {
       const { sub } = (req as any).decodedData;
       const id = new ObjectId(sub);
-      console.log(id);
       const result = await this.usersService.remove(sub);
-      console.log(result);
       if (!result) {
         res.status(404).send({
           success: false,
@@ -304,6 +302,7 @@ export class UsersController {
       });
     }
   }
+
   @Get('/resendmail/:email')
   async resendmail(@Param('email') email: string, @Res() res: Response) {
     const result = await this.usersService.resendmail(email);
