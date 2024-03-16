@@ -140,7 +140,7 @@ export class UsersService {
   }
 
   async remove(id: any): Promise<any> {
-    return this.repositoryUsers.deleteOne(id).exec();
+    return this.repositoryUsers.findByIdAndDelete(id).exec();
   }
 
   async forgotPassword(email: string) {
