@@ -140,7 +140,12 @@ export class UsersService {
   }
 
   async remove(id: any): Promise<any> {
-    return this.repositoryUsers.findByIdAndDelete(id).exec();
+    try {
+      return this.repositoryUsers.findByIdAndDelete(id);
+
+    } catch (error) {
+      throw new ServiceUnavailableException(`error ${error}`)
+    }
   }
 
   async forgotPassword(email: string) {

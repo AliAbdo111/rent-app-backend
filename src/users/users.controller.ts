@@ -269,9 +269,9 @@ export class UsersController {
       const { sub } = (req as any).decodedData;
       const id = new ObjectId(sub);
       console.log(id);
-      const result = await this.usersService.remove(id);
+      const result = await this.usersService.remove(sub);
       console.log(result);
-      if (!result.deletedCount) {
+      if (!result) {
         res.status(404).send({
           success: false,
           message: `not found user with id +${id}`,
