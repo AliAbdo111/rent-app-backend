@@ -11,6 +11,8 @@ import {
   UploadedFiles,
   ServiceUnavailableException,
   Query,
+  UseGuards,
+  Req,
 } from '@nestjs/common';
 import { ConditionBookletOperationsService } from './condition-booklet-operations.service';
 import { CreateConditionBookletOperationDto } from './dto/create-condition-booklet-operation.dto';
@@ -18,6 +20,10 @@ import { UpdateConditionBookletOperationDto } from './dto/update-condition-bookl
 import { FileFieldsInterceptor } from '@nestjs/platform-express';
 import { CloudinaryService } from 'src/cloudinary/clodinary.service';
 import { PaymentService } from 'src/services/payment/payment.service';
+import { AuthGuard } from 'src/auth/AuthGuard';
+import { Request } from 'express';
+import { UsersService } from 'src/users/users.service';
+import { RealEstateBookletUnitService } from 'src/real-estate-booklet-unit/real-estate-booklet-unit.service';
 
 @Controller('ConditionBookletOperation')
 export class ConditionBookletOperationsController {
@@ -27,7 +33,8 @@ export class ConditionBookletOperationsController {
     private readonly conditionBookletOperationsService: ConditionBookletOperationsService,
     private readonly cloudinaryService: CloudinaryService,
     private readonly paymentService: PaymentService,
-  ) {}
+    private readonly userService: UsersService,
+  ) { }
 
   @Post()
   @UseInterceptors(
@@ -52,22 +59,19 @@ export class ConditionBookletOperationsController {
     try {
       // get project related with operations
       const foldeName = 'BookeletUser';
-      const project = await this.conditionBookletOperationsService.getProject(
-        createConditionBookletOperationDto.projectId,
-      );
       // bankAccountStatementFile uploade  ==1
       const bankAccountStatementFile = files?.bankAccountStatementFile
         ? await this.cloudinaryService.uploadImage(
             files?.bankAccountStatementFile[0],
             foldeName,
-          )
+        )
         : '';
-          // birthCertificate uploade 2
+      // birthCertificate uploade 2
       const urlsBirth: {
         public_id: string;
         secure_url: string;
       }[] = files.birthCertificate
-        ? await Promise.all(
+          ? await Promise.all(
             files.birthCertificate.map(
               async (
                 imag,
@@ -78,20 +82,20 @@ export class ConditionBookletOperationsController {
               },
             ),
           )
-        : [];
+          : [];
       // MarriageCertificate ===3
       const MarriageCertificate = files?.MarriageCertificate
         ? await this.cloudinaryService.uploadImage(
-            files?.MarriageCertificate[0],
-            foldeName,
-          )
+          files?.MarriageCertificate[0],
+          foldeName,
+        )
         : '';
       // hrLetter upload ==4
       const hrLetter = files?.hrLetter
         ? await this.cloudinaryService.uploadImage(
           files?.hrLetter[0],
-        foldeName,
-          )
+          foldeName,
+        )
         : '';
       const operatinProject =
         await this.conditionBookletOperationsService.create({
@@ -157,17 +161,43 @@ export class ConditionBookletOperationsController {
       throw new ServiceUnavailableException(`Error Message : ${error}`);
     }
   }
+  @UseGuards(AuthGuard)
+  @Post('paymentOperation')
+  async paymentOperationBookelet(@Body() body: any, @Req() req: Request) {
+    try {
+      const { sub } = (req as any).decodedData
+      const user = await this.userService.findOne(sub)
+      if (!user) {
+        return {
+          success: false,
+          status: 404,
+          message: 'User Not Found'
+        }
+      }
 
+      const operation = await this.conditionBookletOperationsService.findOne(
+        body.operationId,
+      );
+      return {
+        user,
+        operation
+      }
+    } catch (error) {
+      throw new ServiceUnavailableException(
+        `Error From Service Operation Booklet :${error}`,
+      );
+    }
+  }
   // call back for payment operatin project booklet
   @Post('/CallpackPayment/operation')
   async callBack(@Query() query: any, @Body() body: any) {
     try {
-      // console.log(body);
-      // console.log(body?.obj?.id); //TRANSACTION_ID
-      // console.log(body?.obj?.success);
-      // console.log(body?.obj?.pending);
-      // console.log(body?.obj?.order.id);
-      // console.log(query); //hmac
+      console.log(body);
+      console.log(body?.obj?.id); //TRANSACTION_ID
+      console.log(body?.obj?.success);
+      console.log(body?.obj?.pending);
+      console.log(body?.obj?.order.id);
+      console.log(query); //hmac
       const project =
         await this.conditionBookletOperationsService.getOperationByOrderID(
           body?.obj?.order.id,

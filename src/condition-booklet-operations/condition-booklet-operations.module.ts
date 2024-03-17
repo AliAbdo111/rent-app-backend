@@ -7,9 +7,11 @@ import { conditionBookletOperationSchema } from './entities/condition-booklet-op
 import { PaymentService } from 'src/services/payment/payment.service';
 import { ConditionBookletProjectModule } from 'src/condition-booklet-project/condition-booklet-project.module';
 import { ConditionBookletProjectSchema } from 'src/condition-booklet-project/entities/condition-booklet-project.entity';
+import { UsersModule } from 'src/users/users.module';
 
 @Module({
   imports: [
+    UsersModule,
     ConditionBookletProjectModule,
     MongooseModule.forFeature([
       {

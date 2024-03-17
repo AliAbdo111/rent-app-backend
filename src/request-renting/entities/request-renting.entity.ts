@@ -38,15 +38,17 @@ export class RequestRenting extends Document {
 
   @Prop({
     type: mongoose.Types.ObjectId,
-    refPath: 'modelRef',
+    ref: 'RealEstateOriginalUnit',
   })
   unitId: Types.ObjectId;
 
-  @Prop({
-    type: String,
-    enum: ['RealEstateBookletUnit', 'RealEstateOriginalUnit'],
-  })
-  modelRef: string;
+  @Prop()
+  idNumber: number;
+  // @Prop({
+  //   type: String,
+  //   enum: ['RealEstateBookletUnit', 'RealEstateOriginalUnit'],
+  // })
+  // modelRef: string;
 
   @Prop({
     type: mongoose.Types.ObjectId,

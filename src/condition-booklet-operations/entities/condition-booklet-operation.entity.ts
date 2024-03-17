@@ -2,15 +2,15 @@ import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import mongoose from 'mongoose';
 import { Status } from 'src/Types/Inspection';
 import { MaritalStatus } from 'src/Types/RealEstat';
-import { ConditionBookletProject } from 'src/condition-booklet-project/entities/condition-booklet-project.entity';
+import { RealEstateBookletUnit } from 'src/real-estate-booklet-unit/entities/real-estate-booklet-unit.entity';
 
 @Schema({ timestamps: true })
 export class ConditionBookletOperation {
   @Prop({
     type: mongoose.Schema.Types.ObjectId,
-    ref: 'ConditionBookletProject',
+    ref: 'RealEstateBookletUnit',
   })
-  projectId: ConditionBookletProject;
+  unitId: RealEstateBookletUnit;
 
   @Prop()
   fullName: string;
@@ -41,6 +41,9 @@ export class ConditionBookletOperation {
   nationality: string;
 
   @Prop()
+  price: number;
+
+  @Prop()
   familyMembers: number;
 
   @Prop()
@@ -61,7 +64,6 @@ export class ConditionBookletOperation {
     ],
   })
   birthCertificates: { public_id: string; secure_url: string }[];
-
 
   @Prop()
   MarriageCertificate: string;

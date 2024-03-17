@@ -1,13 +1,12 @@
 import { IsEnum, IsNotEmpty } from 'class-validator';
 import { MaritalStatus } from 'src/Types/RealEstat';
-import { ConditionBookletProject } from 'src/condition-booklet-project/entities/condition-booklet-project.entity';
 interface BirthCertificate {
   publicId: string;
   secure_url: string;
 }
 export class CreateConditionBookletOperationDto {
   @IsNotEmpty()
-  projectId: ConditionBookletProject;
+  unitId: string;
 
   firstName: string;
 

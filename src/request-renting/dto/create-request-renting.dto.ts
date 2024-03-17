@@ -26,7 +26,7 @@ export class CreateRequestRentingDto {
   @IsNotEmpty()
   unitId: string;
 
-  @IsEnum(['RealEstateBookletUnit', 'RealEstateOriginalUnit'])
-  @IsNotEmpty()
-  modelRef: string;
+  // @IsEnum(['RealEstateBookletUnit', 'RealEstateOriginalUnit'])
+  // @IsNotEmpty()
+  // modelRef: string;
 }
