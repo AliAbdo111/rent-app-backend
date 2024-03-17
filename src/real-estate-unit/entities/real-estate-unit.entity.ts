@@ -1,6 +1,6 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import mongoose, { Document } from 'mongoose';
-import { Status, TypeUnit } from 'src/Types/RealEstat';
+import { StatusUnit, TypeUnit } from 'src/Types/RealEstat';
 
 @Schema({ timestamps: true })
 export class RealEstateUnit extends Document {
@@ -53,9 +53,9 @@ export class RealEstateUnit extends Document {
 
   @Prop({
     type: String,
-    enum: Object.values(Status),
+    enum: Object.values(StatusUnit),
   })
-  status: Status;
+  status: StatusUnit;
 
   @Prop({
     type: String,

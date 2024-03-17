@@ -34,7 +34,7 @@ export class ConditionBookletOperationsController {
     FileFieldsInterceptor([
       { name: 'bankAccountStatementFile', maxCount: 1 },
       { name: 'hrLetter', maxCount: 1 },
-      { name: 'birthCertificate', maxCount: 1 },
+      { name: 'birthCertificate' },
       { name: 'MarriageCertificate', maxCount: 1 },
     ]),
   )
@@ -45,7 +45,7 @@ export class ConditionBookletOperationsController {
     files: {
       bankAccountStatementFile?: Express.Multer.File;
       hrLetter?: Express.Multer.File;
-      birthCertificate?: Express.Multer.File;
+      birthCertificate?: Express.Multer.File[];
       MarriageCertificate?: Express.Multer.File;
     },
   ) {
@@ -55,35 +55,51 @@ export class ConditionBookletOperationsController {
       const project = await this.conditionBookletOperationsService.getProject(
         createConditionBookletOperationDto.projectId,
       );
-      //  send data user and project to maymnet service
-      // const responsePayment = await this.paymentService.firstStepPayment(
-      //   project,
-      //   createConditionBookletOperationDto,
-      // );
-      const bankAccountStatementFile = await this.cloudinaryService.uploadImage(
-        files?.bankAccountStatementFile[0],
+      // bankAccountStatementFile uploade  ==1
+      const bankAccountStatementFile = files?.bankAccountStatementFile
+        ? await this.cloudinaryService.uploadImage(
+            files?.bankAccountStatementFile[0],
+            foldeName,
+          )
+        : '';
+          // birthCertificate uploade 2
+      const urlsBirth: {
+        public_id: string;
+        secure_url: string;
+      }[] = files.birthCertificate
+        ? await Promise.all(
+            files.birthCertificate.map(
+              async (
+                imag,
+              ): Promise<{ public_id: string; secure_url: string }> => {
+                const { secure_url, public_id } =
+                  await this.cloudinaryService.uploadImage(imag, foldeName);
+                return { public_id, secure_url };
+              },
+            ),
+          )
+        : [];
+      // MarriageCertificate ===3
+      const MarriageCertificate = files?.MarriageCertificate
+        ? await this.cloudinaryService.uploadImage(
+            files?.MarriageCertificate[0],
+            foldeName,
+          )
+        : '';
+      // hrLetter upload ==4
+      const hrLetter = files?.hrLetter
+        ? await this.cloudinaryService.uploadImage(
+          files?.hrLetter[0],
         foldeName,
-      );
-      const birthCertificate = await this.cloudinaryService.uploadImage(
-        files?.birthCertificate[0],
-        foldeName,
-      );
-      const MarriageCertificate = await this.cloudinaryService.uploadImage(
-        files?.MarriageCertificate[0],
-        foldeName,
-      );
-      const hrLetter = await this.cloudinaryService.uploadImage(
-        files?.hrLetter[0],
-        foldeName,
-      );
-
+          )
+        : '';
       const operatinProject =
         await this.conditionBookletOperationsService.create({
           ...createConditionBookletOperationDto,
           success: false,
           bankAccountStatementFile: bankAccountStatementFile.secure_url,
           hrLetter: hrLetter.secure_url,
-          birthCertificate: birthCertificate.secure_url,
+          birthCertificates: urlsBirth,
           MarriageCertificate: MarriageCertificate.secure_url,
         });
       return {

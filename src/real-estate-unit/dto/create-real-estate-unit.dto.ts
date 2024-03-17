@@ -5,7 +5,7 @@ import {
   IsNumber,
   IsString,
 } from 'class-validator';
-import { Status, TypeUnit } from 'src/Types/RealEstat';
+import { StatusUnit, TypeUnit } from 'src/Types/RealEstat';
 
 export class CreateRealEstateUnitDto {
   @IsNotEmpty()
@@ -33,8 +33,8 @@ export class CreateRealEstateUnitDto {
   unitType: TypeUnit;
 
   @IsNotEmpty()
-  @IsEnum(Status)
-  status: Status;
+  @IsEnum(StatusUnit)
+  status: StatusUnit;
 
   // @IsNumber()
   countRoom: number;
