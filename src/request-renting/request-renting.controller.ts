@@ -28,7 +28,7 @@ export class RequestRentingController {
     private cloudinaryService: CloudinaryService,
     private readonly requestRentingService: RequestRentingService,
   ) {}
-
+  @UseGuards(AuthGuard)
   @Post()
   @UseInterceptors(
     FileFieldsInterceptor([
@@ -77,7 +77,7 @@ export class RequestRentingController {
       );
     }
   }
-
+  @UseGuards(AuthGuard)
   @Get()
   async findAll(@Query() query: any) {
     try {
@@ -100,7 +100,7 @@ export class RequestRentingController {
       );
     }
   }
-
+  @UseGuards(AuthGuard)
   @Get('byId/:id')
   async findOne(@Param('id') id: string) {
     try {
@@ -155,7 +155,7 @@ export class RequestRentingController {
       );
     }
   }
-
+  @UseGuards(AuthGuard)
   @Get('/byUnit/:id')
   async findOneByUnit(@Param('id') id: string) {
     try {
@@ -181,6 +181,7 @@ export class RequestRentingController {
       );
     }
   }
+  @UseGuards(AuthGuard)
   @Patch(':id')
   async update(
     @Param('id') id: string,
@@ -207,7 +208,7 @@ export class RequestRentingController {
       throw new ServiceUnavailableException(`Error From Service Is : ${error}`);
     }
   }
-
+  @UseGuards(AuthGuard)
   @Delete(':id')
   async remove(@Param('id') id: string) {
     try {

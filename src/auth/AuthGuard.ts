@@ -25,9 +25,7 @@ export class AuthGuard implements CanActivate {
       request.decodedData = payload;
       return true;
     } catch (error) {
-      throw new ForbiddenException(
-        error.message || 'session expired! Please sign In',
-      );
+      throw new ForbiddenException('Access Denied');
     }
   }
 }
