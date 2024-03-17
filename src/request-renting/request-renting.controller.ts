@@ -10,12 +10,16 @@ import {
   Query,
   UseInterceptors,
   UploadedFiles,
+  UseGuards,
+  Req,
 } from '@nestjs/common';
 import { RequestRentingService } from './request-renting.service';
 import { CreateRequestRentingDto } from './dto/create-request-renting.dto';
 import { UpdateRequestRentingDto } from './dto/update-request-renting.dto';
 import { FileFieldsInterceptor } from '@nestjs/platform-express';
 import { CloudinaryService } from 'src/cloudinary/clodinary.service';
+import { AuthGuard } from 'src/auth/AuthGuard';
+import { Request } from 'express';
 
 @Controller('rent-request')
 export class RequestRentingController {
@@ -80,7 +84,7 @@ export class RequestRentingController {
       const page = query.page || 1;
       const limit = query.page || 10;
       const { pagesCount, requestes } =
-        await this.requestRentingService.findAll( limit, page);
+        await this.requestRentingService.findAll(limit, page);
       return {
         success: true,
         status: 200,
@@ -97,7 +101,7 @@ export class RequestRentingController {
     }
   }
 
-  @Get(':id')
+  @Get('byId/:id')
   async findOne(@Param('id') id: string) {
     try {
       const request = await this.requestRentingService.findOne(id);
@@ -113,7 +117,7 @@ export class RequestRentingController {
       return {
         success: true,
         status: 200,
-        message: 'You Get Request  Successfully',
+        message: 'You Get Request By Id Successfully',
         data: request,
       };
     } catch (error) {
@@ -123,6 +127,60 @@ export class RequestRentingController {
     }
   }
 
+  @UseGuards(AuthGuard)
+  @Get('/byUser')
+  async findOneByUser(@Req() req: Request) {
+    try {
+      const { sub } = (req as any).decodedData;
+      console.log(sub);
+      const request = await this.requestRentingService.findByUser(sub);
+
+      if (!request) {
+        return {
+          success: false,
+          status: 404,
+          message: 'ReQuest Not Found',
+        };
+      }
+
+      return {
+        success: true,
+        status: 200,
+        message: 'You Get Request By User Successfully',
+        data: request,
+      };
+    } catch (error) {
+      throw new ServiceUnavailableException(
+        `Error From Service Requestes renting :${error}`,
+      );
+    }
+  }
+
+  @Get('/byUnit/:id')
+  async findOneByUnit(@Param('id') id: string) {
+    try {
+      const request = await this.requestRentingService.findByUnit(id);
+
+      if (!request) {
+        return {
+          success: false,
+          status: 404,
+          message: 'ReQuest Not Found',
+        };
+      }
+
+      return {
+        success: true,
+        status: 200,
+        message: 'You Get Request By Unit Successfully',
+        data: request,
+      };
+    } catch (error) {
+      throw new ServiceUnavailableException(
+        `Error From Service Requestes renting :${error}`,
+      );
+    }
+  }
   @Patch(':id')
   async update(
     @Param('id') id: string,
@@ -167,7 +225,6 @@ export class RequestRentingController {
         success: true,
         status: 200,
         message: 'You Deleted Request  Successfully',
-        data: request,
       };
     } catch (error) {
       throw new ServiceUnavailableException(

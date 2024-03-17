@@ -20,7 +20,8 @@ export class RequestRentingService {
     const requestes = await this._requestesRepository
       .find()
       .skip(skip)
-      .limit(limit);
+      .limit(limit)
+      .select('-__v');
     const count = await this._requestesRepository.find().countDocuments();
     const pagesCount = Math.ceil(count / limit);
     return {
@@ -30,13 +31,28 @@ export class RequestRentingService {
   }
 
   findOne(id: string) {
-    return this._requestesRepository.findById(id);
+    return this._requestesRepository.findById(id).select('-__v');
+  }
+  findByUser(id: string) {
+    return this._requestesRepository
+      .find({ userId: id })
+      .populate('unitId')
+      .select('-__v');
   }
 
+  findByUnit(id: string) {
+    const unitId = String(id);
+    console.log(unitId);
+    return this._requestesRepository
+      .find({ unitId: unitId })
+      .populate('userId')
+      .select('-__v');
+  }
   update(id: string, updateRequestRentingDto: UpdateRequestRentingDto) {
     return this._requestesRepository.findByIdAndUpdate(
       id,
       updateRequestRentingDto,
+      { new: true },
     );
   }
 

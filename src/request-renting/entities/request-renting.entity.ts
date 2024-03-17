@@ -24,7 +24,7 @@ export class RequestRenting extends Document {
     enum: Object.values(Status),
     default: Status.WAITING,
   })
-  status: Status;
+  status: string;
 
   @Prop({
     type: String,
