@@ -9,8 +9,8 @@ import { Question } from './entities/question.entity';
 export class QuestionsService {
   constructor(
     @InjectModel('Question')
-    private questionRepository: Model<Question>
-  ) { }
+    private questionRepository: Model<Question>,
+  ) {}
   create(createQuestionDto: CreateQuestionDto) {
     return this.questionRepository.create(createQuestionDto);
   }
@@ -27,7 +27,7 @@ export class QuestionsService {
     return {
       countPage: countPage,
       data: data,
-      }
+    };
   }
 
   findOne(id: string) {
@@ -41,6 +41,6 @@ export class QuestionsService {
   }
 
   remove(id: string) {
-    return this.questionRepository.findByIdAndDelete(id)
+    return this.questionRepository.findByIdAndDelete(id);
   }
 }

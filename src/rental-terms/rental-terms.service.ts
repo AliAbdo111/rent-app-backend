@@ -9,16 +9,15 @@ import { InjectModel } from '@nestjs/mongoose';
 export class RentalTermsService {
   constructor(
     @InjectModel('RentalTerm')
-    private rentalTermsRepository: Model<RentalTerm>
-  ) { }
+    private rentalTermsRepository: Model<RentalTerm>,
+  ) {}
   create(createDto: CreateRentalTermDto) {
     return this.rentalTermsRepository.create(createDto);
   }
 
   async findAll() {
     const data = await this.rentalTermsRepository.find().select('-__v');
-    return data
-
+    return data;
   }
 
   findOne(id: string) {
@@ -32,6 +31,6 @@ export class RentalTermsService {
   }
 
   remove(id: string) {
-    return this.rentalTermsRepository.findByIdAndDelete(id)
+    return this.rentalTermsRepository.findByIdAndDelete(id);
   }
 }

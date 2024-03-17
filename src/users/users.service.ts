@@ -142,9 +142,8 @@ export class UsersService {
   async remove(id: any): Promise<any> {
     try {
       return this.repositoryUsers.findByIdAndDelete(id);
-
     } catch (error) {
-      throw new ServiceUnavailableException(`error ${error}`)
+      throw new ServiceUnavailableException(`error ${error}`);
     }
   }
 

@@ -1,15 +1,32 @@
-import { IsString } from "class-validator";
+import { IsEmail, IsEnum, IsMongoId, IsNotEmpty, IsString } from 'class-validator';
 
 export class CreateRequestRentingDto {
-    @IsString()
-    fullName: string;
-    @IsString()
-    email: string;
-  
-    @IsString()
-    phone: string;
+  @IsString()
+  @IsNotEmpty()
+  fullName: string;
 
-    rearIdImage: string;
-    
-    frontIdImage: string;
+  @IsEmail()
+  @IsString()
+  @IsNotEmpty()
+  email: string;
+
+  @IsString()
+  @IsNotEmpty()
+  phone: string;
+
+  rearIdImage: string;
+
+  frontIdImage: string;
+
+  @IsMongoId()
+  @IsNotEmpty()
+  userId: string;
+
+  @IsMongoId()
+  @IsNotEmpty()
+  unitId: string;
+
+  @IsEnum(['RealEstateBookletUnit', 'RealEstateOriginalUnit'])
+  @IsNotEmpty()
+  modelRef: string;
 }

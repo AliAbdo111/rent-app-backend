@@ -1,22 +1,32 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete, ServiceUnavailableException } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  Post,
+  Body,
+  Patch,
+  Param,
+  Delete,
+  ServiceUnavailableException,
+} from '@nestjs/common';
 import { ContractTermsService } from './contract-terms.service';
 import { CreateContractTermDto } from './dto/create-contract-term.dto';
 import { UpdateContractTermDto } from './dto/update-contract-term.dto';
 
 @Controller('contract-terms')
 export class ContractTermsController {
-  constructor(private readonly contractTermsService: ContractTermsService) { }
-
+  constructor(private readonly contractTermsService: ContractTermsService) {}
 
   @Post()
   async create(@Body() createContractTermDto: CreateContractTermDto) {
     try {
-      const ContractTerm = await this.contractTermsService.create(createContractTermDto);
+      const ContractTerm = await this.contractTermsService.create(
+        createContractTermDto,
+      );
       return {
         success: true,
         status: 201,
         message: 'Contract Term Created Successfuly',
-      }
+      };
     } catch (error) {
       throw new ServiceUnavailableException(
         `Error From Service Contract Term Is Say :${error}`,
@@ -27,19 +37,18 @@ export class ContractTermsController {
   @Get()
   async findAll() {
     try {
-
       const data = await this.contractTermsService.findAll();
       return {
         success: true,
         status: 200,
         message: 'You Get All Contract Term Successfuly',
-        data: data
-      }
+        data: data,
+      };
     } catch (error) {
       throw new ServiceUnavailableException(
-        `Error From Service Contract Terms Is Say :${error}`)
+        `Error From Service Contract Terms Is Say :${error}`,
+      );
     }
-
   }
 
   @Get(':id')
@@ -50,15 +59,15 @@ export class ContractTermsController {
         return {
           success: false,
           status: 404,
-          message: ' Contract Term Not Found '
-        }
+          message: ' Contract Term Not Found ',
+        };
       }
       return {
         success: true,
         status: 200,
         message: 'You Get One Contract Term Successfuly',
-        data: ContracTerms
-      }
+        data: ContracTerms,
+      };
     } catch (error) {
       throw new ServiceUnavailableException(
         `Error From Service Contract Terms Is Say : ${error}`,
@@ -81,14 +90,14 @@ export class ContractTermsController {
           success: false,
           status: 404,
           message: ' Contract Terms  Not Found ',
-        }
+        };
       }
       return {
         success: true,
         status: 200,
         message: ' Contract Terms  Successfuly',
-        data: ContracTerms
-      }
+        data: ContracTerms,
+      };
     } catch (error) {
       throw new ServiceUnavailableException(
         `Error From Service Contract Terms Is Say :${error}`,
@@ -104,16 +113,18 @@ export class ContractTermsController {
         return {
           success: false,
           status: 404,
-          message: ' contract Term Not Found '
-        }
+          message: ' contract Term Not Found ',
+        };
       }
       return {
         success: true,
         status: 200,
         message: ' Contract Term Deleted Successfuly',
-      }
+      };
     } catch (error) {
-      throw new ServiceUnavailableException(`Error From Service Contract Terms Is Say :${error}`)
+      throw new ServiceUnavailableException(
+        `Error From Service Contract Terms Is Say :${error}`,
+      );
     }
   }
 }

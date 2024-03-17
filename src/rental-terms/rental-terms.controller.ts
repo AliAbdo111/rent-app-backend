@@ -16,7 +16,6 @@ import { UpdateRentalTermDto } from './dto/update-rental-term.dto';
 export class RentalTermsController {
   constructor(private readonly rentalTermsService: RentalTermsService) {}
 
-
   @Post()
   async create(@Body() createContractTermDto: CreateRentalTermDto) {
     try {
@@ -27,7 +26,7 @@ export class RentalTermsController {
         success: true,
         status: 201,
         message: 'Rental Term Created Successfuly',
-      }
+      };
     } catch (error) {
       throw new ServiceUnavailableException(
         `Error From Service Rental Term Is Say :${error}`,
@@ -38,19 +37,18 @@ export class RentalTermsController {
   @Get()
   async findAll() {
     try {
-
       const data = await this.rentalTermsService.findAll();
       return {
         success: true,
         status: 200,
         message: 'You Get All Rental Terms Successfuly',
-        data: data
-      }
+        data: data,
+      };
     } catch (error) {
       throw new ServiceUnavailableException(
-        `Error From Service Rental Terms Is Say :${error}`)
+        `Error From Service Rental Terms Is Say :${error}`,
+      );
     }
-
   }
 
   @Get(':id')
@@ -61,15 +59,15 @@ export class RentalTermsController {
         return {
           success: false,
           status: 404,
-          message: ' Rental Term Not Found '
-        }
+          message: ' Rental Term Not Found ',
+        };
       }
       return {
         success: true,
         status: 200,
         message: 'You Get One Rental Term Successfuly',
-        data: RentalTerms
-      }
+        data: RentalTerms,
+      };
     } catch (error) {
       throw new ServiceUnavailableException(
         `Error From Service Rental Terms Is Say : ${error}`,
@@ -83,23 +81,20 @@ export class RentalTermsController {
     @Body() updateDto: UpdateRentalTermDto,
   ) {
     try {
-      const RentalTerms = await this.rentalTermsService.update(
-        id,
-        updateDto,
-      );
+      const RentalTerms = await this.rentalTermsService.update(id, updateDto);
       if (!RentalTerms) {
         return {
           success: false,
           status: 404,
           message: ' Rental Term Not Found ',
-        }
+        };
       }
       return {
         success: true,
         status: 200,
         message: ' Rental Term Successfuly',
-        data: RentalTerms
-      }
+        data: RentalTerms,
+      };
     } catch (error) {
       throw new ServiceUnavailableException(
         `Error From Service Rental Terms Is Say :${error}`,
@@ -115,16 +110,18 @@ export class RentalTermsController {
         return {
           success: false,
           status: 404,
-          message: ' Rental Term Not Found '
-        }
+          message: ' Rental Term Not Found ',
+        };
       }
       return {
         success: true,
         status: 200,
         message: 'Rental Term Deleted Successfuly',
-      }
+      };
     } catch (error) {
-      throw new ServiceUnavailableException(`Error From Service Rental Terms Is Say :${error}`)
+      throw new ServiceUnavailableException(
+        `Error From Service Rental Terms Is Say :${error}`,
+      );
     }
   }
 }

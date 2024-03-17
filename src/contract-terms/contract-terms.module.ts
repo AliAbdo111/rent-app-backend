@@ -5,14 +5,13 @@ import { MongooseModule } from '@nestjs/mongoose';
 import { ContractTermSchema } from './entities/contract-term.entity';
 
 @Module({
-  imports:[
-  
+  imports: [
     MongooseModule.forFeature([
       {
         name: 'ContractTerm',
-        schema: ContractTermSchema
-      }
-    ])
+        schema: ContractTermSchema,
+      },
+    ]),
   ],
   controllers: [ContractTermsController],
   providers: [ContractTermsService],

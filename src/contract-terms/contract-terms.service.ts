@@ -9,16 +9,15 @@ import { ContractTerm } from './entities/contract-term.entity';
 export class ContractTermsService {
   constructor(
     @InjectModel('ContractTerm')
-    private contractTermRepository: Model<ContractTerm>
-  ) { }
+    private contractTermRepository: Model<ContractTerm>,
+  ) {}
   create(createDto: CreateContractTermDto) {
     return this.contractTermRepository.create(createDto);
   }
 
   async findAll() {
     const data = await this.contractTermRepository.find().select('-__v');
-    return data
-
+    return data;
   }
 
   findOne(id: string) {
@@ -32,6 +31,6 @@ export class ContractTermsService {
   }
 
   remove(id: string) {
-    return this.contractTermRepository.findByIdAndDelete(id)
+    return this.contractTermRepository.findByIdAndDelete(id);
   }
 }

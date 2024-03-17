@@ -47,7 +47,7 @@ export class RealEstateOriginalUnitService {
       .limit(limit)
       .select('-__v')
       .exec();
-  } 
+  }
 
   async rentingUnit(id: string, update: UpdateRealEstateOriginalUnitDto) {
     return this.unitOriginalRepository.findByIdAndUpdate(id, update, {

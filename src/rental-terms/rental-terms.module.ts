@@ -5,13 +5,13 @@ import { MongooseModule } from '@nestjs/mongoose';
 import { RentalTermSchema } from './entities/rental-term.entity';
 
 @Module({
-  imports:[
+  imports: [
     MongooseModule.forFeature([
       {
         name: 'RentalTerm',
-        schema: RentalTermSchema
-      }
-    ])
+        schema: RentalTermSchema,
+      },
+    ]),
   ],
   controllers: [RentalTermsController],
   providers: [RentalTermsService],

@@ -1,11 +1,21 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete, Query, ServiceUnavailableException } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  Post,
+  Body,
+  Patch,
+  Param,
+  Delete,
+  Query,
+  ServiceUnavailableException,
+} from '@nestjs/common';
 import { QuestionsService } from './questions.service';
 import { CreateQuestionDto } from './dto/create-question.dto';
 import { UpdateQuestionDto } from './dto/update-question.dto';
 
 @Controller('questions')
 export class QuestionsController {
-  constructor(private readonly questionsService: QuestionsService) { }
+  constructor(private readonly questionsService: QuestionsService) {}
 
   @Post()
   async create(@Body() createQuestionDto: CreateQuestionDto) {
@@ -15,9 +25,11 @@ export class QuestionsController {
         success: true,
         status: 201,
         message: 'Question Created Successfuly',
-      }
+      };
     } catch (error) {
-      throw new ServiceUnavailableException(`Error From Service Question Is Say :${error}`)
+      throw new ServiceUnavailableException(
+        `Error From Service Question Is Say :${error}`,
+      );
     }
   }
 
@@ -37,13 +49,13 @@ export class QuestionsController {
         page: page,
         countPages: countPage,
         message: 'You Get All Questions Successfuly',
-        data: data
-      }
+        data: data,
+      };
     } catch (error) {
       throw new ServiceUnavailableException(
-        `Error From Service Question Is Say :${error}`)
+        `Error From Service Question Is Say :${error}`,
+      );
     }
-
   }
 
   @Get(':id')
@@ -54,17 +66,19 @@ export class QuestionsController {
         return {
           success: false,
           status: 404,
-          message: ' Question Not Found '
-        }
+          message: ' Question Not Found ',
+        };
       }
       return {
         success: true,
         status: 200,
         message: 'You Get Question Successfuly',
-        data: question
-      }
+        data: question,
+      };
     } catch (error) {
-      throw new ServiceUnavailableException(`Error From Service Question Is Say : ${error}`)
+      throw new ServiceUnavailableException(
+        `Error From Service Question Is Say : ${error}`,
+      );
     }
   }
 
@@ -83,14 +97,14 @@ export class QuestionsController {
           success: false,
           status: 404,
           message: ' Question Not Found ',
-        }
+        };
       }
       return {
         success: true,
         status: 200,
         message: ' Update Question Successfuly',
-        data: question
-      }
+        data: question,
+      };
     } catch (error) {
       throw new ServiceUnavailableException(
         `Error From Service Question Is Say :${error}`,
@@ -103,20 +117,21 @@ export class QuestionsController {
     try {
       const question = await this.questionsService.remove(id);
       if (!question) {
-        return{
+        return {
           success: false,
           status: 404,
-          message:' Question Not Found '
-        }
+          message: ' Question Not Found ',
+        };
       }
-      return{
+      return {
         success: true,
         status: 200,
-        message:'Delete Question Successfuly',
-  
-      }
+        message: 'Delete Question Successfuly',
+      };
     } catch (error) {
-      throw new ServiceUnavailableException(`Error From Service Is Say :${error}`)
+      throw new ServiceUnavailableException(
+        `Error From Service Is Say :${error}`,
+      );
     }
   }
 }

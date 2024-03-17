@@ -25,7 +25,7 @@ export class RentController {
   constructor(
     private userService: UsersService,
     private readonly _rentService: RentService,
-    private readonly _paymentService: PaymentService
+    private readonly _paymentService: PaymentService,
   ) {}
   @UseGuards(AuthGuard)
   @Post()
@@ -36,7 +36,7 @@ export class RentController {
         return {
           success: false,
           status: 400,
-          message: ' The Rent Not create'
+          message: ' The Rent Not create',
         };
       }
       return {
@@ -60,16 +60,18 @@ export class RentController {
           success: false,
           status: 404,
           message: ' Not Found Any Rentlly Until Now ',
-        }
+        };
       }
       return {
         success: true,
         status: 200,
         message: ' You Get All Rents Successfuly',
-        data: rents
-      }
+        data: rents,
+      };
     } catch (error) {
-      throw new ServiceUnavailableException(`Error From Service Rent :${error}`)
+      throw new ServiceUnavailableException(
+        `Error From Service Rent :${error}`,
+      );
     }
   }
   @UseGuards(AuthGuard)
@@ -163,10 +165,10 @@ export class RentController {
           success: false,
           status: 404,
           message: 'User Not Found',
-        })
+        });
       }
       const { amount } = await this._rentService.findOne(rentId);
-      
+
       const infoRent = {
         price: amount,
       };
@@ -229,7 +231,7 @@ export class RentController {
         message: ' You Delete Rent successfuly With This Id ',
       };
     } catch (error) {
-      throw new ServiceUnavailableException(`Error From Service Is :${error}`)
+      throw new ServiceUnavailableException(`Error From Service Is :${error}`);
     }
   }
 }

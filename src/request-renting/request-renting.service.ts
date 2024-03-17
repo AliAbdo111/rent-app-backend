@@ -21,7 +21,7 @@ export class RequestRentingService {
       .find()
       .skip(skip)
       .limit(limit);
-    const count = await this._requestesRepository.find().countDocuments()
+    const count = await this._requestesRepository.find().countDocuments();
     const pagesCount = Math.ceil(count / limit);
     return {
       pagesCount: pagesCount,

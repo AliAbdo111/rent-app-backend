@@ -5,13 +5,13 @@ import { MongooseModule } from '@nestjs/mongoose';
 import { QuestionSchema } from './entities/question.entity';
 
 @Module({
-  imports:[
+  imports: [
     MongooseModule.forFeature([
       {
         name: 'Question',
-        schema: QuestionSchema
-      }
-    ])
+        schema: QuestionSchema,
+      },
+    ]),
   ],
   controllers: [QuestionsController],
   providers: [QuestionsService],

@@ -15,7 +15,6 @@ import { RequestRentingService } from './request-renting.service';
 import { CreateRequestRentingDto } from './dto/create-request-renting.dto';
 import { UpdateRequestRentingDto } from './dto/update-request-renting.dto';
 import { FileFieldsInterceptor } from '@nestjs/platform-express';
-import { CloudinaryModule } from 'src/cloudinary/cloudinary.module';
 import { CloudinaryService } from 'src/cloudinary/clodinary.service';
 
 @Controller('rent-request')
@@ -23,7 +22,8 @@ export class RequestRentingController {
   folderName: string = 'rent-request';
   constructor(
     private cloudinaryService: CloudinaryService,
-    private readonly requestRentingService: RequestRentingService){}
+    private readonly requestRentingService: RequestRentingService,
+  ) {}
 
   @Post()
   @UseInterceptors(
@@ -41,8 +41,7 @@ export class RequestRentingController {
     @Body() createRequestRentingDto: CreateRequestRentingDto,
   ) {
     try {
-      console.log(files.frontIdImage)
-      console.log(files.rearIdImage)
+
       const frontIdImage = await this.cloudinaryService.uploadImage(
         files.frontIdImage[0],
         this.folderName,
@@ -51,13 +50,11 @@ export class RequestRentingController {
         files.rearIdImage[0],
         this.folderName,
       );
-      console.log(frontIdImage)
-      console.log(rearIdImage)
-      const request = await this.requestRentingService.create(
-        {...createRequestRentingDto,
+      const request = await this.requestRentingService.create({
+        ...createRequestRentingDto,
         rearIdImage: rearIdImage.secure_url,
-        frontIdImage: frontIdImage.secure_url,}
-      );
+        frontIdImage: frontIdImage.secure_url,
+      });
       if (!request) {
         return {
           success: false,
@@ -68,7 +65,7 @@ export class RequestRentingController {
       return {
         success: true,
         status: 201,
-        message: 'Request Created Successfuly',
+        message: 'The rental request has been created successfully',
       };
     } catch (error) {
       throw new ServiceUnavailableException(
@@ -82,12 +79,12 @@ export class RequestRentingController {
     try {
       const page = query.page || 1;
       const limit = query.page || 10;
-      const { requestes, pagesCount } =
-        await this.requestRentingService.findAll(page, limit);
+      const { pagesCount, requestes } =
+        await this.requestRentingService.findAll( limit, page);
       return {
         success: true,
         status: 200,
-        message: 'You Get All Requestes Succefully',
+        message: 'You Get All Rental Requestes Succefully',
         limit: limit,
         numberOfPages: page,
         pagsCount: pagesCount,
@@ -149,7 +146,7 @@ export class RequestRentingController {
         message: 'Request Updated Succesfuly With This Id ',
       };
     } catch (error) {
-      throw new ServiceUnavailableException(`Error From Service Is : ${error}`)
+      throw new ServiceUnavailableException(`Error From Service Is : ${error}`);
     }
   }
 
