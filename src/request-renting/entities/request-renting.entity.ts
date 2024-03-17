@@ -1,4 +1,4 @@
-import { Prop, Schema } from '@nestjs/mongoose';
+import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { Document, Types } from 'mongoose';
 import { Status } from 'src/Types/Inspection';
 import mongoose from 'mongoose';
@@ -7,10 +7,34 @@ import mongoose from 'mongoose';
 export class RequestRenting extends Document {
   @Prop({
     type: String,
+  })
+  fullName: string;
+
+  @Prop()
+  email: string;
+
+  @Prop({
+    type: String,
+    required: true,
+  })
+  phone: string;
+
+  @Prop({
+    type: String,
     enum: Object.values(Status),
     default: Status.WAITING,
   })
   status: Status;
+
+  @Prop({
+    type: String,
+  })
+  frontIdImage: string;
+
+  @Prop({
+    type: String,
+  })
+  rearIdImage: string;
 
   @Prop({
     type: mongoose.Types.ObjectId,
@@ -28,5 +52,8 @@ export class RequestRenting extends Document {
     type: mongoose.Types.ObjectId,
     ref: 'User',
   })
-  userID: string;
+  userId: string;
 }
+
+export const RequestRentingSchema =
+  SchemaFactory.createForClass(RequestRenting);

@@ -6,7 +6,6 @@ import { MongooseModule } from '@nestjs/mongoose';
 import { UserSchema } from './entities/user.entity';
 import { JwtService } from '@nestjs/jwt';
 import { CloudinaryService } from 'src/cloudinary/clodinary.service';
-import { AuthGuard } from 'src/auth/AuthGuard';
 
 @Module({
   imports: [MongooseModule.forFeature([{ name: 'User', schema: UserSchema }])],

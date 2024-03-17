@@ -1,5 +1,6 @@
 export enum Status {
   WAITING = 'WAITING',
   ACCEPTE = 'ACCEPTE',
-  CANLSE = 'CANLSE',
+  REJECT = 'Reject',
+  Rethink = 'Rethink', // اعادة نظر
 }
