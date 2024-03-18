@@ -73,6 +73,7 @@ export class RealEstateUnit extends Document {
     type: String,
   })
   finshingType: string;
+
   @Prop()
   facilities: string[]; // مرافق 
 

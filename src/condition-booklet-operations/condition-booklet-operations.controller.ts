@@ -23,18 +23,17 @@ import { PaymentService } from 'src/services/payment/payment.service';
 import { AuthGuard } from 'src/auth/AuthGuard';
 import { Request } from 'express';
 import { UsersService } from 'src/users/users.service';
-import { RealEstateBookletUnitService } from 'src/real-estate-booklet-unit/real-estate-booklet-unit.service';
+import { ConditionBookletProjectService } from 'src/condition-booklet-project/condition-booklet-project.service';
 
 @Controller('ConditionBookletOperation')
 export class ConditionBookletOperationsController {
-  // @Inject(ConditionBookletProjectService)
-  // private readonly conditionProjectService: ConditionBookletProjectService;
   constructor(
     private readonly conditionBookletOperationsService: ConditionBookletOperationsService,
+    private readonly projectService: ConditionBookletProjectService,
     private readonly cloudinaryService: CloudinaryService,
     private readonly paymentService: PaymentService,
     private readonly userService: UsersService,
-  ) { }
+  ) {}
 
   @Post()
   @UseInterceptors(
@@ -186,10 +185,13 @@ export class ConditionBookletOperationsController {
           message: 'Operation Not Found',
         };
       }
+      const projectCondition = await this.projectService.findOne(
+        operation.projectId,
+      );
       switch (paymentMethod) {
         case 'Card': {
           const payment = await this.paymentService.paymentByCard(
-            operation,
+            projectCondition,
             user,
           );
           console.log('card')
@@ -197,15 +199,15 @@ export class ConditionBookletOperationsController {
         }
         case 'Cach': {
           const payment = await this.paymentService.paymentByCach(
-            operation,
+            projectCondition,
             user,
           );
-          console.log('cash')
+          console.log('cash');
           return payment;
         }
         case 'Souhoola': {
           const payment = await this.paymentService.paymentBySouhoola(
-            operation,
+            projectCondition,
             user,
           );
           console.log('Souhoola')

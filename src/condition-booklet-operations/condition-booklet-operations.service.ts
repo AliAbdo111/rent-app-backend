@@ -4,7 +4,6 @@ import { UpdateConditionBookletOperationDto } from './dto/update-condition-bookl
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import { ConditionBookletOperation } from './entities/condition-booklet-operation.entity';
-import { ConditionBookletProjectService } from 'src/condition-booklet-project/condition-booklet-project.service';
 import { ConditionBookletProject } from 'src/condition-booklet-project/entities/condition-booklet-project.entity';
 import { PaymentService } from 'src/services/payment/payment.service';
 // import { IConditionBookletProject } from './interfaces/ConditionBookletProject.inteface';

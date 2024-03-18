@@ -16,6 +16,9 @@ export class ConditionBookletProject {
     type: Number,
   })
   price: number;
+
+  @Prop()
+  terms: string[];
 }
 export const ConditionBookletProjectSchema = SchemaFactory.createForClass(
   ConditionBookletProject,

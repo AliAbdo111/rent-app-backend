@@ -7,10 +7,10 @@ interface BirthCertificate {
 export class CreateConditionBookletOperationDto {
   @IsNotEmpty()
   unitId: string;
-  
-  @IsNotEmpty()
-  price: number;
 
+  @IsNotEmpty()
+  projectId: string;
+  
   firstName: string;
 
   lastName: string;

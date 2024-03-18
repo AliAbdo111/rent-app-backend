@@ -12,4 +12,6 @@ export class CreateConditionBookletProjectDto {
   @IsNotEmpty()
   @IsNumber()
   price: number;
+
+  terms?: string[];
 }

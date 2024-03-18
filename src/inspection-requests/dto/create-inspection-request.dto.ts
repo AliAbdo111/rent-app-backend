@@ -5,8 +5,6 @@ export class CreateInspectionRequestDto {
   @IsNotEmpty()
   unitId: string;
 
-  modelRef: string;
-
   @IsMongoId()
   @IsNotEmpty()
   userID: string;

@@ -15,5 +15,6 @@ import { MongooseModule } from '@nestjs/mongoose';
   ],
   controllers: [ConditionBookletProjectController],
   providers: [ConditionBookletProjectService],
+  exports: [ConditionBookletProjectService]
 })
 export class ConditionBookletProjectModule {}

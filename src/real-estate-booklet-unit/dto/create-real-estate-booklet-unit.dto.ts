@@ -1,8 +1,4 @@
-import { IsNotEmpty, IsNumber } from 'class-validator';
 import { CreateRealEstateUnitDto } from 'src/real-estate-unit/dto/create-real-estate-unit.dto';
 
 export class CreateRealEstateBookletUnitDto extends CreateRealEstateUnitDto {
-  @IsNotEmpty()
-  @IsNumber()
-  priceBookletCondition: number;
 }
