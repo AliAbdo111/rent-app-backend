@@ -86,9 +86,9 @@ export class ConditionBookletOperationsController {
       // MarriageCertificate ===3
       const MarriageCertificate = files?.MarriageCertificate
         ? await this.cloudinaryService.uploadImage(
-          files?.MarriageCertificate[0],
+            files?.MarriageCertificate[0],
           foldeName,
-        )
+          )
         : '';
       // hrLetter upload ==4
       const hrLetter = files?.hrLetter
@@ -165,22 +165,52 @@ export class ConditionBookletOperationsController {
   @Post('paymentOperation')
   async paymentOperationBookelet(@Body() body: any, @Req() req: Request) {
     try {
-      const { sub } = (req as any).decodedData
-      const user = await this.userService.findOne(sub)
+      const { sub } = (req as any).decodedData;
+      const paymentMethod = body.paymentMethod;
+      const user = await this.userService.findOne(sub);
       if (!user) {
         return {
           success: false,
           status: 404,
-          message: 'User Not Found'
-        }
+          message: 'User Not Found',
+        };
       }
 
       const operation = await this.conditionBookletOperationsService.findOne(
         body.operationId,
       );
-      return {
-        user,
-        operation
+      if (!operation) {
+        return {
+          success: false,
+          status: 404,
+          message: 'Operation Not Found',
+        };
+      }
+      switch (paymentMethod) {
+        case 'Card': {
+          const payment = await this.paymentService.paymentByCard(
+            operation,
+            user,
+          );
+          console.log('card')
+          return payment;
+        }
+        case 'Cach': {
+          const payment = await this.paymentService.paymentByCach(
+            operation,
+            user,
+          );
+          console.log('cash')
+          return payment;
+        }
+        case 'Souhoola': {
+          const payment = await this.paymentService.paymentBySouhoola(
+            operation,
+            user,
+          );
+          console.log('Souhoola')
+          return payment;
+        }
       }
     } catch (error) {
       throw new ServiceUnavailableException(
