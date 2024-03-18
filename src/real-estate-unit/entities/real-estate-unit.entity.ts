@@ -1,6 +1,6 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import mongoose, { Document } from 'mongoose';
-import { StatusUnit, TypeUnit } from 'src/Types/RealEstat';
+import { StatusUnit, SubTypeUnit, TypeUnit } from 'src/Types/RealEstat';
 
 @Schema({ timestamps: true })
 export class RealEstateUnit extends Document {
@@ -48,6 +48,13 @@ export class RealEstateUnit extends Document {
 
   @Prop({
     type: String,
+    enum: Object.values(SubTypeUnit),
+    default: SubTypeUnit.HOUSING,
+  })
+  unitSubType: SubTypeUnit;
+
+  @Prop({
+    type: String,
   })
   title: string;
 
@@ -66,11 +73,18 @@ export class RealEstateUnit extends Document {
     type: String,
   })
   finshingType: string;
+  @Prop()
+  facilities: string[]; // مرافق 
 
   @Prop({
     type: Number,
   })
-  price: number;
+  monthlyRentAmount: number;
+
+  @Prop({
+    type: Number,
+  })
+  annualRentAmount: number;
 
   @Prop({
     type: Number,
@@ -102,6 +116,11 @@ export class RealEstateUnit extends Document {
     ],
   })
   images: { asset_id: string; secure_url: string }[];
+
+  @Prop({
+    type: String,
+  })
+  video: string;
 
   @Prop({
     type: String,

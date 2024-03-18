@@ -1,6 +1,7 @@
 export enum StatusUnit {
   PREMIUM = 'premium',
   STANDARD = 'standard',
+  Plus = 'Plus',
 }
 
 export enum TypeUnit {
@@ -9,7 +10,12 @@ export enum TypeUnit {
   FACTORIES = 'مصانع',
   LANDS = 'اراضي',
 }
-
+export enum SubTypeUnit {
+  HOUSING = 'سكني',
+  ADMINISTRATIVE = 'اداري',
+  FACTORIES = 'مصانع',
+  LANDS = 'اراضي',
+}
 export enum MaritalStatus {
   married = 'متزوج',
   divorced = 'مطلق',
