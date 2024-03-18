@@ -15,19 +15,17 @@ export class QuestionsService {
     return this.questionRepository.create(createQuestionDto);
   }
 
-  async findAll(limit: number, page: number) {
-    const skip = (page - 1) * limit;
+  async findAll(limit: number) {
+
     const count = await this.questionRepository.find().countDocuments();
-    const countPage = Math.ceil(count / limit);
+    if (!limit) {
+      limit = count;
+    }
     const data = await this.questionRepository
       .find()
-      .skip(skip)
       .limit(limit)
       .select('-__v');
-    return {
-      countPage: countPage,
-      data: data,
-    };
+    return { data: data };
   }
 
   findOne(id: string) {

@@ -36,18 +36,13 @@ export class QuestionsController {
   @Get()
   async findAll(@Query() query: any) {
     try {
-      const limit = parseInt(query.limit) || 10;
-      const page = parseInt(query.page) || 1;
-      const { data, countPage } = await this.questionsService.findAll(
-        limit,
-        page,
-      );
+      const limit = parseInt(query.limit)
+
+      const { data } = await this.questionsService.findAll(limit);
       return {
         success: true,
         status: 200,
         limit: limit,
-        page: page,
-        countPages: countPage,
         message: 'You Get All Questions Successfuly',
         data: data,
       };
