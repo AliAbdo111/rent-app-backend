@@ -17,13 +17,32 @@ export class CreateRealEstateUnitDto {
 
   @IsNotEmpty()
   @IsString()
-  address: string;
+  city: string;
+
+  @IsNotEmpty()
+  @IsString()
+  country: string;
+
+  @IsNotEmpty()
+  @IsString()
+  street: string;
+
+  @IsNumber()
+  @IsNotEmpty()
+  buildingNumber: number;
+
+  @IsNumber()
+  @IsNotEmpty()
+  floorNumber: number;
 
   @IsNotEmpty()
   @IsString()
   finshingType: string;
+
   // @IsNumber()
-  price: number;
+  monthlyRentAmount: number;
+
+  annualRentAmount: number;
 
   @IsEnum(TypeUnit)
   @IsNotEmpty()
@@ -54,7 +73,8 @@ export class CreateRealEstateUnitDto {
   hasAParcking: boolean;
   @IsString()
   space: string;
-
+  @IsString()
+  unitSubType: string;
   // @IsNumber()
   yearofconstruction?: number;
 }

@@ -28,7 +28,7 @@ export class RealEstateBookletUnitController {
   @Post()
   @UseInterceptors(FilesInterceptor('images'))
   async create(
-    @Body() createRealEstateUnitDto: CreateRealEstateBookletUnitDto,
+    @Body() createRealEstateUnitDto: any,
     @UploadedFiles() images: Express.Multer.File[],
   ) {
     try {

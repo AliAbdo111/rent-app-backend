@@ -61,7 +61,27 @@ export class RealEstateUnit extends Document {
   @Prop({
     type: String,
   })
-  address: string;
+  city: string;
+
+  @Prop({
+    type: String,
+  })
+  country: string;
+
+  @Prop({
+    type: String,
+  })
+  street: string;
+
+  @Prop({
+    type: Number,
+  })
+  buildingNumber: number;
+
+  @Prop({
+    type: Number,
+  })
+  floorNumber: number;
 
   @Prop({
     type: String,

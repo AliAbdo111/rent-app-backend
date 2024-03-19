@@ -218,9 +218,10 @@ export class ConditionBookletOperationsController {
       const projectCondition = await this.projectService.findOne(
         operation.projectId,
       );
+      let payment
       switch (paymentMethod) {
         case 'Card': {
-          const payment = await this.paymentService.paymentByCard(
+           payment = await this.paymentService.paymentByCard(
             projectCondition,
             user,
           );
@@ -228,7 +229,7 @@ export class ConditionBookletOperationsController {
           return payment;
         }
         case 'Cach': {
-          const payment = await this.paymentService.paymentByCach(
+           payment = await this.paymentService.paymentByCach(
             projectCondition,
             user,
           );
@@ -236,14 +237,20 @@ export class ConditionBookletOperationsController {
           return payment;
         }
         case 'Souhoola': {
-          const payment = await this.paymentService.paymentBySouhoola(
+           payment = await this.paymentService.paymentBySouhoola(
             projectCondition,
             user,
           );
           console.log('Souhoola');
           return payment;
         }
+        default:
+          return {
+            success: false,
+            message: 'Options Invalied',
+          };
       }
+      console.log(payment)
     } catch (error) {
       throw new ServiceUnavailableException(
         `Error From Service Operation Booklet :${error}`,
