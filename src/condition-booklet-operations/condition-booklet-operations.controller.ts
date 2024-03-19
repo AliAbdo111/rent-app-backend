@@ -228,23 +228,23 @@ export class ConditionBookletOperationsController {
           await this.conditionBookletOperationsService.update(operation._id, {
             orderId: payment._id,
           });
+          break ;
         }
         case 'Cach': {
           payment = await this.paymentService.paymentByCach(
             projectCondition,
             user,
           );
-          console.log('cash');
+          break ;
         }
         case 'Souhoola': {
            payment = await this.paymentService.paymentBySouhoola(
             projectCondition,
             user,
           );
-          console.log('Souhoola');
+          break ;
         }
       }
-      console.log(payment)
       return payment;
     } catch (error) {
       throw new ServiceUnavailableException(
@@ -256,12 +256,12 @@ export class ConditionBookletOperationsController {
   @Post('/CallpackPayment/operation')
   async callBack(@Query() query: any, @Body() body: any) {
     try {
-      console.log(body);
-      console.log(body?.obj?.id); //TRANSACTION_ID
-      console.log(body?.obj?.success);
-      console.log(body?.obj?.pending);
-      console.log(body?.obj?.order.id);
-      console.log(query); //hmac
+      // console.log(body);
+      // console.log(body?.obj?.id); //TRANSACTION_ID
+      // console.log(body?.obj?.success);
+      // console.log(body?.obj?.pending);
+      // console.log(body?.obj?.order.id);
+      // console.log(query); //hmac
       const project =
         await this.conditionBookletOperationsService.getOperationByOrderID(
           body?.obj?.order.id,
