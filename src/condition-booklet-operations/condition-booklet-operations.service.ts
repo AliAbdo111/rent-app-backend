@@ -92,7 +92,7 @@ export class ConditionBookletOperationsService {
   ) {
     try {
       const updateOperation =
-        await this.conditionBookletOperation.findOneAndUpdate(
+        await this.conditionBookletOperation.updateOne(
           { orderId: id },
           {
             success: success,
@@ -100,6 +100,7 @@ export class ConditionBookletOperationsService {
             pending: pending,
           },
         );
+      console.log(updateOperation);
       return updateOperation;
     } catch (error) {
       throw new ServiceUnavailableException(error);

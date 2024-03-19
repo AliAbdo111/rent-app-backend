@@ -225,16 +225,16 @@ export class ConditionBookletOperationsController {
             projectCondition,
             user,
           );
-          console.log('card')
-          return payment;
+          await this.conditionBookletOperationsService.update(operation._id, {
+            orderId: payment._id,
+          });
         }
         case 'Cach': {
-           payment = await this.paymentService.paymentByCach(
+          payment = await this.paymentService.paymentByCach(
             projectCondition,
             user,
           );
           console.log('cash');
-          return payment;
         }
         case 'Souhoola': {
            payment = await this.paymentService.paymentBySouhoola(
@@ -242,15 +242,10 @@ export class ConditionBookletOperationsController {
             user,
           );
           console.log('Souhoola');
-          return payment;
         }
-        default:
-          return {
-            success: false,
-            message: 'Options Invalied',
-          };
       }
       console.log(payment)
+      return payment;
     } catch (error) {
       throw new ServiceUnavailableException(
         `Error From Service Operation Booklet :${error}`,
@@ -274,7 +269,7 @@ export class ConditionBookletOperationsController {
           body?.obj?.pending,
           body?.obj?.id,
         );
-      return project;
+      return '';
     } catch (error) {
       throw new ServiceUnavailableException(`Error : ${error}`);
     }
