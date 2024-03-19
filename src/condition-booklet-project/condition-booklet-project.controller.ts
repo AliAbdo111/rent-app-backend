@@ -19,12 +19,23 @@ export class ConditionBookletProjectController {
   ) {}
 
   @Post()
-  create(
+  async create(
     @Body() createConditionBookletProjectDto: CreateConditionBookletProjectDto,
   ) {
-    return this.conditionBookletProjectService.create(
-      createConditionBookletProjectDto,
-    );
+    try {
+      await this.conditionBookletProjectService.create(
+        createConditionBookletProjectDto,
+      );
+      return {
+        success: true,
+        status: 201,
+        message: 'project Create success',
+      };
+    } catch (error) {
+      throw new ServiceUnavailableException(
+        `Error From Service Is Say :${error}`,
+      );
+    }
   }
 
   @Get()

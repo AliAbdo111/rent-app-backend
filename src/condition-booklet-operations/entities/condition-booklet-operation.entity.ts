@@ -69,6 +69,21 @@ export class ConditionBookletOperation {
   })
   birthCertificates: { public_id: string; secure_url: string }[];
 
+  @Prop({
+    type: String,
+  })
+  frontIdImage: string;
+
+  @Prop({
+    type: String,
+  })
+  rearIdImage: string;
+
+  @Prop({
+    type: String,
+  })
+  passportImage: string;
+
   @Prop()
   MarriageCertificate: string;
 
@@ -91,6 +106,9 @@ export class ConditionBookletOperation {
     default: true,
   })
   pending: boolean;
+
+  @Prop()
+  reasonReject: string
 }
 
 export const conditionBookletOperationSchema = SchemaFactory.createForClass(

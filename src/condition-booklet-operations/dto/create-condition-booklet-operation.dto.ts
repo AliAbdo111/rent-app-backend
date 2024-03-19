@@ -26,6 +26,12 @@ export class CreateConditionBookletOperationDto {
 
   familyMembers: number;
 
+  passportImage: string;
+
+  rearIdImage: string;
+
+  frontIdImage: string;
+
   //   files needs
   bankAccountStatementFile: string;
 

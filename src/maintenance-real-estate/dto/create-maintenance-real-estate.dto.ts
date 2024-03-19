@@ -1,4 +1,4 @@
-import { IsDateString, IsISO8601, IsString } from 'class-validator';
+import { IsString } from 'class-validator';
 import { User } from 'src/users/entities/user.entity';
 
 export class CreateMaintenanceRealEstateDto {
@@ -10,6 +10,7 @@ export class CreateMaintenanceRealEstateDto {
   typeOfMalfunction: string;
 
   imgOfMalfunction: string;
+
   @IsString()
   description: string;
 

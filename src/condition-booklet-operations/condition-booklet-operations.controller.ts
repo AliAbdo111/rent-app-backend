@@ -33,7 +33,7 @@ export class ConditionBookletOperationsController {
     private readonly cloudinaryService: CloudinaryService,
     private readonly paymentService: PaymentService,
     private readonly userService: UsersService,
-  ) {}
+  ) { }
 
   @Post()
   @UseInterceptors(
@@ -42,6 +42,9 @@ export class ConditionBookletOperationsController {
       { name: 'hrLetter', maxCount: 1 },
       { name: 'birthCertificate' },
       { name: 'MarriageCertificate', maxCount: 1 },
+      { name: 'passportImage', maxCount: 1 },
+      { name: 'rearIdImage', maxCount: 1 },
+      { name: 'frontIdImage', maxCount: 1 },
     ]),
   )
   async create(
@@ -53,16 +56,19 @@ export class ConditionBookletOperationsController {
       hrLetter?: Express.Multer.File;
       birthCertificate?: Express.Multer.File[];
       MarriageCertificate?: Express.Multer.File;
+      rearIdImage?: Express.Multer.File;
+      frontIdImage?: Express.Multer.File;
+      passportImage?: Express.Multer.File;
     },
   ) {
     try {
       // get project related with operations
-      const foldeName = 'BookeletUser';
+      const folderName = 'BookeletUser';
       // bankAccountStatementFile uploade  ==1
       const bankAccountStatementFile = files?.bankAccountStatementFile
         ? await this.cloudinaryService.uploadImage(
-            files?.bankAccountStatementFile[0],
-            foldeName,
+          files?.bankAccountStatementFile[0],
+          folderName,
         )
         : '';
       // birthCertificate uploade 2
@@ -76,24 +82,45 @@ export class ConditionBookletOperationsController {
                 imag,
               ): Promise<{ public_id: string; secure_url: string }> => {
                 const { secure_url, public_id } =
-                  await this.cloudinaryService.uploadImage(imag, foldeName);
+                  await this.cloudinaryService.uploadImage(imag, folderName);
                 return { public_id, secure_url };
               },
             ),
           )
           : [];
-      // MarriageCertificate ===3
+      // MarriageCertificate === 3
       const MarriageCertificate = files?.MarriageCertificate
         ? await this.cloudinaryService.uploadImage(
-            files?.MarriageCertificate[0],
-          foldeName,
-          )
+          files?.MarriageCertificate[0],
+          folderName,
+        )
         : '';
-      // hrLetter upload ==4
+      // hr Letter upload ==4
       const hrLetter = files?.hrLetter
         ? await this.cloudinaryService.uploadImage(
           files?.hrLetter[0],
-          foldeName,
+          folderName,
+        )
+        : '';
+      ///passportImage upload
+      const passportImage = files?.passportImage
+        ? await this.cloudinaryService.uploadImage(
+          files.passportImage,
+          folderName,
+        )
+        : '';
+
+      const rearIdImage = files?.rearIdImage
+        ? await this.cloudinaryService.uploadImage(
+          files.rearIdImage,
+          folderName,
+        )
+        : '';
+
+      const frontIdImage = files?.frontIdImage
+        ? await this.cloudinaryService.uploadImage(
+          files.frontIdImage,
+          folderName,
         )
         : '';
       const operatinProject =
@@ -104,6 +131,9 @@ export class ConditionBookletOperationsController {
           hrLetter: hrLetter.secure_url,
           birthCertificates: urlsBirth,
           MarriageCertificate: MarriageCertificate.secure_url,
+          frontIdImage: frontIdImage.secure_url,
+          rearIdImage: rearIdImage.secure_url,
+          passportImage: passportImage.secure_url,
         });
       return {
         success: true,
@@ -210,7 +240,7 @@ export class ConditionBookletOperationsController {
             projectCondition,
             user,
           );
-          console.log('Souhoola')
+          console.log('Souhoola');
           return payment;
         }
       }
