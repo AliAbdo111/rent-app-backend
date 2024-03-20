@@ -40,7 +40,7 @@ export class PaymentService {
     try {
       const token = await this.getTokenFromAPI();
       const orderId = await this.createOrder(token, product);
-      return this.generatePaymentUrlCach(token, orderId, product, user);
+      return await this.generatePaymentUrlCach(token, orderId, product, user);
     } catch (error) {
       throw new ServiceUnavailableException(
         `Error from Payment Service: ${error}`,
@@ -115,7 +115,8 @@ export class PaymentService {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(data),
-      });
+      },
+    );
     const { token: paymentToken } = await response.json();
     const iframeUrl = `https://accept.paymob.com/api/acceptance/iframes/824831?payment_token=${paymentToken}`;
     return { ifarmUrl: iframeUrl, _id: orderId };
@@ -169,23 +170,46 @@ export class PaymentService {
   ): Promise<{ ifarmUrl: string; _id: number }> {
     const price = product?.price * 100;
     const data = {
+      auth_token: token,
+      amount_cents: price,
+      expiration: 3600,
+      order_id: orderId,
       source: {
         identifier: '01010101010',
         subtype: 'WALLET',
       },
-      payment_token: token,
-    }
+      billing_data: {
+        apartment: 'NA',
+        email: user.email,
+        floor: 'NA',
+        first_name: user.firstName,
+        street: 'NA',
+        building: 'NA',
+        phone_number: user.phone,
+        shipping_method: 'NA',
+        postal_code: 'NA',
+        city: 'NA',
+        country: 'NA',
+        last_name: user.lastName,
+        state: 'NA',
+      },
+      currency: 'EGP',
+      integration_id: 4486052, // integration id
+    };
+    // const data = {
+    //   source: {
+    //     identifier: '01010101010',
+    //     subtype: 'WALLET',
+    //   },
+    //   payment_token: token,
+    // }
     const response = await fetch(
       'https://accept.paymob.com/api/acceptance/payments/pay',
       {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: {
-            "identifier": 'wallet mobile number',
-            "subtype": "WALLET"
-          },
-          "payment_token": token  // token obtained in step 3
-        },
+        body: JSON.stringify(data),
+      },
       );
     return response;
   }

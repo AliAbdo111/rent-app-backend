@@ -27,11 +27,11 @@ export class CreateRealEstateUnitDto {
   @IsString()
   street: string;
 
-  @IsNumber()
+  // @IsNumber()
   @IsNotEmpty()
   buildingNumber: number;
 
-  @IsNumber()
+  // @IsNumber()
   @IsNotEmpty()
   floorNumber: number;
 

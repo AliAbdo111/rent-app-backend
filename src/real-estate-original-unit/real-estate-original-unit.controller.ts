@@ -11,6 +11,7 @@ import {
   UploadedFiles,
   UseInterceptors,
   Res,
+  UseGuards,
 } from '@nestjs/common';
 import { UpdateRealEstateOriginalUnitDto } from './dto/update-real-estate-original-unit.dto';
 import { FilesInterceptor } from '@nestjs/platform-express';
@@ -19,6 +20,7 @@ import { RealEstateOriginalUnitService } from './real-estate-original-unit.servi
 import { CreateRealEstateOriginalUnitDto } from './dto/create-real-estate-original-unit.dto';
 import { PaymentService } from 'src/services/payment/payment.service';
 import { UsersService } from 'src/users/users.service';
+import { AuthGuard } from 'src/auth/AuthGuard';
 
 @Controller('real-estate-original-unit')
 export class RealEstateOriginalUnitController {
@@ -29,7 +31,7 @@ export class RealEstateOriginalUnitController {
     private readonly paymentService: PaymentService,
     private readonly userService: UsersService,
   ) {}
-
+  @UseGuards(AuthGuard)
   @Post()
   @UseInterceptors(FilesInterceptor('images'))
   async create(
@@ -94,6 +96,30 @@ export class RealEstateOriginalUnitController {
   async findOne(@Param('id') id: string) {
     try {
       const realEstat = await this.realEstateOriginaletUnitService.findOne(id);
+      if (!realEstat) {
+        return {
+          success: false,
+          status: 404,
+          message: 'Not Found Real Estate Unit original',
+        };
+      }
+      return {
+        success: true,
+        status: 200,
+        message: 'You Get Real Estate Unit original Successfuly',
+        realEstatUnit: realEstat,
+      };
+    } catch (error) {
+      throw new ServiceUnavailableException(
+        `Error from realEstate original Unit Service Is :${error}`,
+      );
+    }
+  }
+
+  @Get('getByStatus/:status')
+  async findByStatus(@Param('status') status: string) {
+    try {
+      const realEstat = await this.realEstateOriginaletUnitService.findByStatus(status);
       if (!realEstat) {
         return {
           success: false,
@@ -200,9 +226,6 @@ export class RealEstateOriginalUnitController {
           message: 'Not Found Unit With This Id',
         };
       }
-      const user = await this.userService.findOne(unit.tenant);
-      // console.log(user);
-      // return await this.paymentService.firstStepPayment(unit, user);
       return {
         success: true,
         status: 200,

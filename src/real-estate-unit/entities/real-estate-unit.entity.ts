@@ -55,6 +55,7 @@ export class RealEstateUnit extends Document {
   @Prop({
     type: String,
     enum: Object.values(StatusUnit),
+    default: StatusUnit.ORIGINAL
   })
   status: StatusUnit;
 

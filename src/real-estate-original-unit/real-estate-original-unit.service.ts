@@ -4,6 +4,7 @@ import { UpdateRealEstateOriginalUnitDto } from './dto/update-real-estate-origin
 import { RealEstateOriginalUnit } from './entities/real-estate-original-unit.entity';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
+import { CacheKey, CacheTTL } from '@nestjs/cache-manager';
 
 @Injectable()
 export class RealEstateOriginalUnitService {
@@ -36,6 +37,9 @@ export class RealEstateOriginalUnitService {
     }
   }
 
+  
+  @CacheKey('OriginalUnit')
+  @CacheTTL(60)
   async findAll(
     limit: number,
     page: number,
@@ -57,6 +61,14 @@ export class RealEstateOriginalUnitService {
 
   async findOne(id: string) {
     return await this.unitOriginalRepository.findById(id).select('-__v');
+  }
+
+  @CacheKey('OriginalUnitStatus')
+  @CacheTTL(60)
+  async findByStatus(status: string) {
+    return await this.unitOriginalRepository
+      .find({ status: status })
+      .select('-__v');
   }
 
   async update(

@@ -23,6 +23,8 @@ import { RequestRentingModule } from './request-renting/request-renting.module';
 import { QuestionsModule } from './questions/questions.module';
 import { ContractTermsModule } from './contract-terms/contract-terms.module';
 import { RentalTermsModule } from './rental-terms/rental-terms.module';
+import { CacheModule } from '@nestjs/cache-manager';
+import * as redisStore from 'cache-manager-redis-store';
 
 @Module({
   imports: [
@@ -35,8 +37,13 @@ import { RentalTermsModule } from './rental-terms/rental-terms.module';
     ConfigModule.forRoot({
       isGlobal: true,
     }),
-    UsersModule,
     MongooseModule.forRoot(process.env.DATABASE_CONNECTION_URL),
+    CacheModule.register<any>({
+      store: redisStore,
+      host: 'localhost',
+      port: 6379,
+    }),
+    UsersModule,
     ConditionBookletOperationsModule,
     ConditionBookletProjectModule,
     RealEstateUnitModule,

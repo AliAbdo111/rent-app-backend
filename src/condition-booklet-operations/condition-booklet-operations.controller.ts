@@ -245,6 +245,7 @@ export class ConditionBookletOperationsController {
           break ;
         }
       }
+      console.log(payment)
       return payment;
     } catch (error) {
       throw new ServiceUnavailableException(

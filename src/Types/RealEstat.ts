@@ -1,7 +1,7 @@
 export enum StatusUnit {
-  PREMIUM = 'premium',
-  STANDARD = 'standard',
-  Plus = 'Plus',
+  PREMIUM = 'Premium', //مميز 
+  ORIGINAL = 'Original', // عادي
+  PlUS = 'Plus', // بلس 
 }
 
 export enum TypeUnit {
