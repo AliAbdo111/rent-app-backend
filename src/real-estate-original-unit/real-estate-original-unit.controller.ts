@@ -10,7 +10,6 @@ import {
   Query,
   UploadedFiles,
   UseInterceptors,
-  Res,
   UseGuards,
 } from '@nestjs/common';
 import { UpdateRealEstateOriginalUnitDto } from './dto/update-real-estate-original-unit.dto';
@@ -21,6 +20,7 @@ import { CreateRealEstateOriginalUnitDto } from './dto/create-real-estate-origin
 import { PaymentService } from 'src/services/payment/payment.service';
 import { UsersService } from 'src/users/users.service';
 import { AuthGuard } from 'src/auth/AuthGuard';
+import { CacheInterceptor } from '@nestjs/cache-manager';
 
 @Controller('real-estate-original-unit')
 export class RealEstateOriginalUnitController {
@@ -69,6 +69,7 @@ export class RealEstateOriginalUnitController {
   }
 
   @Get()
+  @UseInterceptors(CacheInterceptor)
   async findAll(@Query() query: any) {
     try {
       const limit = parseInt(query.limit) || 10;
@@ -117,6 +118,7 @@ export class RealEstateOriginalUnitController {
   }
 
   @Get('getByStatus/:status')
+  @UseInterceptors(CacheInterceptor)
   async findByStatus(@Param('status') status: string) {
     try {
       const realEstat = await this.realEstateOriginaletUnitService.findByStatus(status);

@@ -23,13 +23,15 @@ import { RequestRentingModule } from './request-renting/request-renting.module';
 import { QuestionsModule } from './questions/questions.module';
 import { ContractTermsModule } from './contract-terms/contract-terms.module';
 import { RentalTermsModule } from './rental-terms/rental-terms.module';
-import { CacheModule } from '@nestjs/cache-manager';
+import { CacheModule, CacheInterceptor } from '@nestjs/cache-manager';
 import * as redisStore from 'cache-manager-redis-store';
-
+import { APP_INTERCEPTOR } from '@nestjs/core';
 @Module({
   imports: [
     JwtModule.register({
       secret: jwtConstants.secret,
+      global: true,
+      
     }),
     MulterModule.register({
       dest: '/upload',
@@ -42,6 +44,7 @@ import * as redisStore from 'cache-manager-redis-store';
       store: redisStore,
       host: 'localhost',
       port: 6379,
+      isGlobal: true,
     }),
     UsersModule,
     ConditionBookletOperationsModule,
@@ -62,6 +65,13 @@ import * as redisStore from 'cache-manager-redis-store';
   ],
 
   controllers: [AppController],
-  providers: [AppService, PaymentService],
+  providers: [
+    {
+      provide: APP_INTERCEPTOR,
+      useClass: CacheInterceptor,
+    },
+    AppService,
+    PaymentService,
+  ],
 })
 export class AppModule {}
