@@ -56,6 +56,16 @@ export class RequestRentingService {
     );
   }
 
+  updateRequestStatus(id: string, status: string) {
+    return this._requestesRepository.findByIdAndUpdate(
+      id,
+      {
+        status: status,
+      },
+      { new: true },
+    );
+  }
+
   remove(id: string) {
     return this._requestesRepository.findByIdAndDelete(id);
   }

@@ -36,11 +36,18 @@ export class PaymentService {
       );
     }
   }
-  async paymentByCach(product: any, user: any) {
+  async paymentByMobileWallet(product: any, user: any) {
     try {
       const token = await this.getTokenFromAPI();
+      console.log(`Token Is :${token}`)
       const orderId = await this.createOrder(token, product);
-      return await this.generatePaymentUrlCach(token, orderId, product, user);
+      console.log(`orderId Is :${orderId}`)
+      return await this.generatePaymentUrlMobileWallet(
+        token,
+        orderId,
+        product,
+        user,
+      );
     } catch (error) {
       throw new ServiceUnavailableException(
         `Error from Payment Service: ${error}`,
@@ -71,10 +78,11 @@ export class PaymentService {
     const response = await fetch(
       'https://accept.paymob.com/api/ecommerce/orders',
       {
-      method: 'POST',
+        method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(data),
-    });
+        body: JSON.stringify(data),
+      },
+    );
     const { id } = await response.json();
     return id;
   }
@@ -117,6 +125,7 @@ export class PaymentService {
         body: JSON.stringify(data),
       },
     );
+    //four step send request with type method payment used 
     const { token: paymentToken } = await response.json();
     const iframeUrl = `https://accept.paymob.com/api/acceptance/iframes/824831?payment_token=${paymentToken}`;
     return { ifarmUrl: iframeUrl, _id: orderId };
@@ -162,7 +171,7 @@ export class PaymentService {
     const iframeUrl = `https://accept.paymobsolutions.com/iframe/${paymentToken}`;
     return { ifarmUrl: iframeUrl, _id: orderId };
   }
-  private async generatePaymentUrlCach(
+  private async generatePaymentUrlMobileWallet(
     token: string,
     orderId: number,
     product: any,
@@ -174,10 +183,6 @@ export class PaymentService {
       amount_cents: price,
       expiration: 3600,
       order_id: orderId,
-      source: {
-        identifier: '01010101010',
-        subtype: 'WALLET',
-      },
       billing_data: {
         apartment: 'NA',
         email: user.email,
@@ -185,7 +190,7 @@ export class PaymentService {
         first_name: user.firstName,
         street: 'NA',
         building: 'NA',
-        phone_number: user.phone,
+        phone_number: 'user.phone',
         shipping_method: 'NA',
         postal_code: 'NA',
         city: 'NA',
@@ -194,24 +199,35 @@ export class PaymentService {
         state: 'NA',
       },
       currency: 'EGP',
-      integration_id: 4486052, // integration id
+      integration_id: 4543688, // integration id
     };
-    // const data = {
-    //   source: {
-    //     identifier: '01010101010',
-    //     subtype: 'WALLET',
-    //   },
-    //   payment_token: token,
-    // }
     const response = await fetch(
-      'https://accept.paymob.com/api/acceptance/payments/pay',
+      'https://accept.paymob.com/api/acceptance/payment_keys',
       {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(data),
       },
-      );
-    return response;
+    );
+
+    //four step send request with type method payment used 
+    const { token: paymentToken } = await response.json();
+    const result = await fetch(
+      'https://accept.paymob.com/api/acceptance/payments/pay',
+      {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: {
+            "source": {
+              "identifier": "01010101010", 
+              "subtype": "WALLET"
+            },
+            "payment_token":paymentToken // token obtained in step 3
+          
+        },
+      },
+    );
+    return result
   }
   private async generatePaymentUrlValu(
     token: string,

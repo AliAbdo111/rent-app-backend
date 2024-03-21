@@ -12,6 +12,7 @@ import {
   UploadedFiles,
   UseGuards,
   Req,
+  Res,
 } from '@nestjs/common';
 import { RequestRentingService } from './request-renting.service';
 import { CreateRequestRentingDto } from './dto/create-request-renting.dto';
@@ -19,7 +20,11 @@ import { UpdateRequestRentingDto } from './dto/update-request-renting.dto';
 import { FileFieldsInterceptor } from '@nestjs/platform-express';
 import { CloudinaryService } from 'src/cloudinary/clodinary.service';
 import { AuthGuard } from 'src/auth/AuthGuard';
-import { Request } from 'express';
+import { Request, Response } from 'express';
+import { Status } from 'src/Types/Inspection';
+import { join } from 'path';
+import { createReadStream } from 'fs';
+import { readContract } from 'src/utils/readFile';
 
 @Controller('rent-request')
 export class RequestRentingController {
@@ -77,6 +82,7 @@ export class RequestRentingController {
       );
     }
   }
+
   @UseGuards(AuthGuard)
   @Get()
   async findAll(@Query() query: any) {
@@ -100,6 +106,7 @@ export class RequestRentingController {
       );
     }
   }
+
   @UseGuards(AuthGuard)
   @Get('byId/:id')
   async findOne(@Param('id') id: string) {
@@ -155,6 +162,7 @@ export class RequestRentingController {
       );
     }
   }
+
   @UseGuards(AuthGuard)
   @Get('/byUnit/:id')
   async findOneByUnit(@Param('id') id: string) {
@@ -181,6 +189,7 @@ export class RequestRentingController {
       );
     }
   }
+
   @UseGuards(AuthGuard)
   @Patch(':id')
   async update(
@@ -208,6 +217,42 @@ export class RequestRentingController {
       throw new ServiceUnavailableException(`Error From Service Is : ${error}`);
     }
   }
+
+  @UseGuards(AuthGuard)
+  @Patch('updateRequestStatus/:id')
+  async updateRequestStatus(
+    @Res() res: Response,
+    @Param('id') id: string,
+    @Body('status') status: string,
+  ) {
+    try {
+      const request = await this.requestRentingService.updateRequestStatus(
+        id,
+        status,
+      );
+      if (!request) {
+        return res.status(404).json({
+          success: false,
+          status: 404,
+          message: 'Not Found Request With This Id ',
+        });
+      }
+      if (status === 'ACCEPTE') {
+        await readContract()
+        const fileName = 'contract.docx';
+        const file = createReadStream(join(process.cwd(), 'contract.docx'));
+         return file.pipe(res);
+      }
+      res.status(200).json({
+        success: true,
+        status: 200,
+        message: 'Request Updated Succesfuly With This Id ',
+      });
+    } catch (error) {
+      throw new ServiceUnavailableException(`Error From Service Is : ${error}`);
+    }
+  }
+
   @UseGuards(AuthGuard)
   @Delete(':id')
   async remove(@Param('id') id: string) {

@@ -228,14 +228,14 @@ export class ConditionBookletOperationsController {
           await this.conditionBookletOperationsService.update(operation._id, {
             orderId: payment._id,
           });
-          break ;
+          break;
         }
-        case 'Cach': {
-          payment = await this.paymentService.paymentByCach(
+        case 'MobileWallet': {
+          payment = await this.paymentService.paymentByMobileWallet(
             projectCondition,
             user,
           );
-          break ;
+          break;
         }
         case 'Souhoola': {
            payment = await this.paymentService.paymentBySouhoola(
@@ -245,7 +245,6 @@ export class ConditionBookletOperationsController {
           break ;
         }
       }
-      console.log(payment)
       return payment;
     } catch (error) {
       throw new ServiceUnavailableException(
