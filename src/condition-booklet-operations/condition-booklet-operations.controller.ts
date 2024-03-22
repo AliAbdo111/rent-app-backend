@@ -105,21 +105,21 @@ export class ConditionBookletOperationsController {
       ///passportImage upload
       const passportImage = files?.passportImage
         ? await this.cloudinaryService.uploadImage(
-          files.passportImage,
+          files.passportImage[0],
           folderName,
         )
         : '';
 
       const rearIdImage = files?.rearIdImage
         ? await this.cloudinaryService.uploadImage(
-          files.rearIdImage,
+            files.rearIdImage[0],
           folderName,
         )
         : '';
 
       const frontIdImage = files?.frontIdImage
         ? await this.cloudinaryService.uploadImage(
-          files.frontIdImage,
+            files.frontIdImage[0],
           folderName,
         )
         : '';
