@@ -10,24 +10,28 @@ export class TeamMemberController {
   constructor(
     private readonly cloudnairyService: CloudinaryService,
     private readonly teamMemberService: TeamMemberService,
-  ) {}
+  ) { }
 
   @Post()
   @UseInterceptors(FileInterceptor('image'))
   async create(
     @Body() createTeamMemberDto: CreateTeamMemberDto,
     @UploadedFile() image: Express.Multer.File,
-    ) {
-      try {
+  ) {
+    try {
       const { secure_url } = await this.cloudnairyService.uploadImage(
         image,
         'teamMemeber',
       );
-      console.log(secure_url);
-      return await this.teamMemberService.create({
+      await this.teamMemberService.create({
         ...createTeamMemberDto,
         image: secure_url,
       });
+      return{
+        succes: true,
+        status: 201,
+        Message: 'You create Member Team Work Successfully',
+      };
     } catch (error) {
       throw new ServiceUnavailableException(
         `Error From Service Is Say :${error}`,
@@ -36,9 +40,15 @@ export class TeamMemberController {
   }
 
   @Get()
-  findAll() {
+ async findAll() {
     try {
-      return this.teamMemberService.findAll();
+       const members= await this.teamMemberService.findAll();
+       return{
+        succes: true,
+        status: 200,
+        Message: "You Get All Members Team Work Successfully",
+        data: members
+       }
 
     } catch (error) {
       throw new ServiceUnavailableException(`Error From Service Is Say :${error}`)
@@ -56,23 +66,36 @@ export class TeamMemberController {
   }
 
   @Patch(':id')
-  update(
+  @UseInterceptors(FileInterceptor('image'))
+  async update(
     @Param('id') id: string,
     @Body() updateTeamMemberDto: UpdateTeamMemberDto,
+    @UploadedFile() image: Express.Multer.File,
   ) {
     try {
-      return this.teamMemberService.update(id, updateTeamMemberDto);
-
+      // const {secure_url}= image? await this.cloudnairyService.uploadImage(image,'teammember') :''
+      await this.teamMemberService.update(id, updateTeamMemberDto);
+      return{
+        succes: true,
+        status: 200,
+        Message: 'You update  Member Team Work Successfully',
+      };
     } catch (error) {
-      throw new ServiceUnavailableException(`Error From Service Is Say :${error}`)
+      throw new ServiceUnavailableException(
+        `Error From Service Is Say :${error}`,
+      );
     }
   }
 
   @Delete(':id')
-  remove(@Param('id') id: string) {
+  async remove(@Param('id') id: string) {
     try {
-      return this.teamMemberService.remove(id);
-
+      await this.teamMemberService.remove(id);
+      return{
+        succes: true,
+        status: 200,
+        Message: "You Delete  Member Team Work Successfully",
+      };
     } catch (error) {
       throw new ServiceUnavailableException(`Error From Service Is Say :${error}`)
     }
