@@ -17,12 +17,6 @@ export class Rent extends Document {
 
   @Prop({
     type: String,
-    enum: ['RealEstateBookletUnit', 'RealEstateOriginalUnit'],
-  })
-  modelRef: string;
-
-  @Prop({
-    type: String,
   })
   month: string;
 

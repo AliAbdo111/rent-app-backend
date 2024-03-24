@@ -21,8 +21,6 @@ import { RentModule } from './rent/rent.module';
 import { RatingModule } from './rating/rating.module';
 import { RequestRentingModule } from './request-renting/request-renting.module';
 import { QuestionsModule } from './questions/questions.module';
-import { ContractTermsModule } from './contract-terms/contract-terms.module';
-import { RentalTermsModule } from './rental-terms/rental-terms.module';
 import { CacheModule, CacheInterceptor } from '@nestjs/cache-manager';
 import * as redisStore from 'cache-manager-redis-store';
 import { APP_INTERCEPTOR } from '@nestjs/core';
@@ -60,8 +58,6 @@ import { APP_INTERCEPTOR } from '@nestjs/core';
     RatingModule,
     RequestRentingModule,
     QuestionsModule,
-    ContractTermsModule,
-    RentalTermsModule,
   ],
 
   controllers: [AppController],
