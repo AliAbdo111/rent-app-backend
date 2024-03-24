@@ -139,6 +139,7 @@ export class ConditionBookletOperationsController {
         success: true,
         status: 201,
         message: 'The Opration Created',
+        data:operatinProject._id
       };
     } catch (error) {
       console.log(error);
