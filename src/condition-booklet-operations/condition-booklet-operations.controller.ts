@@ -174,7 +174,7 @@ export class ConditionBookletOperationsController {
   ) {
     try {
       return this.conditionBookletOperationsService.update(
-        +id,
+        id,
         updateConditionBookletOperationDto,
       );
     } catch (error) {

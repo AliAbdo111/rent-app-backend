@@ -6,7 +6,7 @@ export const readContract = async (): Promise<string> => {
     const content = await fs.readFile(filePath, 'utf-8');
 
     // Manipulate the content as needed
-     content
+    content
       .replace('طرف أول مالك مؤجر', 'Owner/Landlord')
       .replace('طرف ثان مستأجر', 'Tenant')
       .replace('مادة 1', 'Article 1');

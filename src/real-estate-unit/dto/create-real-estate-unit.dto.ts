@@ -44,8 +44,7 @@ export class CreateRealEstateUnitDto {
 
   annualRentAmount: number;
 
-  @IsEnum(TypeUnit)
-  @IsNotEmpty()
+  // @IsEnum(TypeUnit)
   unitType: TypeUnit;
 
   @IsNotEmpty()

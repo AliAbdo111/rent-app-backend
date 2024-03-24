@@ -43,7 +43,6 @@ export class RealEstateUnit extends Document {
   @Prop({
     type: String,
     enum: Object.values(SubTypeUnit),
-    default: SubTypeUnit.HOUSING,
   })
   unitSubType: SubTypeUnit;
 

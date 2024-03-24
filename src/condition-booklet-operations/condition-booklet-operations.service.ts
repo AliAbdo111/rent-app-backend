@@ -63,7 +63,7 @@ export class ConditionBookletOperationsService {
   }
 
   async update(
-    id: number,
+    id: string,
     updateConditionBookletOperationDto: UpdateConditionBookletOperationDto,
   ): Promise<any> {
     try {
