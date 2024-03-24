@@ -24,6 +24,7 @@ import { QuestionsModule } from './questions/questions.module';
 import { CacheModule, CacheInterceptor } from '@nestjs/cache-manager';
 import * as redisStore from 'cache-manager-redis-store';
 import { APP_INTERCEPTOR } from '@nestjs/core';
+import { TeamMemberModule } from './team-member/team-member.module';
 @Module({
   imports: [
     JwtModule.register({
@@ -58,6 +59,7 @@ import { APP_INTERCEPTOR } from '@nestjs/core';
     RatingModule,
     RequestRentingModule,
     QuestionsModule,
+    TeamMemberModule,
   ],
 
   controllers: [AppController],
