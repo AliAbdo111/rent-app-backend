@@ -159,9 +159,9 @@ export class RealEstateUnit extends Document {
   hasAParcking: boolean;
 
   @Prop({
-    type: String,
+    type: Number,
   })
-  space: string;
+  space: number;
 }
 export const RealEstateUnitSchema =
   SchemaFactory.createForClass(RealEstateUnit);

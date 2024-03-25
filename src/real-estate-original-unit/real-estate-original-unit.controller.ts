@@ -31,6 +31,7 @@ export class RealEstateOriginalUnitController {
     private readonly paymentService: PaymentService,
     private readonly userService: UsersService,
   ) {}
+
   @UseGuards(AuthGuard)
   @Post()
   @UseInterceptors(FilesInterceptor('images'))
@@ -74,9 +75,17 @@ export class RealEstateOriginalUnitController {
     try {
       const limit = parseInt(query.limit) || 10;
       const page = parseInt(query.page) || 1;
+      const filter = { IsAvilable: true };
+       query.city ? (filter['city'] = query.city) : null;
+      query.street ? (filter['street'] = query.street) : null;
+      query.country ? (filter['country'] = query.country) : null;
+      query.monthlyRentAmount
+        ? (filter['monthlyRentAmount'] = { $gte: query.monthlyRentAmount })
+        : null;
       const realEstat = await this.realEstateOriginaletUnitService.findAll(
         limit,
         page,
+        filter
       );
       return {
         success: true,
@@ -170,6 +179,7 @@ export class RealEstateOriginalUnitController {
       );
     }
   }
+
 
   @Delete(':id')
   async remove(@Param('id') id: string) {

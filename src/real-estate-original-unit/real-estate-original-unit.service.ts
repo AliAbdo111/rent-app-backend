@@ -43,10 +43,11 @@ export class RealEstateOriginalUnitService {
   async findAll(
     limit: number,
     page: number,
+    filter: any,
   ): Promise<RealEstateOriginalUnit[]> {
     const skip = (page - 1) * limit;
     return await this.unitOriginalRepository
-      .find({ IsAvilable: true })
+      .find(filter)
       .skip(skip)
       .limit(limit)
       .select('-__v')
