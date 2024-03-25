@@ -33,8 +33,9 @@ export class ConditionBookletOperationsController {
     private readonly cloudinaryService: CloudinaryService,
     private readonly paymentService: PaymentService,
     private readonly userService: UsersService,
-  ) { }
+  ) {}
 
+  @UseGuards(AuthGuard)
   @Post()
   @UseInterceptors(
     FileFieldsInterceptor([
@@ -139,7 +140,7 @@ export class ConditionBookletOperationsController {
         success: true,
         status: 201,
         message: 'The Opration Created',
-        data:operatinProject._id
+        data: operatinProject._id,
       };
     } catch (error) {
       console.log(error);
@@ -150,9 +151,9 @@ export class ConditionBookletOperationsController {
   }
 
   @Get()
-  findAll() {
+  async findAll() {
     try {
-      return this.conditionBookletOperationsService.findAll();
+      return await this.conditionBookletOperationsService.findAll();
     } catch (error) {
       throw new ServiceUnavailableException(`Error : ${error}`);
     }
@@ -167,6 +168,7 @@ export class ConditionBookletOperationsController {
     }
   }
 
+  @UseGuards(AuthGuard)
   @Patch(':id')
   update(
     @Param('id') id: string,
@@ -183,6 +185,24 @@ export class ConditionBookletOperationsController {
     }
   }
 
+
+  @UseGuards(AuthGuard)
+  @Patch(':id')
+  update8(
+    @Param('id') id: string,
+    @Body()
+    updateConditionBookletOperationDto: UpdateConditionBookletOperationDto,
+  ) {
+    try {
+      return this.conditionBookletOperationsService.update(
+        id,
+        updateConditionBookletOperationDto,
+      );
+    } catch (error) {
+      throw new ServiceUnavailableException(`Error :${error}`);
+    }
+  }
+  @UseGuards(AuthGuard)
   @Delete(':id')
   remove(@Param('id') id: string) {
     try {
@@ -191,6 +211,7 @@ export class ConditionBookletOperationsController {
       throw new ServiceUnavailableException(`Error Message : ${error}`);
     }
   }
+
   @UseGuards(AuthGuard)
   @Post('paymentOperation')
   async paymentOperationBookelet(@Body() body: any, @Req() req: Request) {

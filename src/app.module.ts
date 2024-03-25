@@ -25,6 +25,8 @@ import { CacheModule, CacheInterceptor } from '@nestjs/cache-manager';
 import * as redisStore from 'cache-manager-redis-store';
 import { APP_INTERCEPTOR } from '@nestjs/core';
 import { TeamMemberModule } from './team-member/team-member.module';
+import { NotificationService } from './services/notification/notification.service';
+import awsConfig from './config/aws.config';
 
 @Module({
   imports: [
@@ -36,6 +38,7 @@ import { TeamMemberModule } from './team-member/team-member.module';
       dest: '/upload',
     }),
     ConfigModule.forRoot({
+      load: [awsConfig],
       isGlobal: true,
     }),
     MongooseModule.forRoot(process.env.DATABASE_CONNECTION_URL),
@@ -70,6 +73,7 @@ import { TeamMemberModule } from './team-member/team-member.module';
     },
     AppService,
     PaymentService,
+    NotificationService,
   ],
 })
 export class AppModule {}
