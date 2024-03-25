@@ -10,6 +10,7 @@ export class AuthService {
   async genrateToken(payload: any): Promise<string> {
     return await this.jwtService.signAsync(payload, {
       secret: jwtConstants.secret,
+      expiresIn: jwtConstants.expiresIn,
     });
   }
 
@@ -23,7 +24,6 @@ export class AuthService {
     }
   }
   async validateToken(token: string) {
-    console.log(`token is ${token}`);
     return this.jwtService.verify(token, {
       secret: jwtConstants.secret,
     });
