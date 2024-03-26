@@ -1,16 +1,27 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete, UseInterceptors, UploadedFile, UploadedFiles, ServiceUnavailableException } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  Post,
+  Body,
+  Patch,
+  Param,
+  Delete,
+  UseInterceptors,
+  UploadedFile,
+  ServiceUnavailableException,
+} from '@nestjs/common';
 import { TeamMemberService } from './team-member.service';
 import { CreateTeamMemberDto } from './dto/create-team-member.dto';
 import { UpdateTeamMemberDto } from './dto/update-team-member.dto';
 import { FileInterceptor } from '@nestjs/platform-express';
-import { CloudinaryService } from 'src/cloudinary/clodinary.service';
+import { UploadImageService } from 'src/services/upload-image/upload-image.service';
 
 @Controller('team-member')
 export class TeamMemberController {
   constructor(
-    private readonly cloudnairyService: CloudinaryService,
+    private readonly uploadImageService: UploadImageService,
     private readonly teamMemberService: TeamMemberService,
-  ) { }
+  ) {}
 
   @Post()
   @UseInterceptors(FileInterceptor('image'))
@@ -19,15 +30,18 @@ export class TeamMemberController {
     @UploadedFile() image: Express.Multer.File,
   ) {
     try {
-      const { secure_url } = await this.cloudnairyService.uploadImage(
-        image,
-        'teamMemeber',
+      const result = await this.uploadImageService.upload(
+        image.stream,
+        image.originalname,
+        'images-ejary',
+        image.mimetype,
       );
+
       await this.teamMemberService.create({
         ...createTeamMemberDto,
-        image: secure_url,
+        image: result,
       });
-      return{
+      return {
         succes: true,
         status: 201,
         Message: 'You create Member Team Work Successfully',
@@ -40,15 +54,15 @@ export class TeamMemberController {
   }
 
   @Get()
- async findAll() {
+  async findAll() {
     try {
-       const members= await this.teamMemberService.findAll();
-       return{
+      const members = await this.teamMemberService.findAll();
+      return {
         succes: true,
         status: 200,
         Message: "You Get All Members Team Work Successfully",
         data: members
-       }
+      }
 
     } catch (error) {
       throw new ServiceUnavailableException(`Error From Service Is Say :${error}`)
@@ -75,7 +89,7 @@ export class TeamMemberController {
     try {
       // const {secure_url}= image? await this.cloudnairyService.uploadImage(image,'teammember') :''
       await this.teamMemberService.update(id, updateTeamMemberDto);
-      return{
+      return {
         succes: true,
         status: 200,
         Message: 'You update  Member Team Work Successfully',
@@ -91,7 +105,7 @@ export class TeamMemberController {
   async remove(@Param('id') id: string) {
     try {
       await this.teamMemberService.remove(id);
-      return{
+      return {
         succes: true,
         status: 200,
         Message: "You Delete  Member Team Work Successfully",
