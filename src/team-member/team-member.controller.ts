@@ -14,14 +14,15 @@ import { TeamMemberService } from './team-member.service';
 import { CreateTeamMemberDto } from './dto/create-team-member.dto';
 import { UpdateTeamMemberDto } from './dto/update-team-member.dto';
 import { FileInterceptor } from '@nestjs/platform-express';
-import { UploadImageService } from 'src/services/upload-image/upload-image.service';
+import { SourceImage, UploadImageService } from 'src/services/upload-image/upload-image.service';
+import { ImageSource } from 'aws-sdk/clients/imagebuilder';
 
 @Controller('team-member')
 export class TeamMemberController {
   constructor(
     private readonly uploadImageService: UploadImageService,
     private readonly teamMemberService: TeamMemberService,
-  ) {}
+  ) { }
 
   @Post()
   @UseInterceptors(FileInterceptor('image'))
@@ -87,14 +88,18 @@ export class TeamMemberController {
     @UploadedFile() image: Express.Multer.File,
   ) {
     try {
-       image
-        ? (updateTeamMemberDto.image = await this.uploadImageService.update(
-      ( image.stream,
-            image.originalname,
-            'images-ejary',
-          )))
-        : '';
-      await this.teamMemberService.update(id, updateTeamMemberDto);
+      const memberTeam = await this.teamMemberService.findOne(id);
+      const imageRes = image
+        ? await this.uploadImageService.update(
+          image.stream,
+          image.originalname,
+          'images-ejary',
+        )
+        : memberTeam.image;
+      await this.teamMemberService.update(id, {
+        ...updateTeamMemberDto,
+        image: imageRes as SourceImage,
+      });
       return {
         succes: true,
         status: 200,
