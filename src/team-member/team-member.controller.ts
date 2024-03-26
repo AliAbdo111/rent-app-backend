@@ -87,7 +87,13 @@ export class TeamMemberController {
     @UploadedFile() image: Express.Multer.File,
   ) {
     try {
-      // const {secure_url}= image? await this.cloudnairyService.uploadImage(image,'teammember') :''
+       image
+        ? (updateTeamMemberDto.image = await this.uploadImageService.update(
+      ( image.stream,
+            image.originalname,
+            'images-ejary',
+          )))
+        : '';
       await this.teamMemberService.update(id, updateTeamMemberDto);
       return {
         succes: true,

@@ -51,23 +51,7 @@ export class UploadImageService {
     }
   }
 
-  async deleteImage(bucketName: string, fileName: string) {
-    try {
-        const deleteParams ={
-            Bucket: bucketName,
-            Key: fileName,
-        }
-      const param = new DeleteObjectCommand(deleteParams);
-        
-        const result =await this.s3.send(param)
-        console.log(result)
-    } catch (error) {
-        throw new ServiceUnavailableException(
-            `Error From Service Upload file :${error}`,
-          );
-    }
-  }
-
+  
   async update(stream: Readable, fileName: string, bucketName: string) {
     const uploadParams: PutObjectCommandInput = {
       Bucket: bucketName,
@@ -86,4 +70,22 @@ export class UploadImageService {
       throw error;
     }
   }
+
+  async deleteImage(bucketName: string, fileName: string) {
+    try {
+        const deleteParams ={
+            Bucket: bucketName,
+            Key: fileName,
+        }
+      const param = new DeleteObjectCommand(deleteParams);
+        
+        const result =await this.s3.send(param)
+        console.log(result)
+    } catch (error) {
+        throw new ServiceUnavailableException(
+            `Error From Service Upload file :${error}`,
+          );
+    }
+  }
+
 }
