@@ -10,7 +10,7 @@ export class AuthService {
   async genrateToken(payload: any): Promise<string> {
     return await this.jwtService.signAsync(payload, {
       secret: jwtConstants.secret,
-      expiresIn: jwtConstants.expiresIn,
+      expiresIn:21600,
     });
   }
 
