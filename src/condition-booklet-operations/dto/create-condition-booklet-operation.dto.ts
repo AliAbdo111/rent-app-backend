@@ -1,16 +1,16 @@
 import { IsEnum, IsNotEmpty } from 'class-validator';
 import { MaritalStatus } from 'src/Types/RealEstat';
-interface BirthCertificate {
-  publicId: string;
-  secure_url: string;
-}
+
 export class CreateConditionBookletOperationDto {
   @IsNotEmpty()
   unitId: string;
 
   @IsNotEmpty()
   projectId: string;
-  
+
+  @IsNotEmpty()
+  userId: string;
+
   firstName: string;
 
   lastName: string;
@@ -44,7 +44,9 @@ export class CreateConditionBookletOperationDto {
 
   MarriageCertificate: string;
 
-  // data about order
+  status: string;
+
+  // data about order payment
   success?: boolean;
 
   orderId?: number;

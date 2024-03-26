@@ -24,6 +24,7 @@ import { AuthGuard } from 'src/auth/AuthGuard';
 import { Request } from 'express';
 import { UsersService } from 'src/users/users.service';
 import { ConditionBookletProjectService } from 'src/condition-booklet-project/condition-booklet-project.service';
+import { NotificationService } from 'src/services/notification/notification.service';
 
 @Controller('ConditionBookletOperation')
 export class ConditionBookletOperationsController {
@@ -33,6 +34,7 @@ export class ConditionBookletOperationsController {
     private readonly cloudinaryService: CloudinaryService,
     private readonly paymentService: PaymentService,
     private readonly userService: UsersService,
+    private readonly notificationService: NotificationService
   ) {}
 
   @UseGuards(AuthGuard)
@@ -170,7 +172,7 @@ export class ConditionBookletOperationsController {
 
   @UseGuards(AuthGuard)
   @Patch(':id')
-  update(
+  async update(
     @Param('id') id: string,
     @Body()
     updateConditionBookletOperationDto: UpdateConditionBookletOperationDto,
@@ -186,18 +188,29 @@ export class ConditionBookletOperationsController {
   }
 
 
-  @UseGuards(AuthGuard)
-  @Patch(':id')
-  update8(
+  // @UseGuards(AuthGuard)
+  @Patch(':id/:status')
+ async updateStatusOfOperation(
     @Param('id') id: string,
-    @Body()
-    updateConditionBookletOperationDto: UpdateConditionBookletOperationDto,
+    @Param('status')
+    status: string,
   ) {
     try {
-      return this.conditionBookletOperationsService.update(
+      
+      const operation= await this.conditionBookletOperationsService.update(
         id,
-        updateConditionBookletOperationDto,
+       { status: status},
       );
+      await this.notificationService.publishMessage(
+        'arn:aws:sns:eu-north-1:905418202818:notification-booklet-operation',
+        String(operation._id),
+        operation?.userId
+      );
+      return {
+        success: true,
+        message: 'status update successfully',
+
+      }
     } catch (error) {
       throw new ServiceUnavailableException(`Error :${error}`);
     }

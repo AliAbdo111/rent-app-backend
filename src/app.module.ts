@@ -26,6 +26,7 @@ import * as redisStore from 'cache-manager-redis-store';
 import { APP_INTERCEPTOR } from '@nestjs/core';
 import { TeamMemberModule } from './team-member/team-member.module';
 import { NotificationService } from './services/notification/notification.service';
+import { UploadImageService } from './services/upload-image/upload-image.service';
 import awsConfig from './config/aws.config';
 
 @Module({
@@ -74,6 +75,7 @@ import awsConfig from './config/aws.config';
     AppService,
     PaymentService,
     NotificationService,
+    UploadImageService,
   ],
 })
 export class AppModule {}

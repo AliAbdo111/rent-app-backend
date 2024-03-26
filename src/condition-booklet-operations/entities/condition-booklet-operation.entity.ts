@@ -14,6 +14,10 @@ export class ConditionBookletOperation {
   unitId: RealEstateBookletUnit;
 
   @Prop({
+    type: String,
+  })
+  userId: string;
+  @Prop({
     type: mongoose.Schema.Types.ObjectId,
     ref: 'ConditionBookletProject',
   })

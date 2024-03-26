@@ -70,6 +70,7 @@ export class ConditionBookletOperationsService {
       return await this.conditionBookletOperation.findByIdAndUpdate(
         id,
         updateConditionBookletOperationDto,
+        { new: true },
       );
     } catch (error) {
       throw new ServiceUnavailableException(error);

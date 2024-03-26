@@ -9,19 +9,19 @@ export class NotificationService {
         private readonly configService: ConfigService
     ) {
         const awsConfig = this.configService.get('aws');
-        this.sns = new SNS(awsConfig.sns);
+        this.sns = new SNS(awsConfig);
     }
-    async publishMessage(topicArn: string, message: string) {
+    async publishMessage(topicArn: string, message: string, userId: string) {
         try {
-            const param = {
-                TopicArn: topicArn,
-                Message: message,
-            };
-            const result = await this.sns.publish(param).promise()
-            console.log(result)
-        } catch (error) {
-            throw new ServiceUnavailableException(
-                `Error From Service Notificatin : ${error}`)
+      const param = {
+        TopicArn: topicArn,
+        Message: message,
+        MessageStructure: userId ||'test',
+      };
+      const result = await this.sns.publish(param).promise();
+    } catch (error) {
+      throw new ServiceUnavailableException(
+        `Error From Service Notificatin : ${error}`)
        }
     }
 }
