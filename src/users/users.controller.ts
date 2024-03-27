@@ -23,18 +23,18 @@ import {
   FileFieldsInterceptor,
   FileInterceptor,
 } from '@nestjs/platform-express';
-import { CloudinaryService } from 'src/cloudinary/clodinary.service';
 import { AuthGuard } from 'src/auth/AuthGuard';
 import * as bcrypt from 'bcrypt';
 import { AuthService } from 'src/auth/auth.service';
 import { ObjectId } from 'mongodb';
+import { UploadImageService } from 'src/services/upload-image/upload-image.service';
 
 @Controller('users')
 export class UsersController {
   folderName: string = 'User';
   constructor(
     private readonly usersService: UsersService,
-    private readonly cloudinaryService: CloudinaryService,
+    private readonly uploadImageService: UploadImageService,
     private authService: AuthService,
   ) {}
 
@@ -63,15 +63,19 @@ export class UsersController {
 
         if (files?.bankAccountStatementFile) {
           bankAccountStatementFileRes =
-            await this.cloudinaryService.uploadImage(
-              files.bankAccountStatementFile[0],
-              this.folderName,
-            );
+          await this.uploadImageService.upload(
+            files?.bankAccountStatementFile.stream,
+            files?.bankAccountStatementFile.originalname,
+            'images-ejary',
+            files?.bankAccountStatementFile.mimetype,
+          );
         }
         if (files?.criminalRecordFile) {
-          criminalRecordFileRes = await this.cloudinaryService.uploadImage(
-            files.criminalRecordFile[0],
-            this.folderName,
+          criminalRecordFileRes = await this.uploadImageService.upload(
+            files?.criminalRecordFile.stream,
+            files?.criminalRecordFile.originalname,
+            'images-ejary',
+            files?.criminalRecordFile.mimetype,
           );
         }
 
@@ -236,16 +240,17 @@ export class UsersController {
         updateUserDto.password = hash;
       }
       if (imageProfile) {
-        var { secure_url } = await this.cloudinaryService.uploadImage(
-          imageProfile,
-          this.folderName,
+        var { secure_url } = await this.uploadImageService.upload(
+          imageProfile.stream,
+          imageProfile.originalname,
+          'images-ejary',
+          imageProfile.mimetype,
         );
       }
       const updateUser = await this.usersService.update(id, {
         ...updateUserDto,
         imageProfile: secure_url,
       });
-      console.log(updateUser);
       if (!updateUser.matchedCount) {
         res.status(404).send({
           success: false,
