@@ -4,7 +4,7 @@ import { SourceImage } from 'src/services/upload-image/upload-image.service';
 @Schema({ timestamps: true })
 export class TeamMember extends Document {
   @Prop({
-    type: Object
+    type: Object,
   })
   image: SourceImage;
 

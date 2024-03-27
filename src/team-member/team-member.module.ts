@@ -5,7 +5,7 @@ import { MongooseModule } from '@nestjs/mongoose';
 import { TeamMemberScema } from './entities/team-member.entity';
 import { UploadImageService } from 'src/services/upload-image/upload-image.service';
 @Module({
-  imports:[
+  imports: [
     MongooseModule.forFeature([
       {
         name: 'TeamMember',

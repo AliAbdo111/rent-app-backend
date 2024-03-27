@@ -1,4 +1,10 @@
-import { IsEmail, IsEnum, IsMongoId, IsNotEmpty, IsString } from 'class-validator';
+import {
+  IsEmail,
+  IsEnum,
+  IsMongoId,
+  IsNotEmpty,
+  IsString,
+} from 'class-validator';
 
 export class CreateRequestRentingDto {
   @IsString()
@@ -25,5 +31,4 @@ export class CreateRequestRentingDto {
   @IsMongoId()
   @IsNotEmpty()
   unitId: string;
-
 }

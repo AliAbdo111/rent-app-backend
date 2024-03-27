@@ -34,7 +34,7 @@ export class ConditionBookletOperationsController {
     private readonly cloudinaryService: CloudinaryService,
     private readonly paymentService: PaymentService,
     private readonly userService: UsersService,
-    private readonly notificationService: NotificationService
+    private readonly notificationService: NotificationService,
   ) {}
 
   @UseGuards(AuthGuard)
@@ -70,16 +70,16 @@ export class ConditionBookletOperationsController {
       // bankAccountStatementFile uploade  ==1
       const bankAccountStatementFile = files?.bankAccountStatementFile
         ? await this.cloudinaryService.uploadImage(
-          files?.bankAccountStatementFile[0],
-          folderName,
-        )
+            files?.bankAccountStatementFile[0],
+            folderName,
+          )
         : '';
       // birthCertificate uploade 2
       const urlsBirth: {
         public_id: string;
         secure_url: string;
       }[] = files.birthCertificate
-          ? await Promise.all(
+        ? await Promise.all(
             files.birthCertificate.map(
               async (
                 imag,
@@ -90,41 +90,41 @@ export class ConditionBookletOperationsController {
               },
             ),
           )
-          : [];
+        : [];
       // MarriageCertificate === 3
       const MarriageCertificate = files?.MarriageCertificate
         ? await this.cloudinaryService.uploadImage(
-          files?.MarriageCertificate[0],
-          folderName,
-        )
+            files?.MarriageCertificate[0],
+            folderName,
+          )
         : '';
       // hr Letter upload ==4
       const hrLetter = files?.hrLetter
         ? await this.cloudinaryService.uploadImage(
-          files?.hrLetter[0],
-          folderName,
-        )
+            files?.hrLetter[0],
+            folderName,
+          )
         : '';
       ///passportImage upload
       const passportImage = files?.passportImage
         ? await this.cloudinaryService.uploadImage(
-          files.passportImage[0],
-          folderName,
-        )
+            files.passportImage[0],
+            folderName,
+          )
         : '';
 
       const rearIdImage = files?.rearIdImage
         ? await this.cloudinaryService.uploadImage(
             files.rearIdImage[0],
-          folderName,
-        )
+            folderName,
+          )
         : '';
 
       const frontIdImage = files?.frontIdImage
         ? await this.cloudinaryService.uploadImage(
             files.frontIdImage[0],
-          folderName,
-        )
+            folderName,
+          )
         : '';
       const operatinProject =
         await this.conditionBookletOperationsService.create({
@@ -187,30 +187,27 @@ export class ConditionBookletOperationsController {
     }
   }
 
-
   // @UseGuards(AuthGuard)
   @Patch(':id/:status')
- async updateStatusOfOperation(
+  async updateStatusOfOperation(
     @Param('id') id: string,
     @Param('status')
     status: string,
   ) {
     try {
-      
-      const operation= await this.conditionBookletOperationsService.update(
+      const operation = await this.conditionBookletOperationsService.update(
         id,
-       { status: status},
+        { status: status },
       );
       await this.notificationService.publishMessage(
         'arn:aws:sns:eu-north-1:905418202818:notification-booklet-operation',
         String(operation._id),
-        operation?.userId
+        operation?.userId,
       );
       return {
         success: true,
         message: 'status update successfully',
-
-      }
+      };
     } catch (error) {
       throw new ServiceUnavailableException(`Error :${error}`);
     }
@@ -253,10 +250,10 @@ export class ConditionBookletOperationsController {
       const projectCondition = await this.projectService.findOne(
         operation.projectId,
       );
-      let payment
+      let payment;
       switch (paymentMethod) {
         case 'Card': {
-           payment = await this.paymentService.paymentByCard(
+          payment = await this.paymentService.paymentByCard(
             projectCondition,
             user,
           );
@@ -273,11 +270,11 @@ export class ConditionBookletOperationsController {
           break;
         }
         case 'Souhoola': {
-           payment = await this.paymentService.paymentBySouhoola(
+          payment = await this.paymentService.paymentBySouhoola(
             projectCondition,
             user,
           );
-          break ;
+          break;
         }
       }
       return payment;

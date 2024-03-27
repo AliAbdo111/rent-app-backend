@@ -89,7 +89,7 @@ export class RealEstateUnit extends Document {
   finshingType: string;
 
   @Prop()
-  facilities: string[]; // مرافق 
+  facilities: string[]; // مرافق
 
   @Prop({
     type: Number,
@@ -116,6 +116,10 @@ export class RealEstateUnit extends Document {
     type: Number,
   })
   countBathRoom: number;
+  @Prop({
+    type: Number,
+  })
+  countkitchen: number;
 
   @Prop({
     type: [String],

@@ -10,7 +10,7 @@ export const readContract = async (): Promise<string> => {
       .replace('طرف أول مالك مؤجر', 'Owner/Landlord')
       .replace('طرف ثان مستأجر', 'Tenant')
       .replace('مادة 1', 'Article 1');
-   
+
     await fs.writeFile(filePath, content, 'utf-8');
     return 'modifiedContent';
   } catch (error) {

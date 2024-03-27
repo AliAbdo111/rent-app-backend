@@ -28,6 +28,7 @@ import * as bcrypt from 'bcrypt';
 import { AuthService } from 'src/auth/auth.service';
 import { ObjectId } from 'mongodb';
 import { UploadImageService } from 'src/services/upload-image/upload-image.service';
+import { SendMailService } from 'src/services/send-mail/send-mail.service';
 
 @Controller('users')
 export class UsersController {
@@ -36,6 +37,7 @@ export class UsersController {
     private readonly usersService: UsersService,
     private readonly uploadImageService: UploadImageService,
     private authService: AuthService,
+    private sendMailService: SendMailService
   ) {}
 
   // create user return=> access_token ande refresh token in cookie
@@ -62,8 +64,7 @@ export class UsersController {
         let criminalRecordFileRes = { secure_url: '' };
 
         if (files?.bankAccountStatementFile) {
-          bankAccountStatementFileRes =
-          await this.uploadImageService.upload(
+          bankAccountStatementFileRes = await this.uploadImageService.upload(
             files?.bankAccountStatementFile.stream,
             files?.bankAccountStatementFile.originalname,
             'images-ejary',
@@ -78,7 +79,7 @@ export class UsersController {
             files?.criminalRecordFile.mimetype,
           );
         }
-
+        // const mail = await this.sendMailService.sendMail(createUserDto.email);
         const { access_token, refresh_token } = await this.usersService.create({
           ...createUserDto,
           bankAccountStatementFile: bankAccountStatementFileRes.secure_url,

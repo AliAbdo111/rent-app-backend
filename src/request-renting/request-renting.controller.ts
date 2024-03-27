@@ -50,7 +50,6 @@ export class RequestRentingController {
     @Body() createRequestRentingDto: CreateRequestRentingDto,
   ) {
     try {
-
       const frontIdImage = await this.cloudinaryService.uploadImage(
         files.frontIdImage[0],
         this.folderName,
@@ -238,10 +237,10 @@ export class RequestRentingController {
         });
       }
       if (status === 'ACCEPTE') {
-        await readContract()
+        await readContract();
         const fileName = 'contract.docx';
         const file = createReadStream(join(process.cwd(), 'contract.docx'));
-         return file.pipe(res);
+        return file.pipe(res);
       }
       res.status(200).json({
         success: true,

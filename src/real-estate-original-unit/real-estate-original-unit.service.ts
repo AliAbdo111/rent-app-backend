@@ -37,7 +37,6 @@ export class RealEstateOriginalUnitService {
     }
   }
 
-  
   @CacheKey('OriginalUnit')
   @CacheTTL(60)
   async findAll(

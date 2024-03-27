@@ -54,6 +54,8 @@ export class CreateRealEstateUnitDto {
   // @IsNumber()
   countRoom: number;
 
+  countkitchen: number;
+
   // @IsNumber()
   countBathRoom: number;
 

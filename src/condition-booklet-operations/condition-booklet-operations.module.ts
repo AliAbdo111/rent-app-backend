@@ -30,7 +30,7 @@ import { NotificationService } from 'src/services/notification/notification.serv
     ConditionBookletOperationsService,
     CloudinaryService,
     PaymentService,
-    NotificationService
+    NotificationService,
   ],
 })
 export class ConditionBookletOperationsModule {}

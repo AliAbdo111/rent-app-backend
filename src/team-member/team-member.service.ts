@@ -16,7 +16,7 @@ export class TeamMemberService {
   }
 
   findAll() {
-    return this.teamMemberRepositoy.find()
+    return this.teamMemberRepositoy.find();
   }
 
   findOne(id: string) {
@@ -24,10 +24,10 @@ export class TeamMemberService {
   }
 
   update(id: string, updateTeamMemberDto: UpdateTeamMemberDto) {
-    return this.teamMemberRepositoy.findByIdAndUpdate(id, updateTeamMemberDto)
+    return this.teamMemberRepositoy.findByIdAndUpdate(id, updateTeamMemberDto);
   }
 
   remove(id: string) {
-    return this.teamMemberRepositoy.findByIdAndDelete(id)
+    return this.teamMemberRepositoy.findByIdAndDelete(id);
   }
 }

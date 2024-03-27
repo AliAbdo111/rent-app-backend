@@ -14,7 +14,10 @@ import { TeamMemberService } from './team-member.service';
 import { CreateTeamMemberDto } from './dto/create-team-member.dto';
 import { UpdateTeamMemberDto } from './dto/update-team-member.dto';
 import { FileInterceptor } from '@nestjs/platform-express';
-import { SourceImage, UploadImageService } from 'src/services/upload-image/upload-image.service';
+import {
+  SourceImage,
+  UploadImageService,
+} from 'src/services/upload-image/upload-image.service';
 import { ImageSource } from 'aws-sdk/clients/imagebuilder';
 
 @Controller('team-member')
@@ -22,7 +25,7 @@ export class TeamMemberController {
   constructor(
     private readonly uploadImageService: UploadImageService,
     private readonly teamMemberService: TeamMemberService,
-  ) { }
+  ) {}
 
   @Post()
   @UseInterceptors(FileInterceptor('image'))
@@ -61,12 +64,13 @@ export class TeamMemberController {
       return {
         succes: true,
         status: 200,
-        Message: "You Get All Members Team Work Successfully",
-        data: members
-      }
-
+        Message: 'You Get All Members Team Work Successfully',
+        data: members,
+      };
     } catch (error) {
-      throw new ServiceUnavailableException(`Error From Service Is Say :${error}`)
+      throw new ServiceUnavailableException(
+        `Error From Service Is Say :${error}`,
+      );
     }
   }
 
@@ -74,9 +78,10 @@ export class TeamMemberController {
   findOne(@Param('id') id: string) {
     try {
       return this.teamMemberService.findOne(id);
-
     } catch (error) {
-      throw new ServiceUnavailableException(`Error From Service Is Say :${error}`)
+      throw new ServiceUnavailableException(
+        `Error From Service Is Say :${error}`,
+      );
     }
   }
 
@@ -91,10 +96,10 @@ export class TeamMemberController {
       const memberTeam = await this.teamMemberService.findOne(id);
       const imageRes = image
         ? await this.uploadImageService.update(
-          image.stream,
-          image.originalname,
-          'images-ejary',
-        )
+            image.stream,
+            image.originalname,
+            'images-ejary',
+          )
         : memberTeam.image;
       await this.teamMemberService.update(id, {
         ...updateTeamMemberDto,
@@ -119,10 +124,12 @@ export class TeamMemberController {
       return {
         succes: true,
         status: 200,
-        Message: "You Delete  Member Team Work Successfully",
+        Message: 'You Delete  Member Team Work Successfully',
       };
     } catch (error) {
-      throw new ServiceUnavailableException(`Error From Service Is Say :${error}`)
+      throw new ServiceUnavailableException(
+        `Error From Service Is Say :${error}`,
+      );
     }
   }
 }

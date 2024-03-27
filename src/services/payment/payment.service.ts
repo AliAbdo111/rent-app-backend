@@ -39,9 +39,9 @@ export class PaymentService {
   async paymentByMobileWallet(product: any, user: any) {
     try {
       const token = await this.getTokenFromAPI();
-      console.log(`Token Is :${token}`)
+      console.log(`Token Is :${token}`);
       const orderId = await this.createOrder(token, product);
-      console.log(`orderId Is :${orderId}`)
+      console.log(`orderId Is :${orderId}`);
       return await this.generatePaymentUrlMobileWallet(
         token,
         orderId,
@@ -64,7 +64,7 @@ export class PaymentService {
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(data),
     });
-    const { token } = await response.json(); 
+    const { token } = await response.json();
     return token;
   }
   private async createOrder(token: string, product: any): Promise<number> {
@@ -91,7 +91,7 @@ export class PaymentService {
     token: string,
     orderId: number,
     product: any,
-    user: any
+    user: any,
   ): Promise<{ ifarmUrl: string; _id: number }> {
     const price = product?.price * 100;
     const data = {
@@ -125,7 +125,7 @@ export class PaymentService {
         body: JSON.stringify(data),
       },
     );
-    //four step send request with type method payment used 
+    //four step send request with type method payment used
     const { token: paymentToken } = await response.json();
     const iframeUrl = `https://accept.paymob.com/api/acceptance/iframes/824831?payment_token=${paymentToken}`;
     return { ifarmUrl: iframeUrl, _id: orderId };
@@ -134,7 +134,7 @@ export class PaymentService {
     token: string,
     orderId: number,
     product: any,
-    user: any
+    user: any,
   ): Promise<{ ifarmUrl: string; _id: number }> {
     const price = product?.price * 100;
     const data = {
@@ -166,7 +166,8 @@ export class PaymentService {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(data),
-      });
+      },
+    );
     const { token: paymentToken } = await response.json();
     const iframeUrl = `https://accept.paymobsolutions.com/iframe/${paymentToken}`;
     return { ifarmUrl: iframeUrl, _id: orderId };
@@ -175,7 +176,7 @@ export class PaymentService {
     token: string,
     orderId: number,
     product: any,
-    user: any
+    user: any,
   ): Promise<{ ifarmUrl: string; _id: number }> {
     const price = product?.price * 100;
     const data = {
@@ -210,7 +211,7 @@ export class PaymentService {
       },
     );
 
-    //four step send request with type method payment used 
+    //four step send request with type method payment used
     const { token: paymentToken } = await response.json();
     const result = await fetch(
       'https://accept.paymob.com/api/acceptance/payments/pay',
@@ -218,22 +219,21 @@ export class PaymentService {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: {
-            "source": {
-              "identifier": "01010101010", 
-              "subtype": "WALLET"
-            },
-            "payment_token":paymentToken // token obtained in step 3
-          
+          source: {
+            identifier: '01010101010',
+            subtype: 'WALLET',
+          },
+          payment_token: paymentToken, // token obtained in step 3
         },
       },
     );
-    return result
+    return result;
   }
   private async generatePaymentUrlValu(
     token: string,
     orderId: number,
     product: any,
-    user: any
+    user: any,
   ): Promise<{ ifarmUrl: string; _id: number }> {
     const price = product?.price * 100;
     const data = {
@@ -242,19 +242,19 @@ export class PaymentService {
         subtype: 'WALLET',
       },
       payment_token: token,
-    }
+    };
     const response = await fetch(
       'https://accept.paymob.com/api/acceptance/payments/pay',
       {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: {
-            "identifier": 'wallet mobile number',
-            "subtype": "WALLET"
-          },
-          "payment_token": token  // token obtained in step 3
+          identifier: 'wallet mobile number',
+          subtype: 'WALLET',
         },
-      );
+        payment_token: token, // token obtained in step 3
+      },
+    );
     return response;
   }
 }

@@ -16,7 +16,6 @@ export class QuestionsService {
   }
 
   async findAll(limit: number) {
-
     const count = await this.questionRepository.find().countDocuments();
     if (!limit) {
       limit = count;

@@ -7,5 +7,5 @@ export class UpdateRequestRentingDto extends PartialType(
   CreateRequestRentingDto,
 ) {
   @IsEnum(Status)
-  status: string
+  status: string;
 }

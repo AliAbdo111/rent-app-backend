@@ -13,5 +13,5 @@ export class CreateConditionBookletProjectDto {
   @IsNumber()
   price: number;
 
-  terms?: [{ itemNumber: string, title: string }];
+  terms?: [{ itemNumber: string; title: string }];
 }

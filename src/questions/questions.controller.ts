@@ -36,7 +36,7 @@ export class QuestionsController {
   @Get()
   async findAll(@Query() query: any) {
     try {
-      const limit = parseInt(query.limit)
+      const limit = parseInt(query.limit);
 
       const { data } = await this.questionsService.findAll(limit);
       return {

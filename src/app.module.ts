@@ -27,6 +27,7 @@ import { APP_INTERCEPTOR } from '@nestjs/core';
 import { TeamMemberModule } from './team-member/team-member.module';
 import { NotificationService } from './services/notification/notification.service';
 import { UploadImageService } from './services/upload-image/upload-image.service';
+import { SendMailService } from './services/send-mail/send-mail.service';
 import awsConfig from './config/aws.config';
 
 @Module({
@@ -76,6 +77,7 @@ import awsConfig from './config/aws.config';
     PaymentService,
     NotificationService,
     UploadImageService,
+    SendMailService,
   ],
 })
 export class AppModule {}

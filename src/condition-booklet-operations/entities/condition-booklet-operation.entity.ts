@@ -112,7 +112,7 @@ export class ConditionBookletOperation {
   pending: boolean;
 
   @Prop()
-  reasonReject: string
+  reasonReject: string;
 }
 
 export const conditionBookletOperationSchema = SchemaFactory.createForClass(

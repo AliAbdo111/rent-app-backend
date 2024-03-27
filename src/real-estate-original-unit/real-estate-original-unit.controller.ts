@@ -76,7 +76,7 @@ export class RealEstateOriginalUnitController {
       const limit = parseInt(query.limit) || 10;
       const page = parseInt(query.page) || 1;
       const filter = { IsAvilable: true };
-       query.city ? (filter['city'] = query.city) : null;
+      query.city ? (filter['city'] = query.city) : null;
       query.street ? (filter['street'] = query.street) : null;
       query.country ? (filter['country'] = query.country) : null;
       query.monthlyRentAmount
@@ -85,7 +85,7 @@ export class RealEstateOriginalUnitController {
       const realEstat = await this.realEstateOriginaletUnitService.findAll(
         limit,
         page,
-        filter
+        filter,
       );
       return {
         success: true,
@@ -130,7 +130,8 @@ export class RealEstateOriginalUnitController {
   @UseInterceptors(CacheInterceptor)
   async findByStatus(@Param('status') status: string) {
     try {
-      const realEstat = await this.realEstateOriginaletUnitService.findByStatus(status);
+      const realEstat =
+        await this.realEstateOriginaletUnitService.findByStatus(status);
       if (!realEstat) {
         return {
           success: false,
